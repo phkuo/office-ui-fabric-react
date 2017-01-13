@@ -56,8 +56,9 @@ export class ThemeGenerator {
   }
 
   /* Gets the theme as a list of SASS variables that can be used in code in this format:
-   * $tokenName: "TODO"
-   *
+   * $tokenName: "[theme:tokenName, default:#f00f00]";
+   * $tokenName2: "[theme:tokenName2, default:#ba2ba2]";
+   * ...
    */
   public static getThemeAsSass(slotRules: Array<IThemeSlotRule>): any {
     let sassVarTemplate = '${0}Color:\t"[theme: {1},\tdefault: {2}]";\n';
@@ -66,10 +67,7 @@ export class ThemeGenerator {
     let theme: any = {};
     for (let ruleName in slotRules) {
       if (slotRules.hasOwnProperty(ruleName)) {
-
         let rule: IThemeSlotRule = slotRules[ruleName];
-        // theme[rule.name] = rule.value.str;
-
         let camelCasedName = rule.name.charAt(0).toLowerCase() + rule.name.slice(1);
         output += format(sassVarTemplate,
           camelCasedName,
