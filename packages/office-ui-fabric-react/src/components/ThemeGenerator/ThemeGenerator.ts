@@ -1,14 +1,15 @@
 import { IColor } from '../../utilities/Color/IColor';
 import { getColorFromString } from '../../utilities/Color/Colors';
 import { getShade } from '../../utilities/Color/Shades';
+import { format } from '../../utilities/string';
 
 import { IThemeSlotRule } from './IThemeSlotRule';
 
 export class ThemeGenerator {
   public static setSlot(
-    rule:       IThemeSlotRule,
-    value:      string | IColor,
-    slotRules:  Array<IThemeSlotRule>
+    rule: IThemeSlotRule,
+    value: string | IColor,
+    slotRules: Array<IThemeSlotRule>
   ) {
     let valueAsIColor: IColor;
     if (typeof value === 'string') {
@@ -43,7 +44,7 @@ export class ThemeGenerator {
    * { [theme slot name as string] : [value as string],
    *   ... }
    */
-  public static getTheme(slotRules: Array<IThemeSlotRule>): any {
+  public static getThemeAsJson(slotRules: Array<IThemeSlotRule>): any {
     let theme: any = {};
     for (let ruleName in slotRules) {
       if (slotRules.hasOwnProperty(ruleName)) {
@@ -54,10 +55,35 @@ export class ThemeGenerator {
     return theme;
   }
 
+  /* Gets the theme as a list of SASS variables that can be used in code in this format:
+   * $tokenName: "TODO"
+   *
+   */
+  public static getThemeAsSass(slotRules: Array<IThemeSlotRule>): any {
+    let sassVarTemplate = '${0}Color:\t"[theme: {1},\tdefault: {2}]";\n';
+    let output = '';
+
+    let theme: any = {};
+    for (let ruleName in slotRules) {
+      if (slotRules.hasOwnProperty(ruleName)) {
+
+        let rule: IThemeSlotRule = slotRules[ruleName];
+        // theme[rule.name] = rule.value.str;
+
+        let camelCasedName = rule.name.charAt(0).toLowerCase() + rule.name.slice(1);
+        output += format(sassVarTemplate,
+          camelCasedName,
+          camelCasedName,
+          rule.value.str);
+      }
+    }
+    return output;
+  }
+
   private static _setSlot(
-    rule:       IThemeSlotRule,
-    value:      IColor,
-    slotRules:  Array<IThemeSlotRule>,
+    rule: IThemeSlotRule,
+    value: IColor,
+    slotRules: Array<IThemeSlotRule>,
     isCustomized: boolean
   ) {
     // set the appropriate properties on the slot rule first
