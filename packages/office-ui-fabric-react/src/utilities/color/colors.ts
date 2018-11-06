@@ -214,6 +214,11 @@ export function updateSV(color: IColor, s: number, v: number): IColor {
 }
 
 export function updateH(color: IColor, h: number): IColor {
+  h = h % (MAX_COLOR_HUE + 1);
+  if (h < 0) {
+    h = MAX_COLOR_HUE + h;
+  }
+
   const { r, g, b } = hsv2rgb(h, color.s, color.v);
   const hex = rgb2hex(r, g, b);
 

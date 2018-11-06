@@ -13,6 +13,7 @@ import {
   IThemeRules
 } from 'office-ui-fabric-react/lib/ThemeGenerator';
 
+import { Button } from 'office-ui-fabric-react/lib/Button';
 import { Callout } from 'office-ui-fabric-react/lib/Callout';
 import { ColorPicker } from 'office-ui-fabric-react/lib/ColorPicker';
 
@@ -146,6 +147,8 @@ export class ThemeGeneratorPage extends BaseComponent<{}, IThemeGeneratorPageSta
             </Callout>
           )}
 
+        {this._renderSuggestions()}
+
         {/* the three base slots, prominently displayed at the top of the page */}
         <div style={{ display: 'flex' }}>
           {[
@@ -177,51 +180,7 @@ export class ThemeGeneratorPage extends BaseComponent<{}, IThemeGeneratorPageSta
         <br />
 
         <h2 id="Samples">Samples</h2>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <div className="ms-themer-example">
-            <TextFieldBasicExample />
-          </div>
-          <div className="ms-themer-example">
-            <ToggleBasicExample />
-            <ChoiceGroup
-              options={[
-                {
-                  key: 'A',
-                  text: 'Option A'
-                },
-                {
-                  key: 'B',
-                  text: 'Option B',
-                  checked: true
-                }
-              ]}
-              label="Pick one"
-              required={true}
-            />
-            <ChoiceGroup
-              options={[
-                {
-                  key: 'C',
-                  text: 'Option C',
-                  disabled: true
-                },
-                {
-                  key: 'D',
-                  text: 'Option D',
-                  checked: true,
-                  disabled: true
-                }
-              ]}
-              label="Pick one"
-              required={true}
-            />
-          </div>
-          <div className="ms-themer-example">
-            <TeachingBubbleBasicExample />
-            <br />
-            <ProgressIndicatorBasicExample />
-          </div>
-        </div>
+        {this._renderSamplesSection()}
 
         <h2 id="Accessibility">Accessibility</h2>
         <p>Each pair of colors below should produce legible text and have a minimum contrast ratio of 4.5.</p>
@@ -254,6 +213,81 @@ export class ThemeGeneratorPage extends BaseComponent<{}, IThemeGeneratorPageSta
     // 20ms is low enough that you can slowly drag to change color and see that theme,
     // but high enough that quick changes don't get bogged down by a million changes inbetween
   };
+
+  private _renderSuggestions() {
+    const primaryColor = this.state.themeRules[FabricSlots.themePrimary];
+
+    return <div>{this._makeSuggestionButton()}</div>;
+  }
+
+  private _makeSuggestionButton() {
+    return (
+      <Button>
+        <div>test123</div>
+        <div>asdf</div>
+      </Button>
+    );
+  }
+
+  private _applySuggestion(backgroundColor: IColor, foregroundColor: IColor) {
+    const { themeRules } = this.state;
+    const bgColorIsDark = isDark(backgroundColor);
+
+    ThemeGenerator.setSlot(themeRules[BaseSlots[BaseSlots.backgroundColor]], backgroundColor, bgColorIsDark, true, true);
+    ThemeGenerator.setSlot(themeRules[BaseSlots[BaseSlots.foregroundColor]], foregroundColor, bgColorIsDark, true, true);
+
+    this.setState({ themeRules }, this._makeNewTheme);
+  }
+
+  private _renderSamplesSection() {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div className="ms-themer-example">
+          <TextFieldBasicExample />
+        </div>
+        <div className="ms-themer-example">
+          <ToggleBasicExample />
+          <ChoiceGroup
+            options={[
+              {
+                key: 'A',
+                text: 'Option A'
+              },
+              {
+                key: 'B',
+                text: 'Option B',
+                checked: true
+              }
+            ]}
+            label="Pick one"
+            required={true}
+          />
+          <ChoiceGroup
+            options={[
+              {
+                key: 'C',
+                text: 'Option C',
+                disabled: true
+              },
+              {
+                key: 'D',
+                text: 'Option D',
+                checked: true,
+                disabled: true
+              }
+            ]}
+            label="Pick one"
+            required={true}
+          />
+        </div>
+        <div className="ms-themer-example">
+          <TeachingBubbleBasicExample />
+          <br />
+          <ProgressIndicatorBasicExample />
+        </div>
+      </div>
+    );
+  }
 
   private _onSwatchClick = (slotRule: IThemeSlotRule, ev: React.MouseEvent<HTMLElement>): void => {
     const { colorPickerSlotRule, colorPickerElement } = this.state;
@@ -428,7 +462,7 @@ export class ThemeGeneratorPage extends BaseComponent<{}, IThemeGeneratorPageSta
           // isInverted got swapped, so need to refresh slots with new shading rules
           ThemeGenerator.insureSlots(themeRules, !currentIsDark);
         }
-        this.setState({ themeRules: themeRules }, this._makeNewTheme);
+        this.setState({ themeRules }, this._makeNewTheme);
       }, 20);
       // 20ms is low enough that you can slowly drag to change color and see that theme,
       // but high enough that quick changes don't get bogged down by a million changes inbetween
