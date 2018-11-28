@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ISelection } from '../../utilities/selection/interfaces';
 import { ITheme, IStyle } from '../../Styling';
-import { IStyleFunction } from '../../Utilities';
+import { IRefObject, IStyleFunction } from '../../Utilities';
 
 export interface IMarqueeSelection {}
 
@@ -10,7 +10,7 @@ export interface IMarqueeSelectionProps extends React.HTMLAttributes<HTMLDivElem
    * Optional callback to access the IMarqueeSelection interface. Use this instead of ref for accessing
    * the public methods and properties of the component.
    */
-  componentRef?: (component: IMarqueeSelection | null) => void;
+  componentRef?: IRefObject<IMarqueeSelection>;
 
   /**
    * The selection object to interact with when updating selection changes.
@@ -33,14 +33,14 @@ export interface IMarqueeSelectionProps extends React.HTMLAttributes<HTMLDivElem
    * Optional flag to control the enabled state of marquee selection. This allows you to render
    * it and have events all ready to go, but conditionally disable it. That way transitioning
    * between enabled/disabled generate no difference in the DOM.
-   * @default true
+   * @defaultvalue true
    */
   isEnabled?: boolean;
 
   /**
    * Optional flag to restrict the drag rect to the root element, instead of allowing the drag
    * rect to start outside of the root element boundaries.
-   * @default false
+   * @defaultvalue false
    */
   isDraggingConstrainedToRoot?: boolean;
 

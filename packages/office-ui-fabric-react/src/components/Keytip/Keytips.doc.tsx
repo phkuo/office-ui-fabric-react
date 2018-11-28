@@ -14,8 +14,7 @@ const KeytipsOverflowCode = require('!raw-loader!office-ui-fabric-react/src/comp
 export const KeytipsPageProps: IDocPageProps = {
   title: 'Keytips',
   componentName: 'Keytips',
-  componentUrl:
-    'https://github.com/OfficeDev/office-ui-fabric-react/tree/master/packages/office-ui-fabric-react/src/components/Keytips',
+  componentUrl: 'https://github.com/OfficeDev/office-ui-fabric-react/tree/master/packages/office-ui-fabric-react/src/components/Keytips',
   componentStatus: KeytipStatus,
   examples: [
     {
@@ -34,7 +33,7 @@ export const KeytipsPageProps: IDocPageProps = {
       view: <KeytipsOverflowExample />
     },
     {
-      title: 'Keytips Example',
+      title: 'Keytips in Pivots',
       code: KeytipsBasicCode,
       view: <KeytipsBasicExample />
     }
@@ -47,5 +46,6 @@ export const KeytipsPageProps: IDocPageProps = {
   bestPractices: '',
   dos: require<string>('!raw-loader!office-ui-fabric-react/src/components/Keytip/docs/KeytipDos.md'),
   donts: require<string>('!raw-loader!office-ui-fabric-react/src/components/Keytip/docs/KeytipDonts.md'),
-  isHeaderVisible: true
+  isHeaderVisible: true,
+  isFeedbackVisible: true
 };

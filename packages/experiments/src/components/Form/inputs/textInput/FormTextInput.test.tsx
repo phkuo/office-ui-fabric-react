@@ -10,7 +10,6 @@ import { IFormProps } from '../../Form.types';
 import { DEFAULT_DEBOUNCE } from '../../FormBaseInput';
 import { FormTextInput } from './FormTextInput';
 import { IFormTextInputProps } from './FormTextInput.types';
-import { TextField } from 'office-ui-fabric-react/lib/TextField';
 
 // Utilities
 import { Validators } from '../../validators/Validators';
@@ -101,15 +100,14 @@ describe('FormTextInput Unit Tests', () => {
         </Form>
       ) as Form;
 
-      const form: HTMLFormElement = ReactTestUtils.findRenderedDOMComponentWithTag(
-        renderedForm,
-        'form'
-      ) as HTMLFormElement;
+      const form: HTMLFormElement = ReactTestUtils.findRenderedDOMComponentWithTag(renderedForm, 'form') as HTMLFormElement;
       ReactTestUtils.Simulate.submit(form);
 
       // Find the TextField component
-      const field = ReactTestUtils.findRenderedComponentWithType(renderedForm, TextField);
-      expect(field.state.errorMessage).toBeTruthy();
+      // TODO: this test is not working as intended as even nonsense state names pass.
+      //        commented out for now since test isn't executing when named 'xit'
+      // const field = ReactTestUtils.findRenderedComponentWithType(renderedForm, TextField);
+      // expect(field.state.errorMessage).toBeTruthy();
       expect(result).toBeFalsy();
     });
   });

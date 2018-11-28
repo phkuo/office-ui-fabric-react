@@ -18,15 +18,7 @@ export interface ISuggestionsState {
 
 export class SuggestionsItem<T> extends BaseComponent<ISuggestionItemProps<T>, {}> {
   public render(): JSX.Element {
-    const {
-      suggestionModel,
-      RenderSuggestion,
-      onClick,
-      className,
-      onRemoveItem,
-      isSelectedOverride,
-      removeButtonAriaLabel
-    } = this.props;
+    const { suggestionModel, RenderSuggestion, onClick, className, onRemoveItem, isSelectedOverride, removeButtonAriaLabel } = this.props;
     return (
       <div
         className={css(
@@ -131,29 +123,21 @@ export class Suggestions<T> extends BaseComponent<ISuggestionsProps<T>, ISuggest
             <CommandButton
               componentRef={this._forceResolveButton}
               className={css('ms-forceResolve-button', styles.actionButton, {
-                ['is-selected ' + styles.buttonSelected]:
-                  this.state.selectedActionType === SuggestionActionType.forceResolve
+                ['is-selected ' + styles.buttonSelected]: this.state.selectedActionType === SuggestionActionType.forceResolve
               })}
               onClick={this._forceResolve}
             >
               {forceResolveText}
             </CommandButton>
           )}
-        {isLoading && (
-          <Spinner className={css('ms-Suggestions-spinner', styles.suggestionsSpinner)} label={loadingText} />
-        )}
-        {hasNoSuggestions
-          ? onRenderNoResultFound
-            ? onRenderNoResultFound(undefined, noResults)
-            : noResults()
-          : this._renderSuggestions()}
+        {isLoading && <Spinner className={css('ms-Suggestions-spinner', styles.suggestionsSpinner)} label={loadingText} />}
+        {hasNoSuggestions ? (onRenderNoResultFound ? onRenderNoResultFound(undefined, noResults) : noResults()) : this._renderSuggestions()}
         {searchForMoreText &&
           moreSuggestionsAvailable && (
             <CommandButton
               componentRef={this._searchForMoreButton}
               className={css('ms-SearchMore-button', styles.actionButton, {
-                ['is-selected ' + styles.buttonSelected]:
-                  this.state.selectedActionType === SuggestionActionType.searchMore
+                ['is-selected ' + styles.buttonSelected]: this.state.selectedActionType === SuggestionActionType.searchMore
               })}
               iconProps={{ iconName: 'Search' }}
               onClick={this._getMoreResults}
@@ -161,18 +145,12 @@ export class Suggestions<T> extends BaseComponent<ISuggestionsProps<T>, ISuggest
               {searchForMoreText}
             </CommandButton>
           )}
-        {isSearching ? (
-          <Spinner className={css('ms-Suggestions-spinner', styles.suggestionsSpinner)} label={searchingText} />
-        ) : null}
+        {isSearching ? <Spinner className={css('ms-Suggestions-spinner', styles.suggestionsSpinner)} label={searchingText} /> : null}
         {footerTitle && !moreSuggestionsAvailable && !isMostRecentlyUsedVisible && !isSearching ? (
           <div className={css('ms-Suggestions-title', styles.suggestionsTitle)}>{footerTitle(this.props)}</div>
         ) : null}
         {
-          <span
-            role="alert"
-            aria-live="polite"
-            className={css('ms-Suggestions-suggestionsAvailable', styles.suggestionsAvailable)}
-          >
+          <span role="alert" aria-live="polite" className={css('ms-Suggestions-suggestionsAvailable', styles.suggestionsAvailable)}>
             {!isLoading && !isSearching && suggestions && suggestions.length > 0 && suggestionsAvailableAlertText
               ? suggestionsAvailableAlertText
               : null}
@@ -300,14 +278,16 @@ export class Suggestions<T> extends BaseComponent<ISuggestionsProps<T>, ISuggest
     }
   }
 
-  private _renderSuggestions(): JSX.Element {
+  private _renderSuggestions(): JSX.Element | null {
     const {
       onRenderSuggestion,
       removeSuggestionAriaLabel,
       suggestionsItemClassName,
       resultsMaximumNumber,
       showRemoveButtons,
-      suggestionsContainerAriaLabel
+      suggestionsContainerAriaLabel,
+      suggestionsListId,
+      suggestionsClassName
     } = this.props;
     let { suggestions } = this.props;
     const TypedSuggestionsItem = this.SuggestionsItemOfProperType;
@@ -316,11 +296,15 @@ export class Suggestions<T> extends BaseComponent<ISuggestionsProps<T>, ISuggest
       suggestions = suggestions.slice(0, resultsMaximumNumber);
     }
 
+    if (suggestions.length === 0) {
+      return null;
+    }
+
     return (
       <div
-        className={css('ms-Suggestions-container', styles.suggestionsContainer)}
-        id="suggestion-list"
-        role="list"
+        className={css('ms-Suggestions-container', styles.suggestionsContainer, suggestionsClassName)}
+        id={suggestionsListId}
+        role="listbox"
         aria-label={suggestionsContainerAriaLabel}
       >
         {suggestions.map((suggestion, index) => (
@@ -329,11 +313,11 @@ export class Suggestions<T> extends BaseComponent<ISuggestionsProps<T>, ISuggest
             // tslint:disable-next-line:no-string-literal
             key={(suggestion.item as any)['key'] ? (suggestion.item as any)['key'] : index}
             id={'sug-' + index}
-            role="listitem"
+            aria-selected={suggestion.selected}
+            role="option"
             aria-label={suggestion.ariaLabel}
           >
             <TypedSuggestionsItem
-              id={'sug-item' + index}
               suggestionModel={suggestion}
               RenderSuggestion={onRenderSuggestion as any}
               onClick={this._onClickTypedSuggestionsItem(suggestion.item, index)}

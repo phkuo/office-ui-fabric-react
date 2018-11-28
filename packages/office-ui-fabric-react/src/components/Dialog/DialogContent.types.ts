@@ -3,7 +3,7 @@ import { DialogContentBase } from './DialogContent.base';
 import { IButtonProps } from '../Button/Button.types';
 import { ResponsiveMode } from '../../utilities/decorators/withResponsiveMode';
 import { IStyle, ITheme } from '../../Styling';
-import { IStyleFunctionOrObject } from '../../Utilities';
+import { IRefObject, IStyleFunctionOrObject } from '../../Utilities';
 
 export interface IDialogContent {}
 
@@ -12,7 +12,7 @@ export interface IDialogContentProps extends React.Props<DialogContentBase> {
    * Optional callback to access the IDialogContent interface. Use this instead of ref for accessing
    * the public methods and properties of the component.
    */
-  componentRef?: (component: IDialogContent | null) => void;
+  componentRef?: IRefObject<IDialogContent>;
 
   /**
    * Call to provide customized styling that will layer on top of the variant rules
@@ -76,13 +76,13 @@ export interface IDialogContentProps extends React.Props<DialogContentBase> {
 
   /**
    * Label to be passed to to aria-label of close button
-   * @default Close
+   * @defaultvalue Close
    */
   closeButtonAriaLabel?: string;
 
   /**
    * The type of Dialog to display.
-   * @default DialogType.normal
+   * @defaultvalue DialogType.normal
    */
   type?: DialogType;
 }

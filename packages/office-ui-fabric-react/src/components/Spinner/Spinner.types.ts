@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ITheme, IStyle } from '../../Styling';
-import { IStyleFunctionOrObject } from '../../Utilities';
+import { IRefObject, IStyleFunctionOrObject } from '../../Utilities';
 
 export interface ISpinner {}
 
@@ -9,17 +9,17 @@ export interface ISpinnerProps extends React.HTMLAttributes<HTMLElement> {
    * Optional callback to access the ISpinner interface. Use this instead of ref for accessing
    * the public methods and properties of the component.
    */
-  componentRef?: (component: ISpinner | null) => void;
+  componentRef?: IRefObject<ISpinner>;
 
   /**
-   * Deprecated and will be removed at >= 2.0.0. Use SpinnerSize instead.
-   * @deprecated
+   * Deprecated and will be removed at \>= 2.0.0. Use `SpinnerSize` instead.
+   * @deprecated Use `SpinnerSize` instead.
    */
   type?: SpinnerType;
 
   /**
-   * The size of Spinner to render. { extraSmall, small, medium, large }
-   * @default SpinnerType.medium
+   * The size of Spinner to render. \{ extraSmall, small, medium, large \}
+   * @defaultvalue SpinnerType.medium
    */
   size?: SpinnerSize;
 
@@ -36,7 +36,7 @@ export interface ISpinnerProps extends React.HTMLAttributes<HTMLElement> {
 
   /**
    * Politeness setting for label update announcement.
-   * @default polite
+   * @defaultvalue polite
    */
   ariaLive?: 'assertive' | 'polite' | 'off';
 
@@ -79,17 +79,19 @@ export enum SpinnerSize {
 }
 
 /**
- * Deprecated at v2.0.0, use 'SpinnerSize' instead.
- * @deprecated
+ * Deprecated at v2.0.0, use `SpinnerSize` instead.
+ * @deprecated Use `SpinnerSize` instead.
  */
 export enum SpinnerType {
   /**
-   * Deprecated and will be removed at >= 2.0.0. Use SpinnerSize.medium instead.
+   * Deprecated and will be removed at \>= 2.0.0. Use `SpinnerSize.medium` instead.
+   * @deprecated Use `SpinnerSize.medium` instead.
    */
   normal = 0,
 
   /**
-   * Deprecated and will be removed at >= 2.0.0. Use SpinnerSize.large instead.
+   * Deprecated and will be removed at \>= 2.0.0. Use `SpinnerSize.large` instead.
+   * @deprecated Use `SpinnerSize.large` instead.
    */
   large = 1
 }

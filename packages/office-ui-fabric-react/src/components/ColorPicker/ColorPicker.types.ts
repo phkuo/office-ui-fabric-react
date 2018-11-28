@@ -1,13 +1,14 @@
 import { ITheme, IStyle } from '../../Styling';
-import { IStyleFunctionOrObject } from '../../Utilities';
+import { IBaseProps, IRefObject, IStyleFunctionOrObject } from '../../Utilities';
+import { IColor } from '../../utilities/color/colors';
 
 export interface IColorPicker {}
 
-export interface IColorPickerProps {
+export interface IColorPickerProps extends IBaseProps<IColorPicker> {
   /**
    * Gets the component ref.
    */
-  componentRef?: (component: IColorPicker | null) => void;
+  componentRef?: IRefObject<IColorPicker>;
 
   /**
    * CSS-compatible string to describe the initial color.
@@ -17,7 +18,7 @@ export interface IColorPickerProps {
   /**
    * Callback issued when the user changes the color.
    */
-  onColorChanged?: (color: string) => void;
+  onColorChanged?: (color: string, colorObject: IColor) => void;
 
   /**
    * The setting of whether to hide the alpha control slider.
@@ -26,31 +27,31 @@ export interface IColorPickerProps {
 
   /**
    * Label for the hex textfield.
-   * @default Hex
+   * @defaultvalue Hex
    */
   hexLabel?: string;
 
   /**
    * Label for the red textfield.
-   * @default Red
+   * @defaultvalue Red
    */
   redLabel?: string;
 
   /**
    * Label for the green textfield.
-   * @default Green
+   * @defaultvalue Green
    */
   greenLabel?: string;
 
   /**
    * Label for the blue textfield.
-   * @default Blue
+   * @defaultvalue Blue
    */
   blueLabel?: string;
 
   /**
    * Label for the alpha textfield.
-   * @default Alpha
+   * @defaultvalue Alpha
    */
   alphaLabel?: string;
 

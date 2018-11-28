@@ -49,10 +49,7 @@ export type TypedBasePicker = BasePicker<ISimple, IBasePickerProps<ISimple>>;
 
 describe('Pickers', () => {
   describe('BasePicker', () => {
-    const BasePickerWithType = BasePicker as new (props: IBasePickerProps<ISimple>) => BasePicker<
-      ISimple,
-      IBasePickerProps<ISimple>
-    >;
+    const BasePickerWithType = BasePicker as new (props: IBasePickerProps<ISimple>) => BasePicker<ISimple, IBasePickerProps<ISimple>>;
     const onRenderItem = (props: IPickerItemProps<{ key: string; name: string }>): JSX.Element => (
       <div key={props.item.name}>{basicRenderer(props)}</div>
     );
@@ -165,6 +162,32 @@ describe('Pickers', () => {
 
       ReactDOM.unmountComponentAtNode(root);
     });
+
+    it('can render MRU when input is focused', () => {
+      const root = document.createElement('div');
+      const resolveSuggestions = () => onResolveSuggestions('');
+      document.body.appendChild(root);
+      const picker: TypedBasePicker = ReactDOM.render(
+        <BasePickerWithType
+          onResolveSuggestions={onResolveSuggestions}
+          onEmptyInputFocus={resolveSuggestions}
+          onRenderItem={onRenderItem}
+          onRenderSuggestionsItem={basicSuggestionRenderer}
+        />,
+        root
+      ) as TypedBasePicker;
+      const input = document.querySelector('.ms-BasePicker-input') as HTMLInputElement;
+      input.focus();
+
+      const suggestions = document.querySelector('.ms-Suggestions') as HTMLInputElement;
+
+      expect(suggestions).toBeDefined();
+      const suggestionOptions = document.querySelectorAll('.ms-Suggestions-itemButton');
+      expect(suggestionOptions.length).toEqual(15);
+      expect(picker.items.length).toEqual(0);
+
+      ReactDOM.unmountComponentAtNode(root);
+    });
   });
 
   describe('TagPicker', () => {
@@ -177,10 +200,7 @@ describe('Pickers', () => {
     it('can search for and select tags', () => {
       const root = document.createElement('div');
       document.body.appendChild(root);
-      const picker: TagPicker = ReactDOM.render(
-        <TagPicker onResolveSuggestions={onResolveSuggestions} />,
-        root
-      ) as TagPicker;
+      const picker: TagPicker = ReactDOM.render(<TagPicker onResolveSuggestions={onResolveSuggestions} />, root) as TagPicker;
       const input = document.querySelector('.ms-BasePicker-input') as HTMLInputElement;
       input.focus();
       input.value = 'bl';
@@ -220,10 +240,7 @@ describe('Pickers', () => {
       expect(picker.items.length).toEqual(0);
 
       picker = ReactDOM.render(
-        <TagPicker
-          onResolveSuggestions={onResolveSuggestions}
-          selectedItems={[{ key: 'testColor', name: 'testColor' }]}
-        />,
+        <TagPicker onResolveSuggestions={onResolveSuggestions} selectedItems={[{ key: 'testColor', name: 'testColor' }]} />,
         root
       ) as TagPicker;
 
@@ -240,10 +257,7 @@ describe('Pickers', () => {
         done();
       };
 
-      ReactDOM.render(
-        <TagPicker onResolveSuggestions={onResolveSuggestions} selectedItems={[]} onChange={onChange} />,
-        root
-      ) as TagPicker;
+      ReactDOM.render(<TagPicker onResolveSuggestions={onResolveSuggestions} selectedItems={[]} onChange={onChange} />, root) as TagPicker;
       const input = document.querySelector('.ms-BasePicker-input') as HTMLInputElement;
 
       input.focus();

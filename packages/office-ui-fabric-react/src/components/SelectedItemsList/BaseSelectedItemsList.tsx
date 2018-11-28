@@ -9,8 +9,7 @@ export interface IBaseSelectedItemsListState {
   items?: any;
 }
 
-export class BaseSelectedItemsList<T, P extends IBaseSelectedItemsListProps<T>>
-  extends BaseComponent<P, IBaseSelectedItemsListState>
+export class BaseSelectedItemsList<T, P extends IBaseSelectedItemsListProps<T>> extends BaseComponent<P, IBaseSelectedItemsListState>
   implements IBaseSelectedItemsList<T> {
   protected root: HTMLElement;
   protected selection: Selection;
@@ -35,9 +34,7 @@ export class BaseSelectedItemsList<T, P extends IBaseSelectedItemsListProps<T>>
 
   public addItems = (items: T[]): void => {
     // tslint:disable-next-line:no-any
-    const processedItems: T[] | PromiseLike<T[]> = this.props.onItemSelected
-      ? (this.props.onItemSelected as any)(items)
-      : items;
+    const processedItems: T[] | PromiseLike<T[]> = this.props.onItemSelected ? (this.props.onItemSelected as any)(items) : items;
 
     const processedItemObjects: T[] = processedItems as T[];
     const processedItemPromiseLikes: PromiseLike<T[]> = processedItems as PromiseLike<T[]>;
@@ -125,6 +122,10 @@ export class BaseSelectedItemsList<T, P extends IBaseSelectedItemsListProps<T>>
 
   public unselectAll(): void {
     this.selection.setAllSelected(false);
+  }
+
+  public highlightedItems(): T[] {
+    return this.selection.getSelection() as T[];
   }
 
   public componentWillUpdate(newProps: P, newState: IBaseSelectedItemsListState): void {

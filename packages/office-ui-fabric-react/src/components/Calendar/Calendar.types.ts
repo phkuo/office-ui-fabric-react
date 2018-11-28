@@ -1,7 +1,5 @@
-import * as React from 'react';
-import { Calendar } from './Calendar';
 import { DayOfWeek, FirstWeekOfYear, DateRangeType } from '../../utilities/dateValues/DateValues';
-
+import { IRefObject, IBaseProps } from '../../Utilities';
 export { DayOfWeek, DateRangeType, FirstWeekOfYear };
 
 export interface ICalendar {
@@ -9,12 +7,12 @@ export interface ICalendar {
   focus: () => void;
 }
 
-export interface ICalendarProps extends React.Props<Calendar> {
+export interface ICalendarProps extends IBaseProps<ICalendar>, React.HTMLAttributes<HTMLElement> {
   /**
    * Optional callback to access the ICalendar interface. Use this instead of ref for accessing
    * the public methods and properties of the component.
    */
-  componentRef?: (component: ICalendar | null) => void;
+  componentRef?: IRefObject<ICalendar>;
 
   /**
    * Optional class name to add to the root element.
@@ -70,7 +68,7 @@ export interface ICalendarProps extends React.Props<Calendar> {
   /**
    * The date range type indicating how  many days should be selected as the user
    * selects days
-   * @defaultValue DateRangeType.Day
+   * @defaultvalue DateRangeType.Day
    */
   dateRangeType?: DateRangeType;
 
@@ -79,7 +77,7 @@ export interface ICalendarProps extends React.Props<Calendar> {
    * depending on the selected date. If this property is set to true and the currently displayed
    * month is March 2017, if the user clicks on a day outside the month, i.e., April 1st, the
    * picker will automatically navigate to the month of April.
-   * @defaultValue false
+   * @defaultvalue false
    */
   autoNavigateOnSelection?: boolean;
 
@@ -89,8 +87,8 @@ export interface ICalendarProps extends React.Props<Calendar> {
   showGoToToday?: boolean;
 
   /**
-   * This property has been removed at 0.80.0 in place of the focus method, to be removed @ 1.0.0.
-   * @deprecated
+   * This property has been removed at 0.80.0 in place of the `focus` method, to be removed \@ 1.0.0.
+   * @deprecated Replaced with the `focus` method.
    */
   shouldFocusOnMount?: boolean;
 
@@ -155,6 +153,30 @@ export interface ICalendarProps extends React.Props<Calendar> {
    * @defaultvalue [Monday,Tuesday,Wednesday,Thursday,Friday]
    */
   workWeekDays?: DayOfWeek[];
+
+  /**
+   * When clicking on "Today", select the date and close the calendar.
+   * @defaultvalue false
+   */
+  selectDateOnClick?: boolean;
+
+  /**
+   * Whether the close button should be shown or not
+   * @defaultvalue false
+   */
+  showCloseButton?: boolean;
+
+  /**
+   * Allows all dates and buttons to be focused, including disabled ones
+   * @defaultvalue false
+   */
+  allFocusable?: boolean;
+
+  /**
+   * Whether the year picker is enabled
+   * @defaultvalue false
+   */
+  yearPickerHidden?: boolean;
 }
 
 export interface ICalendarStrings {
@@ -208,7 +230,12 @@ export interface ICalendarStrings {
   nextYearAriaLabel?: string;
 
   /**
-   * Aria-label format string for the week number header. Should have 1 string param e.g. "week number {0}"
+   * Aria-label for the "close" button.
+   */
+  closeButtonAriaLabel?: string;
+
+  /**
+   * Aria-label format string for the week number header. Should have 1 string param e.g. "week number \{0\}"
    */
   weekNumberFormatString?: string;
 }
@@ -216,15 +243,21 @@ export interface ICalendarStrings {
 export interface ICalendarIconStrings {
   /**
    * FabricMDL2Icons name for the left navigation icon.  Previous default: ChevronLeft.
-   * @defaultvalue  'Up'
+   * @defaultvalue 'Up'
    */
   leftNavigation?: string;
 
   /**
    * FabricMDL2Icons name for the right navigation icon.  Previous default: ChevronRight.
-   * @defaultvalue  'Down'
+   * @defaultvalue 'Down'
    */
   rightNavigation?: string;
+
+  /**
+   * Close icon
+   * @defaultvalue 'CalculatorMultiply'
+   */
+  closeIcon?: string;
 }
 
 export interface ICalendarFormatDateCallbacks {

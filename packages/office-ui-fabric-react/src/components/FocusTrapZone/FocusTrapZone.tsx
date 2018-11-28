@@ -15,33 +15,19 @@ import { IFocusTrapZone, IFocusTrapZoneProps } from './FocusTrapZone.types';
 
 export class FocusTrapZone extends BaseComponent<IFocusTrapZoneProps, {}> implements IFocusTrapZone {
   private static _focusStack: FocusTrapZone[] = [];
-  private static _clickStack: FocusTrapZone[] = [];
 
   private _root = createRef<HTMLDivElement>();
   private _previouslyFocusedElementOutsideTrapZone: HTMLElement;
   private _previouslyFocusedElementInTrapZone?: HTMLElement;
-  private _isInFocusStack = false;
-  private _isInClickStack = false;
+  private _hasFocusHandler: boolean;
+  private _hasClickHandler: boolean;
 
   public componentWillMount(): void {
-    const { isClickableOutsideFocusTrap = false, forceFocusInsideTrap = true } = this.props;
-    if (forceFocusInsideTrap) {
-      this._isInFocusStack = true;
-      FocusTrapZone._focusStack.push(this);
-    }
-    if (!isClickableOutsideFocusTrap) {
-      this._isInClickStack = true;
-      FocusTrapZone._clickStack.push(this);
-    }
+    FocusTrapZone._focusStack.push(this);
   }
 
   public componentDidMount(): void {
-    const {
-      isClickableOutsideFocusTrap = false,
-      forceFocusInsideTrap = true,
-      elementToFocusOnDismiss,
-      disableFirstFocus = false
-    } = this.props;
+    const { elementToFocusOnDismiss, disableFirstFocus = false } = this.props;
 
     this._previouslyFocusedElementOutsideTrapZone = elementToFocusOnDismiss
       ? elementToFocusOnDismiss
@@ -50,13 +36,7 @@ export class FocusTrapZone extends BaseComponent<IFocusTrapZoneProps, {}> implem
       this.focus();
     }
 
-    if (forceFocusInsideTrap) {
-      this._events.on(window, 'focus', this._forceFocusInTrap, true);
-    }
-
-    if (!isClickableOutsideFocusTrap) {
-      this._events.on(window, 'click', this._forceClickInTrap, true);
-    }
+    this._updateEventHandlers(this.props);
   }
 
   public componentWillReceiveProps(nextProps: IFocusTrapZoneProps): void {
@@ -64,23 +44,17 @@ export class FocusTrapZone extends BaseComponent<IFocusTrapZoneProps, {}> implem
     if (elementToFocusOnDismiss && this._previouslyFocusedElementOutsideTrapZone !== elementToFocusOnDismiss) {
       this._previouslyFocusedElementOutsideTrapZone = elementToFocusOnDismiss;
     }
+
+    this._updateEventHandlers(nextProps);
   }
 
   public componentWillUnmount(): void {
     const { ignoreExternalFocusing } = this.props;
 
     this._events.dispose();
-    if (this._isInFocusStack || this._isInClickStack) {
-      const filter = (value: FocusTrapZone) => {
-        return this !== value;
-      };
-      if (this._isInFocusStack) {
-        FocusTrapZone._focusStack = FocusTrapZone._focusStack.filter(filter);
-      }
-      if (this._isInClickStack) {
-        FocusTrapZone._clickStack = FocusTrapZone._clickStack.filter(filter);
-      }
-    }
+    FocusTrapZone._focusStack = FocusTrapZone._focusStack.filter((value: FocusTrapZone) => {
+      return this !== value;
+    });
 
     const activeElement = document.activeElement as HTMLElement;
     if (
@@ -125,9 +99,7 @@ export class FocusTrapZone extends BaseComponent<IFocusTrapZoneProps, {}> implem
     }
 
     const focusSelector =
-      typeof firstFocusableSelector === 'string'
-        ? firstFocusableSelector
-        : firstFocusableSelector && firstFocusableSelector();
+      typeof firstFocusableSelector === 'string' ? firstFocusableSelector : firstFocusableSelector && firstFocusableSelector();
 
     let _firstFocusableChild;
 
@@ -135,19 +107,30 @@ export class FocusTrapZone extends BaseComponent<IFocusTrapZoneProps, {}> implem
       if (focusSelector) {
         _firstFocusableChild = this._root.current.querySelector('.' + focusSelector);
       } else {
-        _firstFocusableChild = getNextElement(
-          this._root.current,
-          this._root.current.firstChild as HTMLElement,
-          true,
-          false,
-          false,
-          true
-        );
+        _firstFocusableChild = getNextElement(this._root.current, this._root.current.firstChild as HTMLElement, true, false, false, true);
       }
     }
     if (_firstFocusableChild) {
       focusAsync(_firstFocusableChild);
     }
+  }
+
+  private _updateEventHandlers(newProps: IFocusTrapZoneProps): void {
+    const { isClickableOutsideFocusTrap = false, forceFocusInsideTrap = true } = newProps;
+
+    if (forceFocusInsideTrap && !this._hasFocusHandler) {
+      this._events.on(window, 'focus', this._forceFocusInTrap, true);
+    } else if (!forceFocusInsideTrap && this._hasFocusHandler) {
+      this._events.off(window, 'focus', this._forceFocusInTrap, true);
+    }
+    this._hasFocusHandler = forceFocusInsideTrap;
+
+    if (!isClickableOutsideFocusTrap && !this._hasClickHandler) {
+      this._events.on(window, 'click', this._forceClickInTrap, true);
+    } else if (isClickableOutsideFocusTrap && this._hasClickHandler) {
+      this._events.off(window, 'click', this._forceClickInTrap, true);
+    }
+    this._hasClickHandler = !isClickableOutsideFocusTrap;
   }
 
   private _onFocusCapture = (ev: React.FocusEvent<HTMLDivElement>) => {
@@ -179,11 +162,7 @@ export class FocusTrapZone extends BaseComponent<IFocusTrapZoneProps, {}> implem
       return;
     }
 
-    const _firstTabbableChild = getFirstTabbable(
-      this._root.current,
-      this._root.current.firstChild as HTMLElement,
-      true
-    );
+    const _firstTabbableChild = getFirstTabbable(this._root.current, this._root.current.firstChild as HTMLElement, true);
     const _lastTabbableChild = getLastTabbable(this._root.current, this._root.current.lastChild as HTMLElement, true);
 
     if (ev.shiftKey && _firstTabbableChild === ev.target) {
@@ -210,7 +189,7 @@ export class FocusTrapZone extends BaseComponent<IFocusTrapZoneProps, {}> implem
   }
 
   private _forceClickInTrap(ev: MouseEvent): void {
-    if (FocusTrapZone._clickStack.length && this === FocusTrapZone._clickStack[FocusTrapZone._clickStack.length - 1]) {
+    if (FocusTrapZone._focusStack.length && this === FocusTrapZone._focusStack[FocusTrapZone._focusStack.length - 1]) {
       const clickedElement = ev.target as HTMLElement;
 
       if (clickedElement && !elementContains(this._root.current, clickedElement)) {

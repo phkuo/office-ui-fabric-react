@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { BaseButton, Button } from '../../Button';
 import { ITheme, IStyle } from '../../Styling';
-import { IStyleFunctionOrObject } from '../../Utilities';
+import { IRefObject, IStyleFunctionOrObject } from '../../Utilities';
 
-export interface IMessageBar { }
+export interface IMessageBar {}
 
 export interface IMessageBarProps extends React.HTMLAttributes<HTMLElement> {
   /**
    * Optional callback to access the IMessageBar interface. Use this instead of ref for accessing
    * the public methods and properties of the component.
    */
-  componentRef?: (component: IMessageBar | null) => void;
+  componentRef?: IRefObject<IMessageBar>;
 
   /**
    * The type of MessageBar to render.
@@ -33,9 +33,7 @@ export interface IMessageBarProps extends React.HTMLAttributes<HTMLElement> {
    * If null, we don't show a dismiss button.
    * @defaultvalue null
    */
-  onDismiss?: (
-    ev?: React.MouseEvent<HTMLButtonElement | BaseButton | HTMLAnchorElement | HTMLDivElement | Button>
-  ) => any;
+  onDismiss?: (ev?: React.MouseEvent<HTMLButtonElement | BaseButton | HTMLAnchorElement | HTMLDivElement | Button>) => any;
 
   /**
    * Determines if the message bar is multi lined.
@@ -191,8 +189,8 @@ export enum MessageBarType {
   /** Warning styled MessageBar */
   warning = 5,
   /**
-   * Deprecated at v0.48.0, to be removed at >= v1.0.0. Use 'blocked' instead.
-   * @deprecated
+   * Deprecated at v0.48.0, to be removed at \>= v1.0.0. Use `blocked` instead.
+   * @deprecated Use `blocked` instead.
    */
   remove = 90000
 }

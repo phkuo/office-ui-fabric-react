@@ -1,6 +1,62 @@
 # Change Log - @uifabric/file-type-icons
 
-This log was last generated on Tue, 05 Jun 2018 00:44:30 GMT and should not be manually modified.
+This log was last generated on Mon, 15 Oct 2018 12:29:12 GMT and should not be manually modified.
+
+## 6.2.0
+Mon, 15 Oct 2018 12:29:12 GMT
+
+### Minor changes
+
+- Fixing enum to avoid const enum.
+
+## 6.1.3
+Mon, 08 Oct 2018 12:24:15 GMT
+
+### Patches
+
+- Moving tslint/prettier dependencies 
+
+## 6.1.2
+Fri, 21 Sep 2018 14:25:46 GMT
+
+### Patches
+
+- Adding a version stamp file
+
+## 6.1.1
+Tue, 18 Sep 2018 12:26:03 GMT
+
+### Patches
+
+- Make lib import consistent for filetypeicons
+
+## 6.1.0
+Wed, 22 Aug 2018 05:10:19 GMT
+
+### Minor changes
+
+- Add FileIconTypeInput alongside FileIconType const enum
+
+## 6.0.2
+Tue, 14 Aug 2018 10:27:33 GMT
+
+### Patches
+
+- disabling codepen task
+
+## 6.0.1
+Tue, 03 Jul 2018 10:23:19 GMT
+
+### Patches
+
+- Bump variants and file-type-icons packages to restore amd build output
+
+## 6.0.0
+Mon, 15 Jun 2018 00:44:30 GMT
+
+### Breaking changes
+
+- Major bump to 6.0.0 for consistency.
 
 ## 0.7.2
 Tue, 05 Jun 2018 00:44:30 GMT

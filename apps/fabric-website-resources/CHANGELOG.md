@@ -1,6 +1,149 @@
-# Change Log - office-ui-fabric-react
+# Change Log - @uifabric/fabric-website-resources
 
-This log was last generated on Thu, 07 Jun 2018 17:40:07 GMT and should not be manually modified.
+This log was last generated on Thu, 25 Oct 2018 12:30:06 GMT and should not be manually modified.
+
+## 6.9.8
+Thu, 25 Oct 2018 12:30:05 GMT
+
+### Patches
+
+- Organize pages for development site
+
+## 6.9.7
+Tue, 23 Oct 2018 12:32:16 GMT
+
+### Patches
+
+- Fix an issue with the demo site not being able to load (in npm start or aka.ms/fabricdemo).
+
+## 6.9.6
+Mon, 22 Oct 2018 12:29:57 GMT
+
+### Patches
+
+- Move theme definitions to theme-samples package.
+- Use fluent-theme package customizations.
+
+## 6.9.5
+Thu, 18 Oct 2018 20:22:36 GMT
+
+### Patches
+
+- Remove api-extractor.disabled.json
+
+## 6.9.4
+Wed, 17 Oct 2018 01:29:55 GMT
+
+### Patches
+
+- Move theme generator page to color customization page.
+
+## 6.9.3
+Tue, 16 Oct 2018 12:28:48 GMT
+
+### Patches
+
+- Add customizations for component examples.
+
+## 6.9.2
+Mon, 08 Oct 2018 12:24:15 GMT
+
+### Patches
+
+- Moving tslint/prettier dependencies 
+
+## 6.9.1
+Fri, 21 Sep 2018 14:25:46 GMT
+
+### Patches
+
+- Adding a version stamp file
+
+## 6.9.0
+Tue, 11 Sep 2018 02:54:40 GMT
+
+### Minor changes
+
+- IE11 Promise polyfill was missing and broke `npm start`. Added polyfill.
+
+## 6.8.3
+Fri, 07 Sep 2018 22:04:50 GMT
+
+### Patches
+
+- Updating serve config to respect oufr imports.
+
+## 6.8.2
+Fri, 31 Aug 2018 20:48:42 GMT
+
+### Patches
+
+- Invoke ES6 Promise polyfill in local dev site root for IE compat
+
+## 6.8.1
+Fri, 24 Aug 2018 10:26:08 GMT
+
+### Patches
+
+- Fix @types/prop-types being inconsistently restrictive.
+
+## 6.8.0
+Thu, 23 Aug 2018 10:28:17 GMT
+
+### Minor changes
+
+- Allow examples to provide their own scroll mechanic
+
+### Patches
+
+- Updating serve config to respect oufr imports.
+
+## 6.7.4
+Tue, 14 Aug 2018 10:27:33 GMT
+
+### Patches
+
+- autogenerate codepenable examples for fabric examples tagged with @codepen
+
+## 6.7.3
+Fri, 10 Aug 2018 10:26:08 GMT
+
+### Patches
+
+- autogenerate codepenable examples for fabric examples tagged with @codepen
+- Added optional feedback section for component pages
+
+## 6.7.2
+Wed, 08 Aug 2018 10:25:07 GMT
+
+### Patches
+
+- Fix bad imports that break AMD.
+
+## 6.7.1
+Tue, 07 Aug 2018 10:22:32 GMT
+
+### Patches
+
+- Fix duplicate nav key
+
+## 6.7.0
+Mon, 30 Jul 2018 10:27:11 GMT
+
+### Minor changes
+
+- Addressing bad imports.
+
+### Patches
+
+- Fixes an issue with demo website that have a duplicate key in the list of components
+
+## 6.0.2
+Thu, 19 Jul 2018 21:25:32 GMT
+
+### Patches
+
+- Added optional feedback section for component pages
 
 ## 6.6.1
 Thu, 07 Jun 2018 17:40:07 GMT

@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { css, classNamesFunction } from '../../../Utilities';
-import { ActivityItem, IActivityItemProps } from '..';
+import { css, classNamesFunction } from 'office-ui-fabric-react/lib/Utilities';
+import { ActivityItem, IActivityItemProps } from '../../../ActivityItem';
 import { getStyles, IActivityItemExampleStyleProps, IActivityItemExampleStyles } from './ActivityItem.Example.styles';
 import { TestImages } from '../../../common/TestImages';
 import { Link } from '../../../Link';
 
-export class ActivityItemPersonaExample extends React.Component<React.Props<ActivityItemPersonaExample>, {}> {
+export class ActivityItemPersonaExample extends React.Component<React.ClassAttributes<ActivityItemPersonaExample>, {}> {
   public render(): JSX.Element {
     const getClassNames = classNamesFunction<IActivityItemExampleStyleProps, IActivityItemExampleStyles>();
-    const classNames = getClassNames(getStyles);
+    const classNames = getClassNames(getStyles, {});
 
     // tslint:disable:jsx-no-lambda
     const activityItemExamples: (IActivityItemProps & { key: string | number })[] = [

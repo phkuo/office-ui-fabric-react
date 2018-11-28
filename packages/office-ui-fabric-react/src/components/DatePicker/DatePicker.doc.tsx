@@ -10,6 +10,7 @@ import { DatePickerBoundedExample } from './examples/DatePicker.Bounded.Example'
 import { DatePickerStatus } from './DatePicker.checklist';
 
 const DatePickerBasicExampleCode = require('!raw-loader!office-ui-fabric-react/src/components/DatePicker/examples/DatePicker.Basic.Example.tsx') as string;
+const DatePickerBasicExampleCodepen = require('!raw-loader!office-ui-fabric-react/lib/codepen/components/DatePicker/DatePicker.Basic.Example.Codepen.txt') as string;
 const DatePickerWeekNumbersExampleCode = require('!raw-loader!office-ui-fabric-react/src/components/DatePicker/examples/DatePicker.WeekNumbers.Example.tsx') as string;
 const DatePickerRequiredExampleCode = require('!raw-loader!office-ui-fabric-react/src/components/DatePicker/examples/DatePicker.Required.Example.tsx') as string;
 const DatePickerInputExampleCode = require('!raw-loader!office-ui-fabric-react/src/components/DatePicker/examples/DatePicker.Input.Example.tsx') as string;
@@ -19,14 +20,14 @@ const DatePickerBoundedExampleCode = require('!raw-loader!office-ui-fabric-react
 export const DatePickerPageProps: IDocPageProps = {
   title: 'DatePicker',
   componentName: 'DatePicker',
-  componentUrl:
-    'https://github.com/OfficeDev/office-ui-fabric-react/tree/master/packages/office-ui-fabric-react/src/components/DatePicker',
+  componentUrl: 'https://github.com/OfficeDev/office-ui-fabric-react/tree/master/packages/office-ui-fabric-react/src/components/DatePicker',
   componentStatus: DatePickerStatus,
   examples: [
     {
       title: 'Default DatePicker',
       code: DatePickerBasicExampleCode,
-      view: <DatePickerBasicExample />
+      view: <DatePickerBasicExample />,
+      codepenJS: DatePickerBasicExampleCodepen
     },
     {
       title: 'DatePicker with week numbers',
@@ -54,12 +55,11 @@ export const DatePickerPageProps: IDocPageProps = {
       view: <DatePickerBoundedExample />
     }
   ],
-  propertiesTablesSources: [
-    require<string>('!raw-loader!office-ui-fabric-react/src/components/DatePicker/DatePicker.types.ts')
-  ],
+  propertiesTablesSources: [require<string>('!raw-loader!office-ui-fabric-react/src/components/DatePicker/DatePicker.types.ts')],
   overview: require<string>('!raw-loader!office-ui-fabric-react/src/components/DatePicker/docs/DatePickerOverview.md'),
   bestPractices: '',
   dos: require<string>('!raw-loader!office-ui-fabric-react/src/components/DatePicker/docs/DatePickerDos.md'),
   donts: require<string>('!raw-loader!office-ui-fabric-react/src/components/DatePicker/docs/DatePickerDonts.md'),
-  isHeaderVisible: true
+  isHeaderVisible: true,
+  isFeedbackVisible: true
 };

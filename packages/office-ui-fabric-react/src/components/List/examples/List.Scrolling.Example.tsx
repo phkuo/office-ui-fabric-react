@@ -6,7 +6,7 @@ import { Dropdown, IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
 import { List, ScrollToMode } from 'office-ui-fabric-react/lib/List';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import './List.Scrolling.Example.scss';
-import { Checkbox } from '../../..';
+import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 
 export interface IListScrollingExampleProps {
   items: any[];
@@ -47,7 +47,7 @@ export class ListScrollingExample extends React.Component<IListScrollingExampleP
           <DefaultButton onClick={this._scrollRelative(10)}>+10</DefaultButton>
         </div>
         <Dropdown
-          placeHolder="Select an Option"
+          placeholder="Select an Option"
           label="Scroll To Mode:"
           id="Scrolldrop1"
           ariaLabel="Scroll To Mode"
@@ -58,11 +58,11 @@ export class ListScrollingExample extends React.Component<IListScrollingExampleP
             { key: 'bottom', text: 'Bottom' },
             { key: 'center', text: 'Center' }
           ]}
-          onChanged={this._onDropdownChanged}
+          onChange={this._onDropdownChange}
         />
         <div>
           Scroll item index:
-          <TextField value={this.state.selectedIndex.toString(10)} onChanged={this._onChangeText} />
+          <TextField value={this.state.selectedIndex.toString(10)} onChange={this._onChangeText} />
         </div>
         <div>
           <Checkbox
@@ -72,12 +72,7 @@ export class ListScrollingExample extends React.Component<IListScrollingExampleP
           />
         </div>
         <div className="ms-ListScrollingExample-container" data-is-scrollable={true}>
-          <List
-            ref={this._resolveList}
-            items={items}
-            getPageHeight={this._getPageHeight}
-            onRenderCell={this._onRenderCell}
-          />
+          <List ref={this._resolveList} items={items} getPageHeight={this._getPageHeight} onRenderCell={this._onRenderCell} />
         </div>
       </FocusZone>
     );
@@ -102,11 +97,11 @@ export class ListScrollingExample extends React.Component<IListScrollingExampleP
     return h;
   }
 
-  private _onChangeText = (value: any): void => {
+  private _onChangeText = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string): void => {
     this._scroll(parseInt(value, 10) || 0, this.state.scrollToMode);
   };
 
-  private _onDropdownChanged = (option: IDropdownOption) => {
+  private _onDropdownChange = (event: React.FormEvent<HTMLDivElement>, option: IDropdownOption) => {
     let scrollMode = this.state.scrollToMode;
     switch (option.key) {
       case 'auto':
@@ -156,11 +151,7 @@ export class ListScrollingExample extends React.Component<IListScrollingExampleP
         scrollToMode: scrollToMode
       },
       () => {
-        this._list.scrollToIndex(
-          updatedSelectedIndex,
-          idx => (idx % 2 === 0 ? evenItemHeight : oddItemHeight),
-          scrollToMode
-        );
+        this._list.scrollToIndex(updatedSelectedIndex, idx => (idx % 2 === 0 ? evenItemHeight : oddItemHeight), scrollToMode);
       }
     );
   };

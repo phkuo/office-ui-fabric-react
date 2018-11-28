@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IPageImageSetProps, PageHeader, PageImageSet, PageParagraph, PageTag } from '../templates';
+import { IPageImageSetProps, PageHeader, PageImageSet, PageParagraph, PageTag } from '../templates/index';
 import { Link } from 'office-ui-fabric-react/lib/Link';
 import { Image, IImageProps } from 'office-ui-fabric-react/lib/Image';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
@@ -101,6 +101,4 @@ export interface IPageMarkdownProps {
   resources?: IPageMarkdownResources;
   children: string;
 }
-export const PageMarkdown = (props: IPageMarkdownProps) => (
-  <Markdown {...getMarkdownProps(props)}>{props.children}</Markdown>
-);
+export const PageMarkdown = (props: IPageMarkdownProps) => <Markdown {...getMarkdownProps(props)}>{props.children}</Markdown>;

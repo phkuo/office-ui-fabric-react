@@ -11,6 +11,7 @@ export const getStyles = (props: IVerticalBarChartStyleProps): IVerticalBarChart
 
   return {
     root: [
+      theme.fonts.medium,
       'ms-VerticalBarChart',
       className,
       {
@@ -21,7 +22,8 @@ export const getStyles = (props: IVerticalBarChartStyleProps): IVerticalBarChart
       {
         padding: chartPadding,
         width: chartWidth,
-        height: chartHeight
+        height: chartHeight,
+        boxSizing: 'content-box'
       }
     ],
     chartLabel: [

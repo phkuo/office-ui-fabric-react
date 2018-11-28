@@ -1,15 +1,10 @@
 /* tslint:disable */
 import * as React from 'react';
 /* tslint:enable */
-import { BaseComponent } from 'office-ui-fabric-react/lib/Utilities';
 import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
-import { people, groupOne, groupTwo } from '../../ExtendedPicker';
+import { people, groupOne, groupTwo } from '../../../ExtendedPicker';
 import 'office-ui-fabric-react/lib/components/pickers/PeoplePicker/examples/PeoplePicker.Types.Example.scss';
-import {
-  IExtendedPersonaProps,
-  SelectedPeopleList,
-  ISelectedPeopleItemProps
-} from '../SelectedPeopleList/SelectedPeopleList';
+import { IExtendedPersonaProps, SelectedPeopleList, ISelectedPeopleItemProps } from '../SelectedPeopleList/SelectedPeopleList';
 import { ExtendedSelectedItem } from '../SelectedPeopleList/Items/ExtendedSelectedItem';
 import { Selection } from 'office-ui-fabric-react/lib/Selection';
 import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
@@ -22,7 +17,7 @@ export interface IPeopleSelectedItemsListExampleState {
   controlledComponent: boolean;
 }
 
-export class PeopleSelectedItemsListExample extends BaseComponent<{}, IPeopleSelectedItemsListExampleState> {
+export class PeopleSelectedItemsListExample extends React.Component<{}, IPeopleSelectedItemsListExampleState> {
   private _selectionList: SelectedPeopleList;
   private index: number;
   private selection: Selection = new Selection({ onSelectionChanged: () => this._onSelectionChange() });
@@ -39,14 +34,14 @@ export class PeopleSelectedItemsListExample extends BaseComponent<{}, IPeopleSel
   public render(): JSX.Element {
     return (
       <div className={'ms-BasePicker-text'}>
-        <Toggle label="Controlled component" defaultChecked={false} onChanged={this._toggleControlledComponent} />
+        <Toggle label="Controlled component" defaultChecked={false} onChange={this._toggleControlledComponent} />
         <PrimaryButton text="Add another item" onClick={this._onAddItemButtonClicked} />
         {this._renderExtendedPicker()}
       </div>
     );
   }
 
-  private _toggleControlledComponent = (toggleState: boolean): void => {
+  private _toggleControlledComponent = (ev: React.MouseEvent<HTMLElement>, toggleState: boolean): void => {
     this.setState({ controlledComponent: toggleState });
   };
 

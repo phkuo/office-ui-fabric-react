@@ -6,7 +6,7 @@ import { FloatingPeoplePicker, IBaseFloatingPickerProps } from '../../../../Floa
 import { ISelectedPeopleItemProps } from '../SelectedPeopleList';
 import { IExtendedPersonaProps } from '../SelectedPeopleList';
 import { IPeoplePickerItemState } from './ExtendedSelectedItem';
-import { IPersonaProps } from '../../../Persona';
+import { IPersonaProps } from '../../../../Persona';
 
 import * as stylesImport from './EditingItem.scss';
 
@@ -93,10 +93,7 @@ export class EditingItem extends BaseComponent<IEditingSelectedPeopleItemProps, 
   private _onInputBlur = (ev: React.FocusEvent<HTMLElement>): void => {
     if (this._editingFloatingPicker.current && ev.relatedTarget !== null) {
       const target = ev.relatedTarget as HTMLElement;
-      if (
-        target.className.indexOf('ms-Suggestions-itemButton') === -1 &&
-        target.className.indexOf('ms-Suggestions-sectionButton') === -1
-      ) {
+      if (target.className.indexOf('ms-Suggestions-itemButton') === -1 && target.className.indexOf('ms-Suggestions-sectionButton') === -1) {
         this._editingFloatingPicker.current.forceResolveSuggestion();
       }
     }

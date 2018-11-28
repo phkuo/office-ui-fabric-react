@@ -1,4 +1,5 @@
 import { FontSizes, FontWeights, HighContrastSelector, IStyle, IPalette, getGlobalClassNames } from '../../../Styling';
+import { IsFocusVisibleClassName } from '../../../Utilities';
 import { IChoiceGroupOptionStyleProps, IChoiceGroupOptionStyles } from './ChoiceGroupOption.types';
 
 const GlobalClassNames = {
@@ -25,7 +26,7 @@ function getChoiceGroupFocusStyle(palette: Partial<IPalette>, hasIconOrImage?: b
     'is-inFocus',
     {
       selectors: {
-        '.ms-Fabric.is-focusVisible &': {
+        [`.${IsFocusVisibleClassName} &`]: {
           position: 'relative',
           outline: 'transparent',
           selectors: {
@@ -93,7 +94,7 @@ export const getStyles = (props: IChoiceGroupOptionStyleProps): IChoiceGroupOpti
 
   const fieldHoverOrFocusProperties = {
     selectors: {
-      '.ms-Label': {
+      '.ms-ChoiceFieldLabel': {
         color: semanticColors.bodyTextChecked
       },
       ':before': {
@@ -198,6 +199,7 @@ export const getStyles = (props: IChoiceGroupOptionStyleProps): IChoiceGroupOpti
   return {
     root: [
       classNames.root,
+      theme.fonts.medium,
       {
         display: 'flex',
         alignItems: 'center',
@@ -210,7 +212,7 @@ export const getStyles = (props: IChoiceGroupOptionStyleProps): IChoiceGroupOpti
         position: 'relative',
         marginTop: 8,
         selectors: {
-          '.ms-Label': {
+          '.ms-ChoiceFieldLabel': {
             fontSize: FontSizes.medium,
             display: 'inline-block'
           }
@@ -219,7 +221,7 @@ export const getStyles = (props: IChoiceGroupOptionStyleProps): IChoiceGroupOpti
       !hasIcon &&
         !hasImage && {
           selectors: {
-            '.ms-Label': {
+            '.ms-ChoiceFieldLabel': {
               paddingLeft: '26px'
             }
           }
@@ -235,10 +237,7 @@ export const getStyles = (props: IChoiceGroupOptionStyleProps): IChoiceGroupOpti
         height: '100%'
       }
     ],
-    choiceFieldWrapper: [
-      classNames.choiceFieldWrapper,
-      focused && getChoiceGroupFocusStyle(palette, hasIcon || hasImage)
-    ],
+    choiceFieldWrapper: [classNames.choiceFieldWrapper, focused && getChoiceGroupFocusStyle(palette, hasIcon || hasImage)],
     // The hidden input
     input: [
       classNames.input,
@@ -307,7 +306,7 @@ export const getStyles = (props: IChoiceGroupOptionStyleProps): IChoiceGroupOpti
       disabled && {
         cursor: 'default',
         selectors: {
-          '.ms-Label': {
+          '.ms-ChoiceFieldLabel': {
             color: semanticColors.disabledBodyText
           },
           [HighContrastSelector]: {

@@ -27,8 +27,7 @@ const PivotSeparateExampleCode = require('!raw-loader!office-ui-fabric-react/src
 export const PivotPageProps: IDocPageProps = {
   title: 'Pivot',
   componentName: 'Pivot',
-  componentUrl:
-    'https://github.com/OfficeDev/office-ui-fabric-react/tree/master/packages/office-ui-fabric-react/src/components/Pivot',
+  componentUrl: 'https://github.com/OfficeDev/office-ui-fabric-react/tree/master/packages/office-ui-fabric-react/src/components/Pivot',
   componentStatus: PivotStatus,
   examples: [
     {
@@ -91,5 +90,6 @@ export const PivotPageProps: IDocPageProps = {
   dos: require<string>('!raw-loader!office-ui-fabric-react/src/components/Pivot/docs/PivotDos.md'),
   donts: require<string>('!raw-loader!office-ui-fabric-react/src/components/Pivot/docs/PivotDonts.md'),
   isHeaderVisible: true,
+  isFeedbackVisible: true,
   allowNativeProps: 'PivotItem'
 };

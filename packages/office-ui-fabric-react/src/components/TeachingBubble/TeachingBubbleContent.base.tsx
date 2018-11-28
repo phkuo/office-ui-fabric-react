@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BaseComponent, classNamesFunction } from '../../Utilities';
+import { BaseComponent, classNamesFunction, createRef, KeyCodes } from '../../Utilities';
 import { ITeachingBubbleProps, ITeachingBubbleStyleProps, ITeachingBubbleStyles } from './TeachingBubble.types';
 import { ITeachingBubbleState } from './TeachingBubble.base';
 import { PrimaryButton, DefaultButton, IconButton } from '../../Button';
@@ -18,10 +18,30 @@ export class TeachingBubbleContentBase extends BaseComponent<ITeachingBubbleProp
     }
   };
 
+  public rootElement = createRef<HTMLDivElement>();
+
   constructor(props: ITeachingBubbleProps) {
     super(props);
 
     this.state = {};
+  }
+
+  public componentDidMount(): void {
+    if (this.props.onDismiss) {
+      document.addEventListener('keydown', this._onKeyDown, false);
+    }
+  }
+
+  public componentWillUnmount(): void {
+    if (this.props.onDismiss) {
+      document.removeEventListener('keydown', this._onKeyDown);
+    }
+  }
+
+  public focus(): void {
+    if (this.rootElement.current) {
+      this.rootElement.current.focus();
+    }
   }
 
   public render(): JSX.Element {
@@ -38,7 +58,9 @@ export class TeachingBubbleContentBase extends BaseComponent<ITeachingBubbleProp
       hasSmallHeadline,
       isWide,
       styles,
-      theme
+      theme,
+      ariaDescribedBy,
+      ariaLabelledBy
     } = this.props;
 
     let imageContent;
@@ -65,17 +87,25 @@ export class TeachingBubbleContentBase extends BaseComponent<ITeachingBubbleProp
     }
 
     if (headline) {
+      const HeaderWrapperAs = typeof headline === 'string' ? 'p' : 'div';
+
       headerContent = (
         <div className={classNames.header}>
-          <p className={classNames.headline}>{headline}</p>
+          <HeaderWrapperAs className={classNames.headline} id={ariaLabelledBy}>
+            {headline}
+          </HeaderWrapperAs>
         </div>
       );
     }
 
     if (children) {
+      const BodyContentWrapperAs = typeof children === 'string' ? 'p' : 'div';
+
       bodyContent = (
         <div className={classNames.body}>
-          <p className={classNames.subText}>{children}</p>
+          <BodyContentWrapperAs className={classNames.subText} id={ariaDescribedBy}>
+            {children}
+          </BodyContentWrapperAs>
         </div>
       );
     }
@@ -102,7 +132,15 @@ export class TeachingBubbleContentBase extends BaseComponent<ITeachingBubbleProp
     }
 
     return (
-      <div className={classNames.content}>
+      <div
+        className={classNames.content}
+        ref={this.rootElement}
+        role={'dialog'}
+        tabIndex={-1}
+        aria-labelledby={ariaLabelledBy}
+        aria-describedby={ariaDescribedBy}
+        data-is-focusable={true}
+      >
         {imageContent}
         <div className={classNames.bodyContent}>
           {headerContent}
@@ -113,4 +151,12 @@ export class TeachingBubbleContentBase extends BaseComponent<ITeachingBubbleProp
       </div>
     );
   }
+
+  private _onKeyDown = (e: any): void => {
+    if (this.props.onDismiss) {
+      if (e.which === KeyCodes.escape) {
+        this.props.onDismiss();
+      }
+    }
+  };
 }

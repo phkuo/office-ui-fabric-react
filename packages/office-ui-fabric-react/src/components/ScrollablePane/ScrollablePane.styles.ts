@@ -14,10 +14,7 @@ export const getStyles = (props: IScrollablePaneStyleProps): IScrollablePaneStyl
   const AboveAndBelowStyles: IStyle = {
     position: 'absolute',
     pointerEvents: 'auto',
-    width: '100%',
-    zIndex: ZIndexes.ScrollablePane,
-    overflowY: 'hidden',
-    overflowX: 'auto'
+    zIndex: ZIndexes.ScrollablePane
   };
 
   const positioningStyle: IStyle = {
@@ -31,11 +28,11 @@ export const getStyles = (props: IScrollablePaneStyleProps): IScrollablePaneStyl
   };
 
   return {
-    root: [classNames.root, positioningStyle, className],
+    root: [classNames.root, theme.fonts.medium, positioningStyle, className],
     contentContainer: [
       classNames.contentContainer,
       {
-        overflowY: 'auto'
+        overflowY: props.scrollbarVisibility === 'always' ? 'scroll' : 'auto'
       },
       positioningStyle
     ],
@@ -65,7 +62,10 @@ export const getStyles = (props: IScrollablePaneStyleProps): IScrollablePaneStyl
       {
         bottom: 0
       },
-      AboveAndBelowStyles
+      AboveAndBelowStyles,
+      {
+        width: '100%'
+      }
     ]
   };
 };

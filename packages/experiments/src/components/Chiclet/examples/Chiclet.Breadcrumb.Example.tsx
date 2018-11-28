@@ -7,7 +7,7 @@ import { IconButton } from 'office-ui-fabric-react/lib/Button';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { TooltipHost, TooltipOverflowMode } from 'office-ui-fabric-react/lib/Tooltip';
 import { Breadcrumb, IBreadcrumbItem } from 'office-ui-fabric-react/lib/Breadcrumb';
-import { getRTL } from '../../../Utilities';
+import { getRTL } from 'office-ui-fabric-react/lib/Utilities';
 
 export class FooterComponent extends React.Component<IFooterComponent, {}> {
   constructor(props: IFooterComponent) {
@@ -34,9 +34,7 @@ export class ChicletBreadcrumbExample extends React.Component<{}, {}> {
     ];
     const footer = <FooterComponent buttonProps={footerButtonProps} activities="10 Comments  16 Shares  87 Views" />;
 
-    const divider = () => (
-      <Icon iconName={getRTL() ? 'ChevronLeft' : 'ChevronRightSmall'} className={exampleStyles.chevron} />
-    );
+    const divider = () => <Icon iconName={getRTL() ? 'ChevronLeft' : 'ChevronRightSmall'} className={exampleStyles.chevron} />;
     const breadcrumb = (
       <Breadcrumb
         items={[

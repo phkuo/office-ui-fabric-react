@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { DocumentCard } from './DocumentCard';
 import { DocumentCardTitle } from './DocumentCardTitle';
-import { DocumentCardPreview } from './DocumentCardPreview';
 import { DocumentCardLocation } from './DocumentCardLocation';
 import { DocumentCardActivity } from './DocumentCardActivity';
 import { DocumentCardActions } from './DocumentCardActions';
@@ -11,19 +9,26 @@ import { PersonaInitialsColor } from '../../Persona';
 import { ImageFit } from '../../Image';
 import { IButtonProps } from '../../Button';
 import { IIconProps } from '../../Icon';
+import { IBaseProps, IRefObject } from '../../Utilities';
+import { ILinkProps } from '../../Link';
 
-export interface IDocumentCard {}
+export interface IDocumentCard {
+  /**
+   * Sets focus to the DocumentCard.
+   */
+  focus: () => void;
+}
 
-export interface IDocumentCardProps extends React.Props<DocumentCard> {
+export interface IDocumentCardProps extends IBaseProps<IDocumentCard> {
   /**
    * Optional callback to access the IDocumentCard interface. Use this instead of ref for accessing
    * the public methods and properties of the component.
    */
-  componentRef?: (component: IDocumentCard | null) => void;
+  componentRef?: IRefObject<IDocumentCard>;
 
   /**
    * The type of DocumentCard to display.
-   * @default DocumentCardType.normal
+   * @defaultvalue DocumentCardType.normal
    */
   type?: DocumentCardType;
 
@@ -47,8 +52,8 @@ export interface IDocumentCardProps extends React.Props<DocumentCard> {
    * Hex color value of the line below the card, which should correspond to the document type.
    * This should only be supplied when using the 'compact' card layout.
    *
-   * Deprecated at v4.17.1, to be removed at >= v5.0.0.
-   * @deprecated
+   * Deprecated at v4.17.1, to be removed at \>= v5.0.0.
+   * @deprecated To be removed at v5.0.0.
    */
   accentColor?: string;
 }
@@ -64,11 +69,11 @@ export enum DocumentCardType {
   compact = 1
 }
 
-export interface IDocumentCardPreviewProps extends React.Props<DocumentCardPreview> {
+export interface IDocumentCardPreviewProps extends IBaseProps<{}> {
   /**
    * Gets the component ref.
    */
-  componentRef?: () => void;
+  componentRef?: IRefObject<{}>;
 
   /**
    * One or more preview images to display.
@@ -77,7 +82,7 @@ export interface IDocumentCardPreviewProps extends React.Props<DocumentCardPrevi
 
   /**
    * The function return string that will describe the number of overflow documents.
-   * such as  (overflowCount: number) => `+${ overflowCount } more`,
+   * such as  (overflowCount: number) =\> `+${ overflowCount } more`,
    */
   getOverflowDocumentCountText?: (overflowCount: number) => string;
 }
@@ -86,7 +91,7 @@ export interface IDocumentCardPreviewImage {
   /**
    * Gets the component ref.
    */
-  componentRef?: () => void;
+  componentRef?: IRefObject<{}>;
 
   /**
    * File name for the document this preview represents.
@@ -95,8 +100,14 @@ export interface IDocumentCardPreviewImage {
 
   /**
    * URL to view the file.
+   * @deprecated Use `href` inside of `linkProps` instead.
    */
   url?: string;
+
+  /**
+   * Props to pass to Link component
+   */
+  linkProps?: ILinkProps;
 
   /**
    * Path to the preview image.
@@ -104,8 +115,8 @@ export interface IDocumentCardPreviewImage {
   previewImageSrc?: string;
 
   /**
-   * Deprecated at v1.3.6, to be removed at >= v2.0.0.
-   * @deprecated
+   * Deprecated at v1.3.6, to be removed at \>= v2.0.0.
+   * @deprecated To be removed at v2.0.0.
    */
   errorImageSrc?: string;
 
@@ -134,8 +145,8 @@ export interface IDocumentCardPreviewImage {
   /**
    * Hex color value of the line below the preview, which should correspond to the document type.
    *
-   * Deprecated at v4.17.1, to be removed at >= v5.0.0.
-   * @deprecated
+   * Deprecated at v4.17.1, to be removed at \>= v5.0.0.
+   * @deprecated To be removed at v5.0.0.
    */
   accentColor?: string;
 
@@ -156,10 +167,11 @@ export interface IDocumentCardTitleProps extends React.Props<DocumentCardTitle> 
   /**
    * Gets the component ref.
    */
-  componentRef?: () => void;
+  componentRef?: IRefObject<{}>;
 
   /**
-   * Title text. If the card represents more than one document, this should be the title of one document and a "+X" string. For example, a collection of four documents would have a string of "Document.docx +3".
+   * Title text. If the card represents more than one document, this should be the title of one document and a "+X" string.
+   * For example, a collection of four documents would have a string of "Document.docx +3".
    */
   title: string;
 
@@ -180,7 +192,7 @@ export interface IDocumentCardLocationProps extends React.Props<DocumentCardLoca
   /**
    * Gets the component ref.
    */
-  componentRef?: () => void;
+  componentRef?: IRefObject<{}>;
 
   /**
    * Text for the location of the document.
@@ -207,7 +219,7 @@ export interface IDocumentCardActivityProps extends React.Props<DocumentCardActi
   /**
    * Gets the component ref.
    */
-  componentRef?: () => void;
+  componentRef?: IRefObject<{}>;
 
   /**
    * Describes the activity that has taken place, such as "Created Feb 23, 2016".
@@ -254,7 +266,7 @@ export interface IDocumentCardActionsProps extends React.Props<DocumentCardActio
   /**
    * Gets the component ref.
    */
-  componentRef?: () => void;
+  componentRef?: IRefObject<{}>;
 
   /**
    * The actions available for this document.
@@ -271,7 +283,7 @@ export interface IDocumentCardLogoProps extends React.Props<DocumentCardLogo> {
   /**
    * Gets the component ref.
    */
-  componentRef?: () => void;
+  componentRef?: IRefObject<{}>;
   /**
    * Describes DocumentCard Logo badge.
    */
@@ -287,7 +299,7 @@ export interface IDocumentCardStatusProps extends React.Props<DocumentCardStatus
   /**
    * Gets the component ref.
    */
-  componentRef?: () => void;
+  componentRef?: IRefObject<{}>;
   /**
    * Describes DocumentCard status icon.
    */

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BaseComponent } from 'office-ui-fabric-react/lib/Utilities';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import { ResizeGroup } from 'office-ui-fabric-react/lib/ResizeGroup';
-import { OverflowSet } from '../../OverflowSet';
+import { OverflowSet } from 'office-ui-fabric-react/lib/OverflowSet';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import { IContextualMenuItem } from 'office-ui-fabric-react/lib/ContextualMenu';
 import { Dropdown, IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
@@ -87,12 +87,7 @@ export class ResizeGroupOverflowSetExample extends BaseComponent<{}, IResizeGrou
                 overflowItems={data.overflow.length ? data.overflow : null}
                 onRenderItem={item => {
                   return (
-                    <DefaultButton
-                      text={item.name}
-                      iconProps={{ iconName: item.icon }}
-                      onClick={item.onClick}
-                      checked={item.checked}
-                    />
+                    <DefaultButton text={item.name} iconProps={{ iconName: item.icon }} onClick={item.onClick} checked={item.checked} />
                   );
                 }}
                 onRenderOverflowButton={overflowItems => {
@@ -110,7 +105,7 @@ export class ResizeGroupOverflowSetExample extends BaseComponent<{}, IResizeGrou
             <Dropdown
               label="Number of items to render"
               selectedKey={numberOfItems.toString()}
-              onChanged={this._onNumberOfItemsChanged}
+              onChange={this._onNumberOfItemsChanged}
               options={[
                 { key: '20', text: '20' },
                 { key: '30', text: '30' },
@@ -169,7 +164,7 @@ export class ResizeGroupOverflowSetExample extends BaseComponent<{}, IResizeGrou
     this.setState({ buttonsChecked: checked });
   };
 
-  private _onNumberOfItemsChanged = (option: IDropdownOption): void => {
+  private _onNumberOfItemsChanged = (event: React.FormEvent<HTMLDivElement>, option: IDropdownOption): void => {
     this.setState({ numberOfItems: parseInt(option.text, 10) });
   };
 }

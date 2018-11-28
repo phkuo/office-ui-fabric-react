@@ -1,3 +1,4 @@
+// @codepen
 import * as React from 'react';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import { addDays, getDateRangeArray } from 'office-ui-fabric-react/lib/utilities/dateMath/DateMath';
@@ -5,20 +6,7 @@ import { Calendar, DayOfWeek } from 'office-ui-fabric-react/lib/Calendar';
 import { DateRangeType } from 'office-ui-fabric-react/lib/Calendar';
 
 const DayPickerStrings = {
-  months: [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ],
+  months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 
   shortMonths: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 
@@ -88,8 +76,7 @@ export class CalendarInlineExample extends React.Component<ICalendarInlineExampl
       <div style={divStyle}>
         {
           <div>
-            Selected date(s):{' '}
-            <span>{!this.state.selectedDate ? 'Not set' : this.state.selectedDate.toLocaleString()}</span>
+            Selected date(s): <span>{!this.state.selectedDate ? 'Not set' : this.state.selectedDate.toLocaleString()}</span>
           </div>
         }
         <div>
@@ -101,9 +88,8 @@ export class CalendarInlineExample extends React.Component<ICalendarInlineExampl
             Date boundary:
             <span>
               {' '}
-              {this.props.minDate ? this.props.minDate.toLocaleDateString() : 'Not set'}-{this.props.maxDate
-                ? this.props.maxDate.toLocaleDateString()
-                : 'Not set'}
+              {this.props.minDate ? this.props.minDate.toLocaleDateString() : 'Not set'}-
+              {this.props.maxDate ? this.props.maxDate.toLocaleDateString() : 'Not set'}
             </span>
           </div>
         )}

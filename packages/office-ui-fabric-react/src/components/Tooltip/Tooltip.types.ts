@@ -4,7 +4,7 @@ import { ICalloutProps } from '../../Callout';
 import { IRenderFunction } from '../../Utilities';
 import { DirectionalHint } from '../../common/DirectionalHint';
 import { IStyle, ITheme } from '../../Styling';
-import { IStyleFunctionOrObject } from '../../Utilities';
+import { IRefObject, IStyleFunctionOrObject } from '../../Utilities';
 
 export interface ITooltip {}
 
@@ -16,11 +16,11 @@ export interface ITooltipProps extends React.HTMLAttributes<HTMLDivElement | Too
    * Optional callback to access the ITooltip interface. Use this instead of ref for accessing
    * the public methods and properties of the component.
    */
-  componentRef?: (component: ITooltip | null) => void;
+  componentRef?: IRefObject<ITooltip>;
 
   /**
    * Properties to pass through for Callout, reference detail properties in ICalloutProps
-   * @default isBeakVisible: true, beakWidth: 16, gapSpace: 0, setInitialFocus: true, doNotLayer: false
+   * @defaultvalue isBeakVisible: true, beakWidth: 16, gapSpace: 0, setInitialFocus: true, doNotLayer: false
    */
   calloutProps?: ICalloutProps;
 
@@ -36,13 +36,13 @@ export interface ITooltipProps extends React.HTMLAttributes<HTMLDivElement | Too
 
   /**
    * Length of delay. Can be set to zero if you do not want a delay.
-   * @default medium
+   * @defaultvalue medium
    */
   delay?: TooltipDelay;
 
   /**
    * Max width of tooltip
-   * @default 364px
+   * @defaultvalue 364px
    */
   maxWidth?: string | null;
 
@@ -53,7 +53,7 @@ export interface ITooltipProps extends React.HTMLAttributes<HTMLDivElement | Too
 
   /**
    * Indicator of how the tooltip should be anchored to its targetElement.
-   * @default DirectionalHint.topCenter
+   * @defaultvalue DirectionalHint.topCenter
    */
   directionalHint?: DirectionalHint;
 

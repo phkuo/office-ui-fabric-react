@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { BaseComponent, classNamesFunction, customizable } from '../../../Utilities';
-import { IStyleSet } from '../../../Styling';
+import { BaseComponent, classNamesFunction } from '../../../Utilities';
 import { Icon } from '../../../Icon';
 import {
   IPersonaPresenceProps,
@@ -22,7 +21,6 @@ const getClassNames = classNamesFunction<IPersonaPresenceStyleProps, IPersonaPre
  * PersonaPresence with no default styles.
  * [Use the `getStyles` API to add your own styles.](https://github.com/OfficeDev/office-ui-fabric-react/wiki/Styling)
  */
-@customizable('PersonaPresence', ['theme', 'styles'])
 export class PersonaPresenceBase extends BaseComponent<IPersonaPresenceProps, {}> {
   constructor(props: IPersonaPresenceProps) {
     super(props);
@@ -39,8 +37,7 @@ export class PersonaPresenceBase extends BaseComponent<IPersonaPresenceProps, {}
 
     // Render Presence Icon if Persona is above size 32.
     const renderIcon =
-      !(size.isSize10 || size.isSize16 || size.isSize24 || size.isSize28 || size.isSize32) &&
-      (coinSize ? coinSize > 32 : true);
+      !(size.isSize10 || size.isSize16 || size.isSize24 || size.isSize28 || size.isSize32) && (coinSize ? coinSize > 32 : true);
 
     const presenceHeightWidth: string = coinSize
       ? coinSize / coinSizePresenceScaleFactor < presenceMaxSize
@@ -52,12 +49,8 @@ export class PersonaPresenceBase extends BaseComponent<IPersonaPresenceProps, {}
         ? coinSize / coinSizeFontScaleFactor + 'px'
         : presenceFontMaxSize + 'px'
       : '';
-    const coinSizeWithPresenceIconStyle = coinSize
-      ? { fontSize: presenceFontSize, lineHeight: presenceHeightWidth }
-      : undefined;
-    const coinSizeWithPresenceStyle = coinSize
-      ? { width: presenceHeightWidth, height: presenceHeightWidth }
-      : undefined;
+    const coinSizeWithPresenceIconStyle = coinSize ? { fontSize: presenceFontSize, lineHeight: presenceHeightWidth } : undefined;
+    const coinSizeWithPresenceStyle = coinSize ? { width: presenceHeightWidth, height: presenceHeightWidth } : undefined;
 
     // Use getStyles from props, or fall back to getStyles from styles file.
     const classNames = getClassNames(styles, {
@@ -77,8 +70,8 @@ export class PersonaPresenceBase extends BaseComponent<IPersonaPresenceProps, {}
     );
   }
 
-  private _onRenderIcon = (className?: string, styles?: IStyleSet): JSX.Element => (
-    <Icon className={className} iconName={this._determineIcon()} style={styles} />
+  private _onRenderIcon = (className?: string, style?: React.CSSProperties): JSX.Element => (
+    <Icon className={className} iconName={this._determineIcon()} style={style} />
   );
 
   private _determineIcon = (): string | undefined => {

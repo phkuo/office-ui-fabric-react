@@ -1,10 +1,6 @@
 import * as React from 'react';
-import { BaseComponent, classNamesFunction, customizable } from '../../Utilities';
-import {
-  IProgressIndicatorProps,
-  IProgressIndicatorStyleProps,
-  IProgressIndicatorStyles
-} from './ProgressIndicator.types';
+import { BaseComponent, classNamesFunction } from '../../Utilities';
+import { IProgressIndicatorProps, IProgressIndicatorStyleProps, IProgressIndicatorStyles } from './ProgressIndicator.types';
 
 const getClassNames = classNamesFunction<IProgressIndicatorStyleProps, IProgressIndicatorStyles>();
 
@@ -16,7 +12,6 @@ const ZERO_THRESHOLD = 0.01;
  * ProgressIndicator with no default styles.
  * [Use the `styles` API to add your own styles.](https://github.com/OfficeDev/office-ui-fabric-react/wiki/Styling)
  */
-@customizable('ProgressIndicator', ['theme', 'styles'])
 export class ProgressIndicatorBase extends BaseComponent<IProgressIndicatorProps, {}> {
   public static defaultProps = {
     label: '',
@@ -45,9 +40,7 @@ export class ProgressIndicatorBase extends BaseComponent<IProgressIndicatorProps
     } = this.props;
 
     const percentComplete =
-      typeof this.props.percentComplete === 'number'
-        ? Math.min(100, Math.max(0, this.props.percentComplete * 100))
-        : undefined;
+      typeof this.props.percentComplete === 'number' ? Math.min(100, Math.max(0, this.props.percentComplete * 100)) : undefined;
 
     const classNames = getClassNames(styles, {
       theme: theme!,
@@ -77,9 +70,7 @@ export class ProgressIndicatorBase extends BaseComponent<IProgressIndicatorProps
     const { ariaValueText, barHeight, className, styles, theme } = this.props;
 
     const percentComplete =
-      typeof this.props.percentComplete === 'number'
-        ? Math.min(100, Math.max(0, this.props.percentComplete * 100))
-        : undefined;
+      typeof this.props.percentComplete === 'number' ? Math.min(100, Math.max(0, this.props.percentComplete * 100)) : undefined;
 
     const classNames = getClassNames(styles, {
       theme: theme!,

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
-import { BaseComponent } from '../../../Utilities';
+import { BaseComponent } from 'office-ui-fabric-react/lib/Utilities';
 import './Dropdown.Basic.Example.scss';
 
 export class DropdownErrorExample extends BaseComponent<{}, {}> {
@@ -12,7 +12,7 @@ export class DropdownErrorExample extends BaseComponent<{}, {}> {
     return (
       <div className="docs-DropdownExample">
         <Dropdown
-          placeHolder="Select an Option"
+          placeholder="Select an Option"
           label="Error message example:"
           id="Errormessagedrop1"
           ariaLabel="Error message dropdown example"

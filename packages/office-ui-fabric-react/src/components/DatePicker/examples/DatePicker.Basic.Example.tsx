@@ -1,23 +1,11 @@
+// @codepen
 import * as React from 'react';
 import { Dropdown, IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
 import { DatePicker, DayOfWeek, IDatePickerStrings } from 'office-ui-fabric-react/lib/DatePicker';
 import './DatePicker.Examples.scss';
 
 const DayPickerStrings: IDatePickerStrings = {
-  months: [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ],
+  months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 
   shortMonths: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 
@@ -29,7 +17,8 @@ const DayPickerStrings: IDatePickerStrings = {
   prevMonthAriaLabel: 'Go to previous month',
   nextMonthAriaLabel: 'Go to next month',
   prevYearAriaLabel: 'Go to previous year',
-  nextYearAriaLabel: 'Go to next year'
+  nextYearAriaLabel: 'Go to next year',
+  closeButtonAriaLabel: 'Close date picker'
 };
 
 export interface IDatePickerBasicExampleState {
@@ -54,6 +43,7 @@ export class DatePickerBasicExample extends React.Component<{}, IDatePickerBasic
           firstDayOfWeek={firstDayOfWeek}
           strings={DayPickerStrings}
           placeholder="Select a date..."
+          ariaLabel="Select a date"
           // tslint:disable:jsx-no-lambda
           onAfterMenuDismiss={() => console.log('onAfterMenuDismiss called')}
           // tslint:enable:jsx-no-lambda
@@ -91,13 +81,13 @@ export class DatePickerBasicExample extends React.Component<{}, IDatePickerBasic
             }
           ]}
           selectedKey={DayOfWeek[firstDayOfWeek!]}
-          onChanged={this._onDropdownChanged}
+          onChange={this._onDropdownChange}
         />
       </div>
     );
   }
 
-  private _onDropdownChanged = (option: IDropdownOption): void => {
+  private _onDropdownChange = (event: React.FormEvent<HTMLDivElement>, option: IDropdownOption): void => {
     this.setState({
       firstDayOfWeek: (DayOfWeek as any)[option.key]
     });

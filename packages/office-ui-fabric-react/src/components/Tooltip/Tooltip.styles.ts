@@ -8,6 +8,7 @@ export const getStyles = (props: ITooltipStyleProps): ITooltipStyles => {
   return {
     root: [
       'ms-Tooltip',
+      theme.fonts.medium,
       AnimationClassNames.fadeIn200,
       {
         background: palette.white,
@@ -15,16 +16,12 @@ export const getStyles = (props: ITooltipStyleProps): ITooltipStyles => {
         animationDelay: '300ms',
         maxWidth: maxWidth
       },
-      delay === TooltipDelay.zero && [
-        {
-          animationDelay: '0s'
-        }
-      ],
-      delay === TooltipDelay.long && [
-        {
-          animationDelay: '500ms'
-        }
-      ],
+      delay === TooltipDelay.zero && {
+        animationDelay: '0s'
+      },
+      delay === TooltipDelay.long && {
+        animationDelay: '500ms'
+      },
       className
     ],
     content: [

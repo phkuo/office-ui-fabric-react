@@ -28,6 +28,7 @@ export const getStyles = (props: ICheckStyleProps): ICheckStyles => {
   return {
     root: [
       classNames.root,
+      theme.fonts.medium,
       {
         // lineHeight currently needs to be a string to output without 'px'
         lineHeight: '1',
@@ -54,7 +55,7 @@ export const getStyles = (props: ICheckStyleProps): ICheckStyles => {
            * TODO: Come back to this once .checkHost has been
            * converted to mergeStyles
            */
-          '.checkHost:hover &, .checkHost:focus &, &:hover, &:focus': {
+          '$checkHost:hover &, $checkHost:focus &, &:hover, &:focus': {
             opacity: 1
           }
         }
@@ -131,6 +132,8 @@ export const getStyles = (props: ICheckStyleProps): ICheckStyles => {
           }
         }
       }
-    ]
+    ],
+
+    checkHost: [{}]
   };
 };

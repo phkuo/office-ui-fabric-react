@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IBaseProps, ISize } from 'office-ui-fabric-react/lib/Utilities';
+import { IRefObject, IBaseProps, ISize } from 'office-ui-fabric-react/lib/Utilities';
 import { TilesList } from './TilesList';
 import { IFocusZone } from 'office-ui-fabric-react/lib/FocusZone';
 
@@ -99,10 +99,7 @@ export interface ITilesGridSegment<TItem> {
 
 export { ISize as ITileSize };
 
-export interface ITilesListProps<TItem>
-  extends IBaseProps,
-    React.Props<TilesList<TItem>>,
-    React.HTMLAttributes<HTMLDivElement> {
+export interface ITilesListProps<TItem> extends IBaseProps, React.Props<TilesList<TItem>>, React.HTMLAttributes<HTMLDivElement> {
   /**
    * An array of items to assign to the list.
    * This should be complete and not contain any holes.
@@ -117,7 +114,7 @@ export interface ITilesListProps<TItem>
   /**
    * Component ref for the focus zone within the list. Use this to control auto-focus.
    */
-  focusZoneComponentRef?: (focusZone: IFocusZone | null) => void;
+  focusZoneComponentRef?: IRefObject<IFocusZone>;
   /**
    * Callback for when the active element within the list's FocusZone changes.
    */

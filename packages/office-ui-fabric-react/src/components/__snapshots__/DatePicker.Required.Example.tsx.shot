@@ -11,8 +11,13 @@ exports[`Component Examples renders DatePicker.Required.Example.tsx correctly 1`
     className=
         ms-DatePicker
         {
+          -moz-osx-font-smoothing: grayscale;
+          -webkit-font-smoothing: antialiased;
           box-shadow: none;
           box-sizing: border-box;
+          font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+          font-size: 14px;
+          font-weight: 400;
           margin-bottom: 0px;
           margin-left: 0px;
           margin-right: 0px;
@@ -22,22 +27,53 @@ exports[`Component Examples renders DatePicker.Required.Example.tsx correctly 1`
           padding-right: 0px;
           padding-top: 0px;
         }
+    placeholder="Select a date..."
   >
-    <div>
+    <div
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-owns="DatePicker-Callout1"
+      role="combobox"
+    >
       <div
-        className="ms-TextField"
+        className=
+            ms-TextField
+            is-required
+            {
+              box-shadow: none;
+              box-sizing: border-box;
+              margin-bottom: 0px;
+              margin-left: 0px;
+              margin-right: 0px;
+              margin-top: 0px;
+              padding-bottom: 0px;
+              padding-left: 0px;
+              padding-right: 0px;
+              padding-top: 0px;
+              position: relative;
+            }
+            @media screen and (-ms-high-contrast: active){& {
+              border-width: 2px;
+            }
       >
         <div
-          className="ms-TextField-wrapper"
+          className=
+              ms-TextField-wrapper
+
         >
           <label
             className=
                 ms-Label
                 {
+                  -moz-osx-font-smoothing: grayscale;
+                  -webkit-font-smoothing: antialiased;
                   box-shadow: none;
                   box-sizing: border-box;
                   color: #333333;
                   display: block;
+                  font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+                  font-size: 14px;
+                  font-weight: 400;
                   margin-bottom: 0px;
                   margin-left: 0px;
                   margin-right: 0px;
@@ -49,22 +85,87 @@ exports[`Component Examples renders DatePicker.Required.Example.tsx correctly 1`
                   padding-top: 5px;
                   word-wrap: break-word;
                 }
-            htmlFor="TextField0"
+                &::after {
+                  color: #a80000;
+                  content: ' *';
+                  padding-right: 12px;
+                }
+            htmlFor="DatePicker0-label"
+            required={true}
           >
             Date required (with label)
           </label>
           <div
-            className="ms-TextField-fieldGroup"
+            className=
+                ms-TextField-fieldGroup
+                {
+                  align-items: stretch;
+                  background: #ffffff;
+                  border: 1px solid #a6a6a6;
+                  box-shadow: none;
+                  box-sizing: border-box;
+                  display: flex;
+                  flex-direction: row;
+                  height: 32px;
+                  margin-bottom: 0px;
+                  margin-left: 0px;
+                  margin-right: 0px;
+                  margin-top: 0px;
+                  padding-bottom: 0px;
+                  padding-left: 0px;
+                  padding-right: 0px;
+                  padding-top: 0px;
+                  position: relative;
+                }
+                &:hover {
+                  border-color: #212121;
+                }
+                @media screen and (-ms-high-contrast: active){&:hover {
+                  border-color: Highlight;
+                }
           >
             <input
-              aria-describedby={undefined}
-              aria-expanded={false}
-              aria-haspopup="true"
               aria-invalid={false}
-              aria-label={undefined}
-              className="ms-TextField-field"
-              disabled={undefined}
-              id="TextField0"
+              aria-label="Select a date"
+              className=
+                  ms-TextField-field
+                  {
+                    background-color: transparent;
+                    background: none;
+                    border-radius: 0px;
+                    border: none;
+                    box-shadow: none;
+                    box-sizing: border-box;
+                    color: #333333;
+                    font-size: 14px;
+                    margin-bottom: 0px;
+                    margin-left: 0px;
+                    margin-right: 0px;
+                    margin-top: 0px;
+                    min-width: 0px;
+                    outline: 0px;
+                    padding-bottom: 0;
+                    padding-left: 12px;
+                    padding-right: 24px;
+                    padding-top: 0;
+                    text-overflow: ellipsis;
+                    width: 100%;
+                  }
+                  &:active, &:focus, &:hover {
+                    outline: 0px;
+                  }
+                  &::-ms-clear {
+                    display: none;
+                  }
+                  &::placeholder {
+                    color: #666666;
+                    opacity: 1;
+                  }
+                  &:-ms-input-placeholder {
+                    color: #666666;
+                    opacity: 1;
+                  }
+              id="DatePicker0-label"
               onBlur={[Function]}
               onChange={[Function]}
               onClick={[Function]}
@@ -74,7 +175,6 @@ exports[`Component Examples renders DatePicker.Required.Example.tsx correctly 1`
               placeholder="Select a date..."
               readOnly={true}
               required={true}
-              role="button"
               type="text"
               value=""
             />
@@ -115,8 +215,13 @@ exports[`Component Examples renders DatePicker.Required.Example.tsx correctly 1`
     className=
         ms-DatePicker
         {
+          -moz-osx-font-smoothing: grayscale;
+          -webkit-font-smoothing: antialiased;
           box-shadow: none;
           box-sizing: border-box;
+          font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+          font-size: 14px;
+          font-weight: 400;
           margin-bottom: 0px;
           margin-left: 0px;
           margin-right: 0px;
@@ -126,26 +231,118 @@ exports[`Component Examples renders DatePicker.Required.Example.tsx correctly 1`
           padding-right: 0px;
           padding-top: 0px;
         }
+    placeholder="Date required with no label..."
   >
-    <div>
+    <div
+      aria-expanded={false}
+      aria-haspopup="true"
+      aria-owns="DatePicker-Callout4"
+      role="combobox"
+    >
       <div
-        className="ms-TextField is-required undefined"
+        className=
+            ms-TextField
+            is-required
+            {
+              box-shadow: none;
+              box-sizing: border-box;
+              margin-bottom: 0px;
+              margin-left: 0px;
+              margin-right: 0px;
+              margin-top: 0px;
+              padding-bottom: 0px;
+              padding-left: 0px;
+              padding-right: 0px;
+              padding-top: 0px;
+              position: relative;
+            }
+            @media screen and (-ms-high-contrast: active){& {
+              border-width: 2px;
+            }
       >
         <div
-          className="ms-TextField-wrapper"
+          className=
+              ms-TextField-wrapper
+
         >
           <div
-            className="ms-TextField-fieldGroup"
+            className=
+                ms-TextField-fieldGroup
+                {
+                  align-items: stretch;
+                  background: #ffffff;
+                  border: 1px solid #a6a6a6;
+                  box-shadow: none;
+                  box-sizing: border-box;
+                  display: flex;
+                  flex-direction: row;
+                  height: 32px;
+                  margin-bottom: 0px;
+                  margin-left: 0px;
+                  margin-right: 0px;
+                  margin-top: 0px;
+                  padding-bottom: 0px;
+                  padding-left: 0px;
+                  padding-right: 0px;
+                  padding-top: 0px;
+                  position: relative;
+                }
+                &:hover {
+                  border-color: #212121;
+                }
+                @media screen and (-ms-high-contrast: active){&:hover {
+                  border-color: Highlight;
+                }
+                &:after {
+                  color: #a80000;
+                  content: '*';
+                  position: absolute;
+                  right: -10px;
+                  top: -5px;
+                }
           >
             <input
-              aria-describedby={undefined}
-              aria-expanded={false}
-              aria-haspopup="true"
               aria-invalid={false}
-              aria-label={undefined}
-              className="ms-TextField-field"
-              disabled={undefined}
-              id="TextField2"
+              aria-label="Select a date"
+              className=
+                  ms-TextField-field
+                  {
+                    background-color: transparent;
+                    background: none;
+                    border-radius: 0px;
+                    border: none;
+                    box-shadow: none;
+                    box-sizing: border-box;
+                    color: #333333;
+                    font-size: 14px;
+                    margin-bottom: 0px;
+                    margin-left: 0px;
+                    margin-right: 0px;
+                    margin-top: 0px;
+                    min-width: 0px;
+                    outline: 0px;
+                    padding-bottom: 0;
+                    padding-left: 12px;
+                    padding-right: 24px;
+                    padding-top: 0;
+                    text-overflow: ellipsis;
+                    width: 100%;
+                  }
+                  &:active, &:focus, &:hover {
+                    outline: 0px;
+                  }
+                  &::-ms-clear {
+                    display: none;
+                  }
+                  &::placeholder {
+                    color: #666666;
+                    opacity: 1;
+                  }
+                  &:-ms-input-placeholder {
+                    color: #666666;
+                    opacity: 1;
+                  }
+              id="DatePicker3-label"
               onBlur={[Function]}
               onChange={[Function]}
               onClick={[Function]}
@@ -155,7 +352,6 @@ exports[`Component Examples renders DatePicker.Required.Example.tsx correctly 1`
               placeholder="Date required with no label..."
               readOnly={true}
               required={true}
-              role="button"
               type="text"
               value=""
             />

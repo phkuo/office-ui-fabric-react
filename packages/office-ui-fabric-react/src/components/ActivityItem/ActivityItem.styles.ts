@@ -1,11 +1,4 @@
-import {
-  concatStyleSets,
-  ITheme,
-  getTheme,
-  HighContrastSelector,
-  keyframes,
-  PulsingBeaconAnimationStyles
-} from '../../Styling';
+import { concatStyleSets, ITheme, getTheme, HighContrastSelector, keyframes, PulsingBeaconAnimationStyles } from '../../Styling';
 import { memoizeFunction } from '../../Utilities';
 import { IActivityItemStyles, IActivityItemProps } from './ActivityItem.types';
 
@@ -70,7 +63,6 @@ export const getStyles = memoizeFunction(
           display: 'flex',
           justifyContent: 'flex-start',
           alignItems: 'flex-start',
-          lineHeight: '17px',
           boxSizing: 'border-box',
           color: theme.palette.neutralSecondary
         },

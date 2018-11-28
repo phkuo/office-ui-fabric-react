@@ -1,3 +1,4 @@
+// @codepen
 import * as React from 'react';
 import { ContextualMenuItemType } from 'office-ui-fabric-react/lib/ContextualMenu';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
@@ -15,7 +16,7 @@ export class ContextualMenuBasicExample extends React.Component {
     return (
       <div>
         <DefaultButton
-          id="ContextualMenuButton1"
+          id="ContextualMenuBasicExample"
           text="Click for ContextualMenu"
           menuProps={{
             shouldFocusOnMount: true,

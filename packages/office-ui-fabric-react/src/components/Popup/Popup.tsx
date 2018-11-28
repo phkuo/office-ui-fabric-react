@@ -1,13 +1,5 @@
 import * as React from 'react';
-import {
-  BaseComponent,
-  KeyCodes,
-  divProperties,
-  doesElementContainFocus,
-  getDocument,
-  getNativeProps,
-  createRef
-} from '../../Utilities';
+import { BaseComponent, KeyCodes, divProperties, doesElementContainFocus, getDocument, getNativeProps, createRef } from '../../Utilities';
 import { IPopupProps } from './Popup.types';
 
 export interface IPopupState {
@@ -112,6 +104,11 @@ export class Popup extends BaseComponent<IPopupProps, IPopupState> {
   }
 
   private _getScrollBar(): void {
+    // If overflowY is overriden, don't waste time calculating whether the scrollbar is necessary.
+    if (this.props.style && this.props.style.overflowY) {
+      return;
+    }
+
     let needsVerticalScrollBar = false;
     if (this._root && this._root.current && this._root.current.firstElementChild) {
       // ClientHeight returns the client height of an element rounded to an

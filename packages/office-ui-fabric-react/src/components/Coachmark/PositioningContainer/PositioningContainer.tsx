@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { IPositioningContainerTypes } from './PositioningContainer.types';
+import { IPositioningContainerProps } from './PositioningContainer.types';
 import { getClassNames } from './PositioningContainer.styles';
-import { Layer } from '../../Layer';
+import { Layer } from '../../../Layer';
 
 // Utilites/Helpers
 import { DirectionalHint } from '../../../common/DirectionalHint';
@@ -14,18 +14,10 @@ import {
   elementContains,
   focusFirstChild,
   getWindow,
-  getDocument,
-  createRef
+  getDocument
 } from '../../../Utilities';
 
-import {
-  getMaxHeight,
-  positionElement,
-  IPositionedData,
-  IPositionProps,
-  IPosition,
-  RectangleEdge
-} from '../../../utilities/positioning';
+import { getMaxHeight, positionElement, IPositionedData, IPositionProps, IPosition, RectangleEdge } from '../../../utilities/positioning';
 
 import { AnimationClassNames, mergeStyles } from '../../../Styling';
 
@@ -55,9 +47,9 @@ export interface IPositioningContainerState {
   heightOffset?: number;
 }
 
-export class PositioningContainer extends BaseComponent<IPositioningContainerTypes, IPositioningContainerState>
+export class PositioningContainer extends BaseComponent<IPositioningContainerProps, IPositioningContainerState>
   implements PositioningContainer {
-  public static defaultProps: IPositioningContainerTypes = {
+  public static defaultProps: IPositioningContainerProps = {
     preventDismissOnScroll: false,
     offsetFromTarget: 0,
     minPagePadding: 8,
@@ -69,10 +61,10 @@ export class PositioningContainer extends BaseComponent<IPositioningContainerTyp
   /**
    * The primary positioned div.
    */
-  private _positionedHost = createRef<HTMLDivElement>();
+  private _positionedHost = React.createRef<HTMLDivElement>();
 
   // @TODO rename to reflect the name of this class
-  private _contentHost = createRef<HTMLDivElement>();
+  private _contentHost = React.createRef<HTMLDivElement>();
 
   /**
    * Stores an instance of Window, used to check
@@ -95,7 +87,7 @@ export class PositioningContainer extends BaseComponent<IPositioningContainerTyp
   private _target: HTMLElement | MouseEvent | IPoint | null;
   private _setHeightOffsetTimer: number;
 
-  constructor(props: IPositioningContainerTypes) {
+  constructor(props: IPositioningContainerProps) {
     super(props);
     this._didSetInitialFocus = false;
     this.state = {
@@ -118,7 +110,7 @@ export class PositioningContainer extends BaseComponent<IPositioningContainerTyp
     this._updateAsyncPosition();
   }
 
-  public componentWillUpdate(newProps: IPositioningContainerTypes): void {
+  public componentWillUpdate(newProps: IPositioningContainerProps): void {
     // If the target element changed, find the new one. If we are tracking
     // target with class name, always find element because we do not know if
     // fabric has rendered a new element and disposed the old element.
@@ -186,8 +178,8 @@ export class PositioningContainer extends BaseComponent<IPositioningContainerTyp
   }
 
   /**
-   * Deprecated. Use onResize instead.
-   * @deprecated
+   * Deprecated, use `onResize` instead.
+   * @deprecated Use `onResize` instead.
    */
   public dismiss = (ev?: Event | React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>): void => {
     this.onResize(ev);
@@ -211,8 +203,7 @@ export class PositioningContainer extends BaseComponent<IPositioningContainerTyp
 
   protected _dismissOnLostFocus(ev: Event): void {
     const target = ev.target as HTMLElement;
-    const clickedOutsideCallout =
-      this._positionedHost.current && !elementContains(this._positionedHost.current, target);
+    const clickedOutsideCallout = this._positionedHost.current && !elementContains(this._positionedHost.current, target);
 
     if (
       (!this._target && clickedOutsideCallout) ||
@@ -412,9 +403,7 @@ export class PositioningContainer extends BaseComponent<IPositioningContainerTyp
     }
   }
 
-  private _getTarget(
-    props: IPositioningContainerTypes = this.props
-  ): HTMLElement | string | MouseEvent | IPoint | null {
+  private _getTarget(props: IPositioningContainerProps = this.props): HTMLElement | string | MouseEvent | IPoint | null {
     const { target } = props;
     return target!;
   }

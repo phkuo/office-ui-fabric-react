@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { BaseComponent, createRef } from 'office-ui-fabric-react/lib/Utilities';
+import { BaseComponent } from 'office-ui-fabric-react/lib/Utilities';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
 import { IDetailsList, DetailsList, IColumn } from 'office-ui-fabric-react/lib/DetailsList';
-import { Checkbox } from '../../..';
+import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import './DetailsList.Grouped.Example.scss';
 
 const _columns = [
@@ -58,7 +58,7 @@ export class DetailsListGroupedExample extends BaseComponent<
     showItemIndexInView: boolean;
   }
 > {
-  private _root = createRef<IDetailsList>();
+  private _root = React.createRef<IDetailsList>();
 
   constructor(props: {}) {
     super(props);

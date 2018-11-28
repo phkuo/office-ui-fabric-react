@@ -1,26 +1,25 @@
-import * as React from 'react';
-import { Beak } from './Beak';
 import { RectangleEdge } from '../../../utilities/positioning';
+import { IBaseProps, IRefObject } from '../../../Utilities';
 
 export interface IBeak {}
 
-export interface IBeakProps extends React.Props<Beak> {
+export interface IBeakProps extends IBaseProps<IBeak> {
   /**
    * All props for your component are to be defined here.
    */
-  componentRef?: (component: IBeak | null) => void;
+  componentRef?: IRefObject<IBeak>;
 
   /**
    * Beak width.
-   * @default 18
-   * @deprecated
+   * @defaultvalue 18
+   * @deprecated Do not use.
    */
   width?: number;
 
   /**
    * Beak height.
-   * @default 18
-   * @deprecated
+   * @defaultvalue 18
+   * @deprecated Do not use.
    */
   height?: number;
 

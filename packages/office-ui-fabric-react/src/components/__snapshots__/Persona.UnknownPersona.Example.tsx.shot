@@ -38,7 +38,6 @@ exports[`Component Examples renders Persona.UnknownPersona.Example.tsx correctly
           color: #212121;
         }
     size={12}
-    style={undefined}
   >
     <div
       className=
@@ -63,7 +62,6 @@ exports[`Component Examples renders Persona.UnknownPersona.Example.tsx correctly
               text-align: center;
               width: 40px;
             }
-        style={undefined}
       >
         <div
           aria-hidden="true"
@@ -85,7 +83,6 @@ exports[`Component Examples renders Persona.UnknownPersona.Example.tsx correctly
                 box-sizing: border-box;
                 color: WindowText;
               }
-          style={undefined}
         >
           <i
             aria-hidden={true}
@@ -105,53 +102,6 @@ exports[`Component Examples renders Persona.UnknownPersona.Example.tsx correctly
           >
             
           </i>
-        </div>
-        <div
-          className=
-              ms-Image
-              ms-Persona-image
-              {
-                border-radius: 50%;
-                border: 0px;
-                height: 40px;
-                left: 0px;
-                margin-right: 10px;
-                overflow: hidden;
-                perspective: 1px;
-                position: absolute;
-                top: 0px;
-                width: 40px;
-              }
-          style={
-            Object {
-              "height": 40,
-              "width": 40,
-            }
-          }
-        >
-          <img
-            alt=""
-            className=
-                ms-Image-image
-                ms-Image-image--cover
-                ms-Image-image--portrait
-                is-notLoaded
-                is-fadeIn
-                {
-                  display: block;
-                  height: auto;
-                  left: 50% /* @noflip */;
-                  opacity: 0;
-                  position: absolute;
-                  top: 50%;
-                  transform: translate(-50%,-50%);
-                  width: 100%;
-                }
-            onError={[Function]}
-            onLoad={[Function]}
-            role={undefined}
-            src={undefined}
-          />
         </div>
       </div>
     </div>
@@ -184,8 +134,11 @@ exports[`Component Examples renders Persona.UnknownPersona.Example.tsx correctly
             }
       >
         <div
-          aria-describedby={undefined}
-          className="ms-TooltipHost"
+          className=
+              ms-TooltipHost
+              {
+                display: inline;
+              }
           onBlurCapture={[Function]}
           onFocusCapture={[Function]}
           onMouseEnter={[Function]}
@@ -207,8 +160,11 @@ exports[`Component Examples renders Persona.UnknownPersona.Example.tsx correctly
             }
       >
         <div
-          aria-describedby={undefined}
-          className="ms-TooltipHost"
+          className=
+              ms-TooltipHost
+              {
+                display: inline;
+              }
           onBlurCapture={[Function]}
           onFocusCapture={[Function]}
           onMouseEnter={[Function]}
@@ -279,7 +235,6 @@ exports[`Component Examples renders Persona.UnknownPersona.Example.tsx correctly
           color: #212121;
         }
     size={14}
-    style={undefined}
   >
     <div
       className=
@@ -304,7 +259,6 @@ exports[`Component Examples renders Persona.UnknownPersona.Example.tsx correctly
               text-align: center;
               width: 72px;
             }
-        style={undefined}
       >
         <div
           aria-hidden="true"
@@ -326,7 +280,6 @@ exports[`Component Examples renders Persona.UnknownPersona.Example.tsx correctly
                 box-sizing: border-box;
                 color: WindowText;
               }
-          style={undefined}
         >
           <i
             aria-hidden={true}
@@ -346,53 +299,6 @@ exports[`Component Examples renders Persona.UnknownPersona.Example.tsx correctly
           >
             
           </i>
-        </div>
-        <div
-          className=
-              ms-Image
-              ms-Persona-image
-              {
-                border-radius: 50%;
-                border: 0px;
-                height: 72px;
-                left: 0px;
-                margin-right: 10px;
-                overflow: hidden;
-                perspective: 1px;
-                position: absolute;
-                top: 0px;
-                width: 72px;
-              }
-          style={
-            Object {
-              "height": 72,
-              "width": 72,
-            }
-          }
-        >
-          <img
-            alt=""
-            className=
-                ms-Image-image
-                ms-Image-image--cover
-                ms-Image-image--portrait
-                is-notLoaded
-                is-fadeIn
-                {
-                  display: block;
-                  height: auto;
-                  left: 50% /* @noflip */;
-                  opacity: 0;
-                  position: absolute;
-                  top: 50%;
-                  transform: translate(-50%,-50%);
-                  width: 100%;
-                }
-            onError={[Function]}
-            onLoad={[Function]}
-            role={undefined}
-            src={undefined}
-          />
         </div>
       </div>
     </div>
@@ -425,8 +331,11 @@ exports[`Component Examples renders Persona.UnknownPersona.Example.tsx correctly
             }
       >
         <div
-          aria-describedby={undefined}
-          className="ms-TooltipHost"
+          className=
+              ms-TooltipHost
+              {
+                display: inline;
+              }
           onBlurCapture={[Function]}
           onFocusCapture={[Function]}
           onMouseEnter={[Function]}
@@ -448,8 +357,11 @@ exports[`Component Examples renders Persona.UnknownPersona.Example.tsx correctly
             }
       >
         <div
-          aria-describedby={undefined}
-          className="ms-TooltipHost"
+          className=
+              ms-TooltipHost
+              {
+                display: inline;
+              }
           onBlurCapture={[Function]}
           onFocusCapture={[Function]}
           onMouseEnter={[Function]}
@@ -472,8 +384,11 @@ exports[`Component Examples renders Persona.UnknownPersona.Example.tsx correctly
             }
       >
         <div
-          aria-describedby={undefined}
-          className="ms-TooltipHost"
+          className=
+              ms-TooltipHost
+              {
+                display: inline;
+              }
           onBlurCapture={[Function]}
           onFocusCapture={[Function]}
           onMouseEnter={[Function]}

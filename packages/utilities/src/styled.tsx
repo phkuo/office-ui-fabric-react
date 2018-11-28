@@ -1,17 +1,10 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import { concatStyleSets } from '@uifabric/merge-styles';
-import { IStyleFunction } from './IStyleFunction';
-import { CustomizableContextTypes } from './customizable';
-import { Customizations, ICustomizations } from './Customizations';
+import { concatStyleSets, IStyleSet, IStyleFunctionOrObject, IConcatenatedStyleSet } from '@uifabric/merge-styles';
+import { Customizations } from './Customizations';
+import { CustomizerContext, ICustomizerContext } from './Customizer';
 
-export type IStyleFunctionOrObject<TStyleProps, TStyles> = IStyleFunction<TStyleProps, TStyles> | Partial<TStyles>;
-
-export interface IPropsWithStyles<TStyleProps, TStyles> {
-  styles?: IStyleFunctionOrObject<TStyleProps, TStyles>;
-  subComponents?: {
-    [key: string]: IStyleFunction<{}, {}>;
-  };
+export interface IPropsWithStyles<TStyleProps, TStyleSet extends IStyleSet<TStyleSet>> {
+  styles?: IStyleFunctionOrObject<TStyleProps, TStyleSet>;
 }
 
 export interface ICustomizableProps {
@@ -22,7 +15,7 @@ export interface ICustomizableProps {
 
   /**
    * List of fields which can be customized.
-   * @default [ 'theme', 'styles' ]
+   * @defaultvalue [ 'theme', 'styles' ]
    */
   fields?: string[];
 }
@@ -45,40 +38,67 @@ const DefaultFields = ['theme', 'styles'];
  * @param getProps - A helper which provides default props.
  * @param customizable - An object which defines which props can be customized using the Customizer.
  */
-export function styled<TComponentProps extends IPropsWithStyles<TStyleProps, TStyles>, TStyleProps, TStyles>(
+export function styled<
+  TComponentProps extends IPropsWithStyles<TStyleProps, TStyleSet>,
+  TStyleProps,
+  TStyleSet extends IStyleSet<TStyleSet>
+>(
   Component: React.ComponentClass<TComponentProps> | React.StatelessComponent<TComponentProps>,
-  baseStyles: IStyleFunctionOrObject<TStyleProps, TStyles>,
+  baseStyles: IStyleFunctionOrObject<TStyleProps, TStyleSet>,
   getProps?: (props: TComponentProps) => Partial<TComponentProps>,
   customizable?: ICustomizableProps
 ): (props: TComponentProps) => JSX.Element {
-  const Wrapped: React.StatelessComponent<TComponentProps> = (
-    componentProps: TComponentProps,
-    context: { customizations: ICustomizations }
-  ) => {
-    customizable = customizable || { scope: '', fields: undefined };
+  customizable = customizable || { scope: '', fields: undefined };
 
-    const { scope, fields = DefaultFields } = customizable;
-    const settings = Customizations.getSettings(fields, scope, context.customizations);
-    const { styles: customizedStyles, ...rest } = settings;
-    const styles = (styleProps: TStyleProps) =>
-      _resolve(styleProps, baseStyles, customizedStyles, componentProps.styles);
+  const { scope, fields = DefaultFields } = customizable;
 
-    const additionalProps = getProps ? getProps(componentProps) : undefined;
+  class Wrapped extends React.Component<TComponentProps, {}> {
+    public static displayName = `Styled${Component.displayName || Component.name}`;
 
-    return <Component {...rest} {...additionalProps} {...componentProps} styles={styles} />;
-  };
+    private _inCustomizerContext = false;
 
-  Wrapped.contextTypes = CustomizableContextTypes;
-  Wrapped.displayName = `Styled${Component.displayName || Component.name}`;
+    public render(): JSX.Element {
+      return (
+        <CustomizerContext.Consumer>
+          {(context: ICustomizerContext) => {
+            this._inCustomizerContext = !!context.customizations.inCustomizerContext;
 
-  return Wrapped as (props: TComponentProps) => JSX.Element;
+            const settings = Customizations.getSettings(fields, scope, context.customizations);
+            const { styles: customizedStyles, ...rest } = settings;
+            const styles = (styleProps: TStyleProps) => _resolve(styleProps, baseStyles, customizedStyles, this.props.styles);
+
+            const additionalProps = getProps ? getProps(this.props) : undefined;
+            return <Component {...rest} {...additionalProps} {...this.props} styles={styles} />;
+          }}
+        </CustomizerContext.Consumer>
+      );
+    }
+
+    public componentDidMount(): void {
+      if (!this._inCustomizerContext) {
+        Customizations.observe(this._onSettingsChanged);
+      }
+    }
+
+    public componentWillUnmount(): void {
+      if (!this._inCustomizerContext) {
+        Customizations.unobserve(this._onSettingsChanged);
+      }
+    }
+
+    private _onSettingsChanged = () => this.forceUpdate();
+  }
+
+  // This preserves backwards compatibility.
+  // tslint:disable-next-line:no-any
+  return Wrapped as any;
 }
 
-function _resolve<TStyleProps, TStyles>(
+function _resolve<TStyleProps, TStyleSet extends IStyleSet<TStyleSet>>(
   styleProps: TStyleProps,
-  ...allStyles: (IStyleFunctionOrObject<TStyleProps, Partial<TStyles>> | undefined)[]
-): Partial<TStyles> | undefined {
-  const result: Partial<TStyles>[] = [];
+  ...allStyles: (IStyleFunctionOrObject<TStyleProps, TStyleSet> | undefined)[]
+): IConcatenatedStyleSet<TStyleSet> | undefined {
+  const result: Partial<TStyleSet>[] = [];
 
   for (const styles of allStyles) {
     if (styles) {
@@ -86,7 +106,12 @@ function _resolve<TStyleProps, TStyles>(
     }
   }
   if (result.length) {
-    return concatStyleSets(...result);
+    // cliffkoh: I cannot figure out how to avoid the cast to any here.
+    // It is something to do with the use of Omit in IStyleSet.
+    // It might not be necessary once  Omit becomes part of lib.d.ts (when we remove our own Omit and rely on
+    // the official version).
+    // tslint:disable-next-line:no-any
+    return concatStyleSets(...(result as any)) as IConcatenatedStyleSet<TStyleSet>;
   }
 
   return undefined;

@@ -15,7 +15,7 @@ export interface IBaseFloatingPicker {
   hidePicker: () => void;
 
   /** Shows the picker
-   * @param updateValue optional param to indicate whether to update the query string
+   * @param updateValue - Optional param to indicate whether to update the query string
    */
   showPicker: (updateValue?: boolean) => void;
 
@@ -40,9 +40,9 @@ export interface IBaseFloatingPickerProps<T> extends React.Props<any> {
   suggestionsStore: SuggestionsStore<T>;
 
   /**
-   * The suggestions to show on zero query
+   * The suggestions to show on zero query, return null if using as a controlled component
    */
-  onZeroQuerySuggestion?: (selectedItems?: T[]) => T[] | PromiseLike<T[]>;
+  onZeroQuerySuggestion?: (selectedItems?: T[]) => T[] | PromiseLike<T[]> | null;
 
   /**
    * The input element to listen on events
@@ -58,6 +58,7 @@ export interface IBaseFloatingPickerProps<T> extends React.Props<any> {
    * A callback for what should happen when a person types text into the input.
    * Returns the already selected items so the resolver can filter them out.
    * If used in conjunction with resolveDelay this will ony kick off after the delay throttle.
+   * Return null if using as a controlled component
    */
   onResolveSuggestions: (filter: string, selectedItems?: T[]) => T[] | PromiseLike<T[]> | null;
 
@@ -67,7 +68,7 @@ export interface IBaseFloatingPickerProps<T> extends React.Props<any> {
   onInputChanged?: (filter: string) => void;
 
   /**
-   * The delay time in ms before resolving suggestions, which is kicked off when input has been cahnged.
+   * The delay time in ms before resolving suggestions, which is kicked off when input has been changed.
    * e.g. If a second input change happens within the resolveDelay time, the timer will start over.
    * Only until after the timer completes will onResolveSuggestions be called.
    */
@@ -134,6 +135,11 @@ export interface IBaseFloatingPickerProps<T> extends React.Props<any> {
    * The callback that should be called when the suggestions are hiden
    */
   onSuggestionsHidden?: () => void;
+
+  /**
+   * If using as a controlled component, the items to show in the suggestion list
+   */
+  suggestionItems?: T[];
 }
 
 export interface IBaseFloatingPickerSuggestionProps {

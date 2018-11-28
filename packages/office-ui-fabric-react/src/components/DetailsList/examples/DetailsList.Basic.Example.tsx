@@ -1,15 +1,8 @@
 import * as React from 'react';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
-import {
-  DetailsList,
-  DetailsListLayoutMode,
-  Selection,
-  IColumn,
-  IDetailsList
-} from 'office-ui-fabric-react/lib/DetailsList';
+import { DetailsList, DetailsListLayoutMode, Selection, IColumn, IDetailsList } from 'office-ui-fabric-react/lib/DetailsList';
 import { MarqueeSelection } from 'office-ui-fabric-react/lib/MarqueeSelection';
-import { Checkbox } from '../../..';
-import { createRef } from '../../../Utilities';
+import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 
 const _items: any[] = [];
 
@@ -43,7 +36,7 @@ export class DetailsListBasicExample extends React.Component<
   }
 > {
   private _selection: Selection;
-  private _detailsList = createRef<IDetailsList>();
+  private _detailsList = React.createRef<IDetailsList>();
 
   constructor(props: {}) {
     super(props);
@@ -83,7 +76,7 @@ export class DetailsListBasicExample extends React.Component<
             onChange={this._onShowItemIndexInViewChanged}
           />
         </div>
-        <TextField label="Filter by name:" onChanged={this._onChanged} />
+        <TextField label="Filter by name:" onChange={this._onChange} />
         <MarqueeSelection selection={this._selection}>
           <DetailsList
             componentRef={this._detailsList}
@@ -122,7 +115,7 @@ export class DetailsListBasicExample extends React.Component<
     }
   }
 
-  private _onChanged = (text: any): void => {
+  private _onChange = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text: string): void => {
     this.setState({ items: text ? _items.filter(i => i.name.toLowerCase().indexOf(text) > -1) : _items });
   };
 

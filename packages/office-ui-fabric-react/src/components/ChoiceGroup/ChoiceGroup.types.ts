@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IIconProps } from '../../Icon';
-import { IRenderFunction, IStyleFunctionOrObject } from '../../Utilities';
+import { IRefObject, IRenderFunction, IStyleFunctionOrObject } from '../../Utilities';
 import { ITheme, IStyle } from '../../Styling';
 
 export interface IChoiceGroup {}
@@ -10,7 +10,7 @@ export interface IChoiceGroupProps extends React.InputHTMLAttributes<HTMLElement
    * Optional callback to access the IChoiceGroup interface. Use this instead of ref for accessing
    * the public methods and properties of the component.
    */
-  componentRef?: (component: IChoiceGroup | null) => void;
+  componentRef?: IRefObject<IChoiceGroup>;
 
   /**
    * The options for the choice group.
@@ -39,8 +39,8 @@ export interface IChoiceGroupProps extends React.InputHTMLAttributes<HTMLElement
   label?: string;
 
   /**
-   * Deprecated and will be removed by 07/17/2017 Use 'onChange' instead.
-   * @deprecated
+   * Deprecated and will be removed by 07/17/2017. Use `onChange` instead.
+   * @deprecated Use `onChange` instead.
    */
   onChanged?: (option: IChoiceGroupOption, evt?: React.FormEvent<HTMLElement | HTMLInputElement>) => void;
 
@@ -53,6 +53,11 @@ export interface IChoiceGroupProps extends React.InputHTMLAttributes<HTMLElement
    * Call to provide customized styling that will layer on top of the variant rules.
    */
   styles?: IStyleFunctionOrObject<IChoiceGroupStyleProps, IChoiceGroupStyles>;
+
+  /**
+   * Aria labelled by prop for the ChoiceGroup itself
+   */
+  ariaLabelledBy?: string;
 }
 
 export interface IChoiceGroupOption extends React.HTMLAttributes<HTMLElement | HTMLInputElement> {
@@ -72,7 +77,7 @@ export interface IChoiceGroupOption extends React.HTMLAttributes<HTMLElement | H
   onRenderField?: IRenderFunction<IChoiceGroupOption>;
 
   /**
-   * Optional override of option render
+   * Optional override of label render
    */
   onRenderLabel?: (option: IChoiceGroupOption) => JSX.Element;
 
@@ -98,7 +103,7 @@ export interface IChoiceGroupOption extends React.HTMLAttributes<HTMLElement | H
 
   /**
    * The width and height of the image in px for choice field.
-   * @default { width: 32, height: 32 }
+   * @defaultvalue \{ width: 32, height: 32 \}
    */
   imageSize?: { width: number; height: number };
 
@@ -123,6 +128,11 @@ export interface IChoiceGroupOption extends React.HTMLAttributes<HTMLElement | H
    * Should be used for 'aria-owns' and other such uses, rather than direct reference for programmatic purposes.
    */
   labelId?: string;
+
+  /**
+   * The aria label of the ChoiceGroupOption for the benefit of screen readers.
+   */
+  ariaLabel?: string;
 }
 
 export interface IChoiceGroupStyleProps {

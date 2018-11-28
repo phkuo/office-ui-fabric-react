@@ -12,11 +12,12 @@ import { Selection, SelectionMode, SelectionZone } from '../../Selection';
 const styles: any = stylesImport;
 
 export interface IBaseExtendedPickerState<T> {
+  queryString: string | null;
   selectedItems: T[] | null;
+  suggestionItems: T[] | null;
 }
 
-export class BaseExtendedPicker<T, P extends IBaseExtendedPickerProps<T>>
-  extends BaseComponent<P, IBaseExtendedPickerState<T>>
+export class BaseExtendedPicker<T, P extends IBaseExtendedPickerProps<T>> extends BaseComponent<P, IBaseExtendedPickerState<T>>
   implements IBaseExtendedPicker<T> {
   public floatingPicker = createRef<BaseFloatingPicker<T, IBaseFloatingPickerProps<T>>>();
   public selectedItemsList = createRef<BaseSelectedItemsList<T, IBaseSelectedItemsListProps<T>>>();
@@ -33,6 +34,8 @@ export class BaseExtendedPicker<T, P extends IBaseExtendedPickerProps<T>>
     this.selection = new Selection({ onSelectionChanged: () => this.onSelectionChange() });
 
     this.state = {
+      queryString: '',
+      suggestionItems: this.props.suggestionItems ? (this.props.suggestionItems as T[]) : null,
       selectedItems: this.props.defaultSelectedItems
         ? (this.props.defaultSelectedItems as T[])
         : this.props.selectedItems
@@ -87,8 +90,12 @@ export class BaseExtendedPicker<T, P extends IBaseExtendedPickerProps<T>>
     return this.input.current && this.input.current.inputElement;
   }
 
+  public get highlightedItems(): T[] {
+    return this.selectedItemsList.current ? this.selectedItemsList.current.highlightedItems() : [];
+  }
+
   public render(): JSX.Element {
-    const { className, inputProps, disabled } = this.props;
+    const { className, inputProps, disabled, focusZoneProps } = this.props;
     const activeDescendant =
       this.floatingPicker.current && this.floatingPicker.current.currentSelectedSuggestionIndex !== -1
         ? 'sug-' + this.floatingPicker.current.currentSelectedSuggestionIndex
@@ -101,7 +108,7 @@ export class BaseExtendedPicker<T, P extends IBaseExtendedPickerProps<T>>
         onKeyDown={this.onBackspace}
         onCopy={this.onCopy}
       >
-        <FocusZone direction={FocusZoneDirection.bidirectional}>
+        <FocusZone direction={FocusZoneDirection.bidirectional} {...focusZoneProps}>
           <SelectionZone selection={this.selection} selectionMode={SelectionMode.multiple}>
             <div className={css('ms-BasePicker-text', styles.pickerText)} role={'list'}>
               {this.props.headerComponent}
@@ -116,13 +123,12 @@ export class BaseExtendedPicker<T, P extends IBaseExtendedPickerProps<T>>
                   onInputValueChange={this.onInputChange}
                   aria-activedescendant={activeDescendant}
                   aria-owns="suggestion-list"
-                  aria-expanded="true"
+                  aria-expanded={this.floatingPicker.current ? this.floatingPicker.current.isSuggestionsShown : false}
                   aria-haspopup="true"
                   autoCapitalize="off"
                   autoComplete="off"
                   role="combobox"
                   disabled={disabled}
-                  aria-controls="selected-suggestion-alert"
                   onPaste={this.onPaste}
                 />
               )}
@@ -150,6 +156,7 @@ export class BaseExtendedPicker<T, P extends IBaseExtendedPickerProps<T>>
       onChange: this._onSuggestionSelected,
       inputElement: this.input.current ? this.input.current.inputElement : undefined,
       selectedItems: this.items,
+      suggestionItems: this.props.suggestionItems ? this.props.suggestionItems : undefined,
       ...this.floatingPickerProps
     });
   }
@@ -159,13 +166,14 @@ export class BaseExtendedPicker<T, P extends IBaseExtendedPickerProps<T>>
     return onRenderSelectedItems({
       componentRef: this.selectedItemsList,
       selection: this.selection,
-      selectedItems: this.state.selectedItems ? this.state.selectedItems : undefined,
+      selectedItems: this.props.selectedItems ? this.props.selectedItems : undefined,
       onItemsDeleted: this.props.selectedItems ? this.props.onItemsRemoved : undefined,
       ...this.selectedItemsListProps
     });
   }
 
   protected onInputChange = (value: string): void => {
+    this.setState({ queryString: value });
     if (this.floatingPicker.current) {
       this.floatingPicker.current.onQueryStringChanged(value);
     }
@@ -188,8 +196,7 @@ export class BaseExtendedPicker<T, P extends IBaseExtendedPickerProps<T>>
 
     if (this.floatingPicker.current && this.inputElement) {
       // Update the value if the input value is empty or it is different than the current inputText from the floatingPicker
-      const shoudUpdateValue =
-        this.inputElement.value === '' || this.inputElement.value !== this.floatingPicker.current.inputText;
+      const shoudUpdateValue = this.inputElement.value === '' || this.inputElement.value !== this.floatingPicker.current.inputText;
       this.floatingPicker.current.showPicker(shoudUpdateValue);
     }
   };
@@ -241,26 +248,28 @@ export class BaseExtendedPicker<T, P extends IBaseExtendedPickerProps<T>>
   };
 
   protected _onSuggestionSelected = (item: T): void => {
-    const processedItem: T | PromiseLike<T> | null = this.props.onItemSelected
-      ? (this.props.onItemSelected as any)(item)
-      : item;
+    const currentRenderedQueryString = this.props.currentRenderedQueryString;
+    const queryString = this.state.queryString;
+    if (currentRenderedQueryString === undefined || currentRenderedQueryString === queryString) {
+      const processedItem: T | PromiseLike<T> | null = this.props.onItemSelected ? (this.props.onItemSelected as any)(item) : item;
 
-    if (processedItem === null) {
-      return;
-    }
+      if (processedItem === null) {
+        return;
+      }
 
-    const processedItemObject: T = processedItem as T;
-    const processedItemPromiseLike: PromiseLike<T> = processedItem as PromiseLike<T>;
+      const processedItemObject: T = processedItem as T;
+      const processedItemPromiseLike: PromiseLike<T> = processedItem as PromiseLike<T>;
 
-    let newItem: T;
-    if (processedItemPromiseLike && processedItemPromiseLike.then) {
-      processedItemPromiseLike.then((resolvedProcessedItem: T) => {
-        newItem = resolvedProcessedItem;
+      let newItem: T;
+      if (processedItemPromiseLike && processedItemPromiseLike.then) {
+        processedItemPromiseLike.then((resolvedProcessedItem: T) => {
+          newItem = resolvedProcessedItem;
+          this._addProcessedItem(newItem);
+        });
+      } else {
+        newItem = processedItemObject;
         this._addProcessedItem(newItem);
-      });
-    } else {
-      newItem = processedItemObject;
-      this._addProcessedItem(newItem);
+      }
     }
   };
 

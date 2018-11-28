@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { BaseComponent, IClassNames, classNamesFunction, css, customizable, format, getId } from '../../Utilities';
+import { BaseComponent, classNamesFunction, css, format, getId } from '../../Utilities';
+import { IProcessedStyleSet } from '../../Styling';
 import { Icon } from '../../Icon';
 import { FocusZone, FocusZoneDirection } from '../../FocusZone';
 import { IRatingProps, RatingSize, IRatingStyleProps, IRatingStyles } from './Rating.types';
@@ -10,7 +11,7 @@ interface IRatingStarProps extends React.AllHTMLAttributes<HTMLElement> {
   fillPercentage: number;
   disabled: boolean;
   readOnly: boolean;
-  classNames: IClassNames<IRatingStyles>;
+  classNames: IProcessedStyleSet<IRatingStyles>;
 }
 
 export interface IRatingState {
@@ -21,16 +22,11 @@ const RatingStar = (props: IRatingStarProps) => (
   <div className={props.classNames.ratingStar} key={props.id}>
     <Icon className={props.classNames.ratingStarBack} iconName="FavoriteStarFill" />
     {!props.disabled && (
-      <Icon
-        className={props.classNames.ratingStarFront}
-        iconName="FavoriteStarFill"
-        style={{ width: props.fillPercentage + '%' }}
-      />
+      <Icon className={props.classNames.ratingStarFront} iconName="FavoriteStarFill" style={{ width: props.fillPercentage + '%' }} />
     )}
   </div>
 );
 
-@customizable('Rating', ['theme', 'getStyles'])
 export class RatingBase extends BaseComponent<IRatingProps, IRatingState> {
   public static defaultProps: IRatingProps = {
     min: 1,
@@ -39,10 +35,14 @@ export class RatingBase extends BaseComponent<IRatingProps, IRatingState> {
   private _id: string;
   private _min: number;
   private _labelId: string;
-  private _classNames: { [key in keyof IRatingStyles]: string };
+  private _classNames: IProcessedStyleSet<IRatingStyles>;
 
   constructor(props: IRatingProps) {
     super(props);
+
+    this._warnDeprecations({
+      onChanged: 'onChange'
+    });
 
     this._id = getId('Rating');
     this._min = this.props.allowZeroStars ? 0 : 1;
@@ -115,9 +115,7 @@ export class RatingBase extends BaseComponent<IRatingProps, IRatingState> {
           [this._classNames.rootIsLarge]: size === RatingSize.Large,
           [this._classNames.rootIsSmall]: size !== RatingSize.Large
         })}
-        aria-label={
-          getAriaLabel ? getAriaLabel(this.state.rating ? this.state.rating : 0, this.props.max as number) : ''
-        }
+        aria-label={getAriaLabel ? getAriaLabel(this.state.rating ? this.state.rating : 0, this.props.max as number) : ''}
         id={id}
       >
         <FocusZone
@@ -146,7 +144,12 @@ export class RatingBase extends BaseComponent<IRatingProps, IRatingState> {
         rating: value
       } as IRatingState);
 
-      const { onChanged } = this.props;
+      const { onChange, onChanged } = this.props;
+
+      if (onChange) {
+        onChange(ev, value);
+      }
+
       if (onChanged) {
         onChanged(value);
       }

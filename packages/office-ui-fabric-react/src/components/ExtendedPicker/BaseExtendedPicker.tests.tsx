@@ -7,8 +7,8 @@ import * as renderer from 'react-test-renderer';
 
 import { IBaseExtendedPickerProps } from './BaseExtendedPicker.types';
 import { BaseExtendedPicker } from './BaseExtendedPicker';
-import { IBaseFloatingPickerProps, BaseFloatingPicker, SuggestionsStore } from '../FloatingPicker';
-import { IBaseSelectedItemsListProps, ISelectedItemProps, BaseSelectedItemsList } from '../SelectedItemsList';
+import { IBaseFloatingPickerProps, BaseFloatingPicker, SuggestionsStore } from '../FloatingPicker/index';
+import { IBaseSelectedItemsListProps, ISelectedItemProps, BaseSelectedItemsList } from '../SelectedItemsList/index';
 import { KeyCodes } from '../../Utilities';
 
 function onResolveSuggestions(text: string): ISimple[] {
@@ -38,9 +38,10 @@ const BasePickerWithType = BaseFloatingPicker as new (props: IBaseFloatingPicker
   IBaseFloatingPickerProps<ISimple>
 >;
 
-const BaseSelectedItemsListWithType = BaseSelectedItemsList as new (
-  props: IBaseSelectedItemsListProps<ISimple>
-) => BaseSelectedItemsList<ISimple, IBaseSelectedItemsListProps<ISimple>>;
+const BaseSelectedItemsListWithType = BaseSelectedItemsList as new (props: IBaseSelectedItemsListProps<ISimple>) => BaseSelectedItemsList<
+  ISimple,
+  IBaseSelectedItemsListProps<ISimple>
+>;
 
 const basicSuggestionRenderer = (props: ISimple) => {
   return <div> {props.name} </div>;
@@ -77,9 +78,10 @@ export type TypedBaseExtendedPicker = BaseExtendedPicker<ISimple, IBaseExtendedP
 
 describe('Pickers', () => {
   describe('BasePicker', () => {
-    const BaseExtendedPickerWithType = BaseExtendedPicker as new (
-      props: IBaseExtendedPickerProps<ISimple>
-    ) => BaseExtendedPicker<ISimple, IBaseExtendedPickerProps<ISimple>>;
+    const BaseExtendedPickerWithType = BaseExtendedPicker as new (props: IBaseExtendedPickerProps<ISimple>) => BaseExtendedPicker<
+      ISimple,
+      IBaseExtendedPickerProps<ISimple>
+    >;
 
     it('renders BaseExtendedPicker correctly', () => {
       const component = renderer.create(

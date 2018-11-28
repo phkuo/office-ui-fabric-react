@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { css, classNamesFunction } from '../../../Utilities';
+import { css, classNamesFunction } from 'office-ui-fabric-react/lib/Utilities';
 import { getStyles, IButtonBasicExampleStyleProps, IButtonBasicExampleStyles } from './Button.Basic.Example.styles';
-import { DefaultButton, IButtonProps } from 'office-ui-fabric-react/lib/Button';
+import { DefaultButton, PrimaryButton, IButtonProps } from 'office-ui-fabric-react/lib/Button';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 
 export class ButtonDefaultExample extends React.Component<IButtonProps, {}> {
@@ -9,7 +9,7 @@ export class ButtonDefaultExample extends React.Component<IButtonProps, {}> {
     const { disabled, checked } = this.props;
 
     const getClassNames = classNamesFunction<IButtonBasicExampleStyleProps, IButtonBasicExampleStyles>();
-    const classNames = getClassNames(getStyles);
+    const classNames = getClassNames(getStyles, {});
 
     return (
       <div className={css(classNames.twoup)}>
@@ -26,8 +26,7 @@ export class ButtonDefaultExample extends React.Component<IButtonProps, {}> {
         </div>
         <div>
           <Label>Primary</Label>
-          <DefaultButton
-            primary={true}
+          <PrimaryButton
             data-automation-id="test"
             disabled={disabled}
             checked={checked}

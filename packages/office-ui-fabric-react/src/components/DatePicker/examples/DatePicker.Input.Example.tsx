@@ -4,20 +4,7 @@ import { DatePicker, DayOfWeek, IDatePickerStrings } from 'office-ui-fabric-reac
 import './DatePicker.Examples.scss';
 
 const DayPickerStrings: IDatePickerStrings = {
-  months: [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ],
+  months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 
   shortMonths: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 
@@ -30,6 +17,7 @@ const DayPickerStrings: IDatePickerStrings = {
   nextMonthAriaLabel: 'Go to next month',
   prevYearAriaLabel: 'Go to previous year',
   nextYearAriaLabel: 'Go to next year',
+  closeButtonAriaLabel: 'Close date picker',
 
   isRequiredErrorMessage: 'Start date is required.',
 
@@ -57,8 +45,8 @@ export class DatePickerInputExample extends React.Component<{}, IDatePickerInput
     return (
       <div className="docs-DatePickerExample">
         <p>
-          Text input allowed by default when use keyboard navigation. Mouse click the TextField will popup DatePicker,
-          click the TextField again will dismiss the DatePicker and allow text input.
+          Text input allowed by default when use keyboard navigation. Mouse click the TextField will popup DatePicker, click the TextField
+          again will dismiss the DatePicker and allow text input.
         </p>
         <DatePicker
           label="Start date"

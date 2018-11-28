@@ -27,11 +27,7 @@ export default class BoxExample extends React.Component<React.HTMLAttributes<HTM
 
     return (
       <div>
-        <DefaultButton
-          secondaryText="Focuses inside the FocusTrapZone"
-          onClick={this._onButtonClickHandler}
-          text="Go to Trap Zone"
-        />
+        <DefaultButton secondaryText="Focuses inside the FocusTrapZone" onClick={this._onButtonClickHandler} text="Go to Trap Zone" />
 
         {(() => {
           if (isChecked) {
@@ -58,7 +54,7 @@ export default class BoxExample extends React.Component<React.HTMLAttributes<HTM
         <Toggle
           componentRef={this._setRef}
           checked={isChecked}
-          onChanged={this._onFocusTrapZoneToggleChanged}
+          onChange={this._onFocusTrapZoneToggleChanged}
           label="Focus Trap Zone"
           onText="On"
           offText="Off"
@@ -66,11 +62,7 @@ export default class BoxExample extends React.Component<React.HTMLAttributes<HTM
         {(() => {
           if (isChecked) {
             return (
-              <DefaultButton
-                secondaryText="Exit Focus Trap Zone"
-                onClick={this._onExitButtonClickHandler}
-                text="Exit Focus Trap Zone"
-              />
+              <DefaultButton secondaryText="Exit Focus Trap Zone" onClick={this._onExitButtonClickHandler} text="Exit Focus Trap Zone" />
             );
           }
         })()}
@@ -90,7 +82,7 @@ export default class BoxExample extends React.Component<React.HTMLAttributes<HTM
     });
   };
 
-  private _onFocusTrapZoneToggleChanged = (isChecked: boolean): void => {
+  private _onFocusTrapZoneToggleChanged = (ev: React.MouseEvent<HTMLElement>, isChecked: boolean): void => {
     this.setState(
       {
         isChecked: isChecked

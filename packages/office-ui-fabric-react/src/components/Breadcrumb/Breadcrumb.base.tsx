@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { BaseComponent, getRTL, createRef, classNamesFunction, IClassNames } from '../../Utilities';
+import { BaseComponent, getRTL, classNamesFunction } from '../../Utilities';
+import { IProcessedStyleSet } from '../../Styling';
 import { FocusZone, FocusZoneDirection } from '../../FocusZone';
 import { Link } from '../../Link';
 import { Icon } from '../../Icon';
@@ -8,7 +9,7 @@ import { IBreadcrumbProps, IBreadcrumbItem, IDividerAsProps } from './Breadcrumb
 import { DirectionalHint } from '../../common/DirectionalHint';
 import { ResizeGroup } from '../../ResizeGroup';
 import { TooltipHost, TooltipOverflowMode } from '../../Tooltip';
-import { IBreadcrumbStyleProps, IBreadcrumbStyles } from './Breadcrumb.styles';
+import { IBreadcrumbStyleProps, IBreadcrumbStyles } from './Breadcrumb.types';
 
 const getClassNames = classNamesFunction<IBreadcrumbStyleProps, IBreadcrumbStyles>();
 
@@ -28,8 +29,8 @@ export class BreadcrumbBase extends BaseComponent<IBreadcrumbProps, any> {
     overflowIndex: 0
   };
 
-  private _classNames: IClassNames<IBreadcrumbStyles>;
-  private _focusZone = createRef<FocusZone>();
+  private _classNames: IProcessedStyleSet<IBreadcrumbStyles>;
+  private _focusZone = React.createRef<FocusZone>();
 
   constructor(props: IBreadcrumbProps) {
     super(props);
@@ -47,15 +48,7 @@ export class BreadcrumbBase extends BaseComponent<IBreadcrumbProps, any> {
   }
 
   public render(): JSX.Element {
-    const {
-      onReduceData = this._onReduceData,
-      overflowIndex,
-      maxDisplayedItems,
-      items,
-      className,
-      theme,
-      styles
-    } = this.props;
+    const { onReduceData = this._onReduceData, overflowIndex, maxDisplayedItems, items, className, theme, styles } = this.props;
     const renderedItems = [...items];
     const renderedOverflowItems = renderedItems.splice(overflowIndex!, renderedItems.length - maxDisplayedItems!);
     const breadCrumbData: IBreadCrumbData = {
@@ -117,11 +110,7 @@ export class BreadcrumbBase extends BaseComponent<IBreadcrumbProps, any> {
       <li className={this._classNames.listItem} key={item.key || String(index)}>
         {onRenderItem(item, this._onRenderItem)}
         {(index !== lastItemIndex || (hasOverflowItems && index === overflowIndex! - 1)) && (
-          <DividerType
-            className={this._classNames.chevron}
-            iconName={getRTL() ? 'ChevronLeft' : 'ChevronRight'}
-            item={item}
-          />
+          <DividerType className={this._classNames.chevron} iconName={getRTL() ? 'ChevronLeft' : 'ChevronRight'} item={item} />
         )}
       </li>
     ));

@@ -1,6 +1,157 @@
 # Change Log - @uifabric/fabric-website
 
-This log was last generated on Wed, 20 Jun 2018 10:25:55 GMT and should not be manually modified.
+This log was last generated on Wed, 07 Nov 2018 13:31:00 GMT and should not be manually modified.
+
+## 6.8.0
+Wed, 07 Nov 2018 13:31:00 GMT
+
+### Minor changes
+
+- Add TopNav and mobile left nav to local and non-UHF site. Allow left nav to be accessed by keyboard.
+
+### Patches
+
+- Website: Update iconography implementation documentation
+
+## 6.7.2
+Tue, 06 Nov 2018 13:31:09 GMT
+
+### Patches
+
+- Update TypeScript instructions in getting started tutorial
+- Fix visual bugs caused by MWF overrides on Fabric site
+
+## 6.7.1
+Fri, 02 Nov 2018 12:28:54 GMT
+
+### Patches
+
+- Update website getting started docs
+
+## 6.7.0
+Tue, 30 Oct 2018 18:45:48 GMT
+
+### Minor changes
+
+- Carry over website pipeline improvements to prod-deployed index
+
+## 6.6.2
+Wed, 24 Oct 2018 12:28:58 GMT
+
+### Patches
+
+- Nav: fix loosely typed const after changes in display property type of IRawStyleBase.
+
+## 6.6.1
+Wed, 17 Oct 2018 01:29:55 GMT
+
+### Patches
+
+- Modify theme generator output and add codepen export option.
+
+## 6.6.0
+Mon, 15 Oct 2018 12:29:12 GMT
+
+### Minor changes
+
+- Enable website to load bundle scripts from manifest JS file
+
+## 6.5.0
+Mon, 08 Oct 2018 12:24:15 GMT
+
+### Minor changes
+
+- Add temporary MessageBar to link to Fluent for Fabric
+
+### Patches
+
+- Moving tslint/prettier dependencies 
+
+## 6.4.6
+Tue, 02 Oct 2018 12:28:04 GMT
+
+### Patches
+
+- Minor typing change to support Foundation refactor.
+
+## 6.4.5
+Fri, 21 Sep 2018 14:25:46 GMT
+
+### Patches
+
+- Adding a version stamp file
+
+## 6.4.4
+Thu, 13 Sep 2018 17:38:04 GMT
+
+### Patches
+
+- prettier fixes
+
+## 6.4.3
+Wed, 12 Sep 2018 12:26:41 GMT
+
+### Patches
+
+- Fix typo in docs
+
+## 6.4.2
+Wed, 15 Aug 2018 10:26:31 GMT
+
+### Patches
+
+- Fixed the bug where the searchbox didn't appear and when clicking any detailslist child the nav would disappear
+
+## 6.4.1
+Fri, 10 Aug 2018 10:26:09 GMT
+
+### Patches
+
+- Fixed bug where searchbox appeared in pages it wasn't supposed to.
+- Prettier cleanup.
+
+## 6.4.0
+Fri, 03 Aug 2018 10:25:59 GMT
+
+### Minor changes
+
+- Added Nav categories, filter highlighting, and alphabetization of components
+
+## 6.3.1
+Fri, 27 Jul 2018 10:25:39 GMT
+
+### Patches
+
+- Added @uifabric/experiments dependency to fabric-website
+
+## 6.3.0
+Mon, 23 Jul 2018 10:28:08 GMT
+
+### Minor changes
+
+- prettier fixes
+- Addressing bad imports.
+
+## 6.2.0
+Tue, 17 Jul 2018 10:28:40 GMT
+
+### Minor changes
+
+- Added searchbox feature
+
+## 6.1.4
+Mon, 16 Jul 2018 10:27:18 GMT
+
+### Patches
+
+- Refactors DetailsList variants to be sub-pages
+
+## 6.1.3
+Fri, 06 Jul 2018 10:23:46 GMT
+
+### Patches
+
+- Update documentation regarding dir attribute.
 
 ## 6.1.2
 Wed, 20 Jun 2018 10:25:55 GMT

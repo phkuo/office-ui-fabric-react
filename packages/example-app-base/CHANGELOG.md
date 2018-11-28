@@ -1,6 +1,127 @@
 # Change Log - @uifabric/example-app-base
 
-This log was last generated on Thu, 14 Jun 2018 20:52:57 GMT and should not be manually modified.
+This log was last generated on Tue, 06 Nov 2018 13:31:09 GMT and should not be manually modified.
+
+## 6.9.2
+Tue, 06 Nov 2018 13:31:09 GMT
+
+### Patches
+
+- Fix visual bugs caused by MWF overrides on Fabric site
+
+## 6.9.1
+Wed, 31 Oct 2018 12:32:41 GMT
+
+### Patches
+
+- Replace usage of scheme prop with theme provider.
+
+## 6.9.0
+Wed, 17 Oct 2018 01:29:55 GMT
+
+### Minor changes
+
+- Modify CodepenComponent for use by other packages.
+
+## 6.8.0
+Tue, 16 Oct 2018 12:28:48 GMT
+
+### Minor changes
+
+- Add optional app customizations and apply to examples when provided.
+
+## 6.7.6
+Thu, 11 Oct 2018 23:13:31 GMT
+
+### Patches
+
+- Documentation: remove unwanted backslashes and render backticks as code blocks
+
+## 6.7.5
+Wed, 10 Oct 2018 12:29:05 GMT
+
+### Patches
+
+- ExampleCard: Replace Fabric Core classes with mixins
+- ExampleCard: Adds utility classes for spacing within examples
+
+## 6.7.4
+Mon, 08 Oct 2018 12:24:15 GMT
+
+### Patches
+
+- Moving tslint/prettier dependencies 
+
+## 6.7.3
+Fri, 21 Sep 2018 14:25:46 GMT
+
+### Patches
+
+- Adding a version stamp file
+
+## 6.7.2
+Fri, 10 Aug 2018 10:26:08 GMT
+
+### Patches
+
+- Added optional feedback section for component pages
+
+## 6.7.1
+Wed, 08 Aug 2018 10:25:07 GMT
+
+### Patches
+
+- Autodoc: improve regex to handle certain edge cases of declaring interfaces.
+
+## 6.7.0
+Tue, 24 Jul 2018 10:24:36 GMT
+
+### Minor changes
+
+- Updating example pages to provide codepen script content.
+
+## 6.6.0
+Mon, 23 Jul 2018 10:28:08 GMT
+
+### Minor changes
+
+- Addressing bad imports.
+
+## 6.5.2
+Thu, 19 Jul 2018 19:04:38 GMT
+
+### Patches
+
+- Added optional feedback section for component pages
+
+## 6.5.1
+Wed, 18 Jul 2018 10:25:50 GMT
+
+### Patches
+
+- Fix typing bugs in example-app-base
+
+## 6.5.0
+Tue, 17 Jul 2018 10:28:40 GMT
+
+### Minor changes
+
+- Removing most `@customizable` decorator usage. This change should reduce extra React dom elements from being created. Also updating `componentRef` resolution to support `React.createRef()` usage.
+
+## 6.4.0
+Mon, 16 Jul 2018 10:27:18 GMT
+
+### Minor changes
+
+- Variant section lists have same style as best practices section lists. ComponentPage Overview now marked optional prop.
+- EditSection: Remove ComponentPageSection enum to make EditSection easier to use.
+
+## 6.3.0
+Fri, 13 Jul 2018 21:32:37 GMT
+
+### Minor changes
+
+- Reverting the TypeScript bump, to un
 
 ## 6.2.1
 Thu, 14 Jun 2018 20:52:57 GMT

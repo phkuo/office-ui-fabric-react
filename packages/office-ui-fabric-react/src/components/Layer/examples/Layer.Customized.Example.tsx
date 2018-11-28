@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Customizer } from '@uifabric/utilities';
-import { Panel } from '../../../Panel';
-import { Checkbox } from '../../../Checkbox';
-import { LayerHost } from '../LayerHost';
+import { Panel } from 'office-ui-fabric-react/lib/Panel';
+import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
+import { LayerHost } from 'office-ui-fabric-react/lib/Layer';
 
 export interface ILayerCustomizedExampleState {
   showPanel: boolean;
@@ -14,8 +14,8 @@ export class LayerCustomizedExample extends React.Component<{}, ILayerCustomized
     super(props);
 
     this.state = {
-      showPanel: true,
-      trapPanel: true
+      showPanel: false,
+      trapPanel: false
     };
   }
 
@@ -23,8 +23,8 @@ export class LayerCustomizedExample extends React.Component<{}, ILayerCustomized
     return (
       <div>
         <p>
-          A <code>Panel</code> is rendered, trapped in a specified container. Use 'Show panel' to show/hide the panel
-          (or click the X to dismiss it). Use 'Trap panel' to release the panel from its bounds.
+          A <code>Panel</code> is rendered, trapped in a specified container. Use 'Show panel' to show/hide the panel (or click the X to
+          dismiss it). Use 'Trap panel' to release the panel from its bounds.
         </p>
         <Checkbox label="Show panel" checked={this.state.showPanel} onChange={this._onShowPanelChange} />
         <Checkbox label="Trap panel" checked={this.state.trapPanel} onChange={this._onTrapPanelChange} />
@@ -59,7 +59,8 @@ export class LayerCustomizedExample extends React.Component<{}, ILayerCustomized
           style={{
             position: 'relative',
             height: '400px',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            border: '1px solid #ccc'
           }}
         />
       </div>

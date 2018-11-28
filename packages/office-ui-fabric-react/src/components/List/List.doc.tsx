@@ -17,8 +17,7 @@ const _cachedItems = createListItems(5000);
 export const ListPageProps: IDocPageProps = {
   title: 'List',
   componentName: 'ListExample',
-  componentUrl:
-    'https://github.com/OfficeDev/office-ui-fabric-react/tree/master/packages/office-ui-fabric-react/src/components/List',
+  componentUrl: 'https://github.com/OfficeDev/office-ui-fabric-react/tree/master/packages/office-ui-fabric-react/src/components/List',
   examples: [
     {
       title: 'List of 5000 grid items',
@@ -47,5 +46,6 @@ export const ListPageProps: IDocPageProps = {
   propertiesTablesSources: [require<string>('!raw-loader!office-ui-fabric-react/src/components/List/List.types.ts')],
   overview: require<string>('!raw-loader!office-ui-fabric-react/src/components/List/docs/ListOverview.md'),
   isHeaderVisible: true,
+  isFeedbackVisible: true,
   componentStatus: ListStatus
 };
