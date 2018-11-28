@@ -142,17 +142,16 @@ export class PropertiesTable extends React.Component<IPropertiesTableProps, IPro
     super(props);
 
     let properties = (props.properties as IInterfaceProperty[])
-      .sort(
-        (a: IInterfaceProperty, b: IInterfaceProperty) =>
-          a.interfacePropertyType < b.interfacePropertyType
-            ? -1
-            : a.interfacePropertyType > b.interfacePropertyType
-              ? 1
-              : a.name < b.name
-                ? -1
-                : a.name > b.name
-                  ? 1
-                  : 0
+      .sort((a: IInterfaceProperty, b: IInterfaceProperty) =>
+        a.interfacePropertyType < b.interfacePropertyType
+          ? -1
+          : a.interfacePropertyType > b.interfacePropertyType
+          ? 1
+          : a.name < b.name
+          ? -1
+          : a.name > b.name
+          ? 1
+          : 0
       )
       .map((prop: IInterfaceProperty, index: number) => assign({}, prop, { key: index }));
 

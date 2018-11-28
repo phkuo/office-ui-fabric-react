@@ -240,29 +240,27 @@ export class CalendarDay extends BaseComponent<ICalendarDayProps, ICalendarDaySt
             >
               {weeks!.map((week, weekIndex) => (
                 <tr key={weekNumbers ? weekNumbers[weekIndex] : weekIndex}>
-                  {showWeekNumbers &&
-                    weekNumbers && (
-                      <th
-                        className={css('ms-DatePicker-weekNumbers', 'ms-DatePicker-weekday', styles.weekday, styles.weekNumbers)}
-                        key={weekIndex}
-                        title={
-                          weekNumbers && strings.weekNumberFormatString && format(strings.weekNumberFormatString, weekNumbers[weekIndex])
-                        }
-                        aria-label={
-                          weekNumbers && strings.weekNumberFormatString && format(strings.weekNumberFormatString, weekNumbers[weekIndex])
-                        }
-                        scope="row"
+                  {showWeekNumbers && weekNumbers && (
+                    <th
+                      className={css('ms-DatePicker-weekNumbers', 'ms-DatePicker-weekday', styles.weekday, styles.weekNumbers)}
+                      key={weekIndex}
+                      title={
+                        weekNumbers && strings.weekNumberFormatString && format(strings.weekNumberFormatString, weekNumbers[weekIndex])
+                      }
+                      aria-label={
+                        weekNumbers && strings.weekNumberFormatString && format(strings.weekNumberFormatString, weekNumbers[weekIndex])
+                      }
+                      scope="row"
+                    >
+                      <div
+                        className={css('ms-DatePicker-day', styles.day, {
+                          ['ms-DatePicker-week--highlighted ' + styles.weekIsHighlighted]: selectedDateWeekNumber === weekNumbers[weekIndex]
+                        })}
                       >
-                        <div
-                          className={css('ms-DatePicker-day', styles.day, {
-                            ['ms-DatePicker-week--highlighted ' + styles.weekIsHighlighted]:
-                              selectedDateWeekNumber === weekNumbers[weekIndex]
-                          })}
-                        >
-                          <span>{weekNumbers[weekIndex]}</span>
-                        </div>
-                      </th>
-                    )}
+                        <span>{weekNumbers[weekIndex]}</span>
+                      </div>
+                    </th>
+                  )}
                   {week.map((day, dayIndex) => {
                     const isNavigatedDate = compareDates(navigatedDate, day.originalDate);
                     return (

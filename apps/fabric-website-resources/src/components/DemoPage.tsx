@@ -41,20 +41,14 @@ export const DemoPage: React.StatelessComponent<IDemoPageProps> = componentPageP
         </div>
       }
       propertiesTables={
-        componentPageProps.propertiesTablesSources && (
-          <PropertiesTableSet sources={componentPageProps.propertiesTablesSources} />
-        )
+        componentPageProps.propertiesTablesSources && <PropertiesTableSet sources={componentPageProps.propertiesTablesSources} />
       }
       overview={componentPageProps.overview ? <PageMarkdown>{componentPageProps.overview}</PageMarkdown> : undefined}
-      bestPractices={
-        componentPageProps.bestPractices ? <PageMarkdown>{componentPageProps.bestPractices}</PageMarkdown> : undefined
-      }
+      bestPractices={componentPageProps.bestPractices ? <PageMarkdown>{componentPageProps.bestPractices}</PageMarkdown> : undefined}
       dos={componentPageProps.dos ? <PageMarkdown>{componentPageProps.dos}</PageMarkdown> : undefined}
       donts={componentPageProps.donts ? <PageMarkdown>{componentPageProps.donts}</PageMarkdown> : undefined}
       isHeaderVisible={componentPageProps.isHeaderVisible}
-      componentStatus={
-        componentPageProps.componentStatus ? <ComponentStatus {...componentPageProps.componentStatus} /> : undefined
-      }
+      componentStatus={componentPageProps.componentStatus ? <ComponentStatus {...componentPageProps.componentStatus} /> : undefined}
       isFeedbackVisible={componentPageProps.isFeedbackVisible}
       feedback={componentPageProps.isFeedbackVisible ? <FeedbackList title={componentPageProps.title} /> : undefined}
     />

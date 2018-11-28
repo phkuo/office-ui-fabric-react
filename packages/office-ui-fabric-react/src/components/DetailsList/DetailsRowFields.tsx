@@ -16,17 +16,17 @@ export interface IDetailsRowFieldsState {
 }
 
 /* When a column gets new data, we animate the transition. The old data slides out
-  * and then the new data slides in. In order to do this, we remember the old data
-  * whenever new props come in, in getDerivedStateFromProps(). Then we do rendering
-  * in three phases:
-  * 2. OldContentOutgiong: Render with the old data and animate it sliding out
-  * 1. NewContentIncoming: Render the new data and slide it in
-  * 0. Rest: resting state, remove all animation classes
-  * Every render() call will move the rendering phase closer to the rest state.
-  * The phases go 2->1->0 with a delay inbetween each to allow the animation to
-  * complete. Each cell will also check to make sure it changed, if its contents
-  * did not change, then it will not do any animation.
-*/
+ * and then the new data slides in. In order to do this, we remember the old data
+ * whenever new props come in, in getDerivedStateFromProps(). Then we do rendering
+ * in three phases:
+ * 2. OldContentOutgiong: Render with the old data and animate it sliding out
+ * 1. NewContentIncoming: Render the new data and slide it in
+ * 0. Rest: resting state, remove all animation classes
+ * Every render() call will move the rendering phase closer to the rest state.
+ * The phases go 2->1->0 with a delay inbetween each to allow the animation to
+ * complete. Each cell will also check to make sure it changed, if its contents
+ * did not change, then it will not do any animation.
+ */
 export const enum DetailsRowFieldsRenderingPhase {
   OldContentOutgoing = 2,
   NewContentIncoming = 1,
@@ -43,8 +43,7 @@ export class DetailsRowFields extends BaseComponent<IDetailsRowFieldsProps, IDet
       try {
         const render = column.onRender || onRenderItemColumn;
 
-        cellContent =
-          render && !shimmer ? render(item, itemIndex, column) : DetailsRowFields._getCellText(item, column);
+        cellContent = render && !shimmer ? render(item, itemIndex, column) : DetailsRowFields._getCellText(item, column);
       } catch (e) {
         /* no-op */
       }
@@ -100,15 +99,12 @@ export class DetailsRowFields extends BaseComponent<IDetailsRowFieldsProps, IDet
     }
 
     return (
-      <div className={rowClassNames.fields}
-        data-automationid="DetailsRowFields"
-        role="presentation">
+      <div className={rowClassNames.fields} data-automationid="DetailsRowFields" role="presentation">
         {columns.map((column, columnIndex) => {
           const oldColumn = oldColumns && oldColumns[columnIndex];
           let contentChanged = false;
           if (oldItem && oldColumn) {
-            contentChanged =
-              DetailsRowFields._getCellText(item, column) !== DetailsRowFields._getCellText(oldItem, oldColumn);
+            contentChanged = DetailsRowFields._getCellText(item, column) !== DetailsRowFields._getCellText(oldItem, oldColumn);
           }
           switch (renderingPhase) {
             case DetailsRowFieldsRenderingPhase.OldContentOutgoing:
@@ -132,21 +128,16 @@ export class DetailsRowFields extends BaseComponent<IDetailsRowFieldsProps, IDet
     );
   }
 
-  private _renderCell(
-    column: IColumn,
-    columnIndex: number,
-    cellContent: React.ReactNode[],
-    withAnimationClass?: string
-  ) {
+  private _renderCell(column: IColumn, columnIndex: number, cellContent: React.ReactNode[], withAnimationClass?: string) {
     const { columnStartIndex, shimmer, rowClassNames, cellStyleProps = DEFAULT_CELL_STYLE_PROPS } = this.props;
 
     const width: string | number =
       typeof column.calculatedWidth === 'undefined'
         ? 'auto'
         : column.calculatedWidth +
-        cellStyleProps.cellLeftPadding +
-        cellStyleProps.cellRightPadding +
-        (column.isPadded ? cellStyleProps.cellExtraRightPadding : 0);
+          cellStyleProps.cellLeftPadding +
+          cellStyleProps.cellRightPadding +
+          (column.isPadded ? cellStyleProps.cellExtraRightPadding : 0);
 
     return (
       <div

@@ -511,10 +511,10 @@ export class DropdownBase extends BaseComponent<IDropdownInternalProps, IDropdow
       isItemSelected && item.disabled === true // preciate: both selected and disabled
         ? this._classNames.dropdownItemSelectedAndDisabled
         : isItemSelected // preciate: selected only
-          ? this._classNames.dropdownItemSelected
-          : item.disabled === true // predicate: disabled only
-            ? this._classNames.dropdownItemDisabled
-            : this._classNames.dropdownItem;
+        ? this._classNames.dropdownItemSelected
+        : item.disabled === true // predicate: disabled only
+        ? this._classNames.dropdownItemDisabled
+        : this._classNames.dropdownItem;
 
     return !this.props.multiSelect ? (
       <CommandButton
