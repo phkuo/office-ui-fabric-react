@@ -3494,7 +3494,6 @@ export interface IDetailsRowState {
     };
     // (undocumented)
     groupNestingDepth?: number;
-    // (undocumented)
     isDropping?: boolean;
     // (undocumented)
     selectionState?: IDetailsRowSelectionState;

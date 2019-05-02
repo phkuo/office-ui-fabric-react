@@ -1,3 +1,4 @@
+import { IBaseProps } from '../../Utilities';
 import { IColumn } from './DetailsList.types';
 import { ICellStyleProps } from './DetailsRow.types';
 import { IDetailsListProps } from './DetailsList';
@@ -11,7 +12,7 @@ export type IOverrideColumnRenderProps = Pick<IDetailsListProps, 'onRenderItemCo
 /**
  * {@docCategory DetailsList}
  */
-export interface IDetailsRowFieldsProps extends IOverrideColumnRenderProps {
+export interface IDetailsRowFieldsProps extends IBaseProps, IOverrideColumnRenderProps {
   /**
    * Data source for this component
    */
@@ -46,16 +47,18 @@ export interface IDetailsRowFieldsProps extends IOverrideColumnRenderProps {
   /**
    * Subset of classnames currently generated in DetailsRow that are used within DetailsRowFields.
    */
-  rowClassNames: {
-    isMultiline: string;
-    isRowHeader: string;
-    shimmerIconPlaceholder: string;
-    shimmer: string;
-    cell: string;
-    cellPadded: string;
-    cellUnpadded: string;
-    fields: string;
-  };
+  rowClassNames: IRowClassNames;
 
   cellStyleProps?: ICellStyleProps;
+}
+
+export interface IRowClassNames {
+  isMultiline: string;
+  isRowHeader: string;
+  shimmerIconPlaceholder: string;
+  shimmer: string;
+  cell: string;
+  cellPadded: string;
+  cellUnpadded: string;
+  fields: string;
 }
