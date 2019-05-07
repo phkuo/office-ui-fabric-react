@@ -1,6 +1,77 @@
 # Change Log - @uifabric/fabric-website
 
-This log was last generated on Tue, 30 Apr 2019 12:31:36 GMT and should not be manually modified.
+This log was last generated on Tue, 07 May 2019 12:34:52 GMT and should not be manually modified.
+
+## 6.17.0
+Tue, 07 May 2019 12:34:52 GMT
+
+### Minor changes
+
+- Expand getting started info and use kebab case IDs
+
+### Patches
+
+- Fix DetailsList large grouped demo infinite loading loop
+- Include .md files in npm package
+- Fix UHF element selectors for un-overriding font
+- Fix UHF header styles
+- Add stub "get started" pages for mobile
+
+## 6.16.4
+Mon, 06 May 2019 19:32:45 GMT
+
+### Patches
+
+- Fix UHF styling conflicts
+
+## 6.16.3
+Mon, 06 May 2019 12:35:11 GMT
+
+### Patches
+
+- Remove css reset
+
+## 6.16.2
+Mon, 06 May 2019 00:28:08 GMT
+
+### Patches
+
+- Accessibility fixes
+
+## 6.16.1
+Sun, 05 May 2019 19:59:10 GMT
+
+### Patches
+
+- Added get started section
+- Added more mobile controls documentation
+- Mobile documentation updates
+- Adjust Resources content
+- Anchor link handling and other bug fixes
+- Add version dropdown and fix other bugs
+
+## 6.16.0
+Sat, 04 May 2019 00:01:54 GMT
+
+### Minor changes
+
+- ported logic for devhost from index.html to homepage.htm
+- Switch to new website
+
+### Patches
+
+- Getting started update with CRA, just and Gatsby.js
+
+## 6.15.0
+Thu, 02 May 2019 12:36:35 GMT
+
+### Minor changes
+
+- Adds a manifest generation script
+
+### Patches
+
+- Check for undefined hashes
 
 ## 6.14.0
 Tue, 30 Apr 2019 12:31:36 GMT

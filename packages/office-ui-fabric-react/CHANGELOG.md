@@ -1,6 +1,51 @@
 # Change Log - office-ui-fabric-react
 
-This log was last generated on Wed, 01 May 2019 12:34:25 GMT and should not be manually modified.
+This log was last generated on Tue, 07 May 2019 12:34:52 GMT and should not be manually modified.
+
+## 6.177.0
+Tue, 07 May 2019 12:34:52 GMT
+
+### Minor changes
+
+- Color card + samples cards of Theming Designer, set up the layout of the whole app, got started implementing the creation of the theme"
+- Theme Designer app: Colors left nav, Samples card, A11y Checker card, Fabric Palette card, Export Panel
+- New feature: Semantic Slots card as well as clean up of layout & css.
+
+### Patches
+
+- Router should error if getComponent doesn't return anything
+- Truncate suggestions in IE11
+- Icon documentation update
+
+## 6.176.3
+Sun, 05 May 2019 19:59:10 GMT
+
+### Patches
+
+- Router: ignore trailing slashes, don't update if hash didn't change
+
+## 6.176.2
+Sat, 04 May 2019 00:01:54 GMT
+
+### Patches
+
+- Properly propagate Esc in DatePicker
+- Add min panel width for small screen sizes
+- Documentation: adds more `docCategory` tags to API items.
+- Doc updates for new website
+
+## 6.176.0
+Thu, 02 May 2019 12:36:35 GMT
+
+### Minor changes
+
+- Add IBreadcrumbData, deprecate IBreadCrumbData
+- Modal/Dialog: Add ability to move via mouse and/or keyboard
+- Tooltip/TooltipHost: content now can take JSX content.
+
+### Patches
+
+- Remove out-of-date IE focus handling work-around. Pass forceFocusInsideTrap={false} to DatePicker FocusTrapZone. Adjust FocusTrapZone return focus handling.
 
 ## 6.175.0
 Wed, 01 May 2019 12:34:25 GMT
