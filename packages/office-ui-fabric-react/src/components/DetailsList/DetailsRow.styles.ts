@@ -334,7 +334,7 @@ export const getStyles = (props: IDetailsRowStyleProps): IDetailsRowStyles => {
       }
     ],
 
-    cell: [defaultCellStyles, enableUpdateAnimations && AnimationStyles.slideLeftIn40],
+    cell: [defaultCellStyles, !enableUpdateAnimations && AnimationStyles.slideLeftIn40],
 
     cellMeasurer: [
       classNames.cellMeasurer,

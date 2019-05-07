@@ -1938,6 +1938,10 @@ exports[`DetailsRow renders details list row with checkbox visible always correc
       className=
           ms-DetailsRow-cell
           {
+            animation-duration: 0.367s;
+            animation-fill-mode: both;
+            animation-name: keyframes from{opacity:0;}to{opacity:1;} keyframes from{transform:translate3d(40px,0,0);}to{transform:translate3d(0,0,0);};
+            animation-timing-function: cubic-bezier(.1,.9,.2,1);
             box-sizing: border-box;
             display: inline-block;
             min-height: 42px;
@@ -2009,6 +2013,10 @@ exports[`DetailsRow renders details list row with checkbox visible always correc
       className=
           ms-DetailsRow-cell
           {
+            animation-duration: 0.367s;
+            animation-fill-mode: both;
+            animation-name: keyframes from{opacity:0;}to{opacity:1;} keyframes from{transform:translate3d(40px,0,0);}to{transform:translate3d(0,0,0);};
+            animation-timing-function: cubic-bezier(.1,.9,.2,1);
             box-sizing: border-box;
             display: inline-block;
             min-height: 42px;
@@ -2080,6 +2088,10 @@ exports[`DetailsRow renders details list row with checkbox visible always correc
       className=
           ms-DetailsRow-cell
           {
+            animation-duration: 0.367s;
+            animation-fill-mode: both;
+            animation-name: keyframes from{opacity:0;}to{opacity:1;} keyframes from{transform:translate3d(40px,0,0);}to{transform:translate3d(0,0,0);};
+            animation-timing-function: cubic-bezier(.1,.9,.2,1);
             box-sizing: border-box;
             display: inline-block;
             min-height: 42px;
