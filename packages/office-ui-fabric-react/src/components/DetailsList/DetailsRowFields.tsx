@@ -6,6 +6,7 @@ import { DEFAULT_CELL_STYLE_PROPS } from './DetailsRow.styles';
 
 const getCellText = (item: any, column: IColumn): string => {
   let value = item && column && column.fieldName ? item[column.fieldName] : '';
+  value = value || (item && column && column.fieldName && item.rowData && item.rowData[column.fieldName]);
 
   if (value === null || value === undefined) {
     value = '';
@@ -50,7 +51,8 @@ export class DetailsRowFields extends React.PureComponent<IDetailsRowFieldsProps
           // generate a key that auto-dirties when content changes, to force the container to re-render, to trigger animation
           let key: number | string;
           try {
-            const s = JSON.stringify(cellContentsRender);
+            const s = getCellText(item, column);
+            // s = s || JSON.stringify(cellContentsRender);
             key = s ? s + columnIndex : String(columnIndex);
           } catch {
             // circular reference
