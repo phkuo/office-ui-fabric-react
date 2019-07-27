@@ -8,7 +8,7 @@ export function rgb2hex(r: number, g: number, b: number): string {
 
 /** Converts an RGB component to a 0-padded hex component of length 2. */
 function _rgbToPaddedHex(num: number): string {
-  num = clamp(num, MAX_COLOR_RGB);
+  num = Math.floor(clamp(num, MAX_COLOR_RGB));
   const hex = num.toString(16);
 
   return hex.length === 1 ? '0' + hex : hex;

@@ -1,485 +1,437 @@
 import * as React from 'react';
 import './ColorsPage.global.scss';
 import { BaseComponent } from 'office-ui-fabric-react/lib/Utilities';
+import { IHSV, IColor } from 'office-ui-fabric-react/lib/utilities/color/interfaces';
+import { getColorFromString, getColorFromHSV, getColorFromRGBA, MAX_COLOR_RGB } from 'office-ui-fabric-react/lib/utilities/color/colors';
 
-import { loadTheme } from 'office-ui-fabric-react/lib/Styling';
-import { CodepenComponent } from '@uifabric/example-app-base';
-import { IColor } from 'office-ui-fabric-react/lib/utilities/color/interfaces';
-import { getContrastRatio, isDark } from 'office-ui-fabric-react/lib/utilities/color/shades';
+import { getContrastRatio } from 'office-ui-fabric-react/lib/utilities/color/shades';
 
-import {
-  ThemeGenerator,
-  themeRulesStandardCreator,
-  BaseSlots,
-  FabricSlots,
-  IThemeSlotRule,
-  IThemeRules
-} from 'office-ui-fabric-react/lib/ThemeGenerator';
-
-import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
-import { Callout } from 'office-ui-fabric-react/lib/Callout';
 import { ColorPicker } from 'office-ui-fabric-react/lib/ColorPicker';
 
-import { ChoiceGroup } from 'office-ui-fabric-react/lib/ChoiceGroup';
-import { Pivot, PivotItem } from 'office-ui-fabric-react/lib/Pivot';
-import { TeachingBubbleBasicExample } from 'office-ui-fabric-react/lib/components/TeachingBubble/examples/TeachingBubble.Basic.Example';
-import { TextFieldBasicExample } from 'office-ui-fabric-react/lib/components/TextField/examples/TextField.Basic.Example';
-import { ToggleBasicExample } from 'office-ui-fabric-react/lib/components/Toggle/examples/Toggle.Basic.Example';
-import { ProgressIndicatorBasicExample } from 'office-ui-fabric-react/lib/components/ProgressIndicator/examples/ProgressIndicator.Basic.Example';
-
-export interface IColorsPageState {
-  themeRules: IThemeRules;
-  colorPickerSlotRule: IThemeSlotRule | null;
-  colorPickerElement: HTMLElement | null;
-  colorPickerVisible: boolean;
+interface ISubTheme {
+  background: IColor;
+  text: IColor;
+  border: IColor;
+  backgroundHovered: IColor;
+  textHovered: IColor;
+  borderHovered: IColor;
 }
 
-const codeHeader = "import { loadTheme } from 'office-ui-fabric-react';\n\n";
-const codepenHeader = 'const { loadTheme, DefaultButton, PrimaryButton, Toggle, TooltipHost } = Fabric;\n\n';
-const codepenSamples =
-  '\n\nclass Content extends React.Component {\n  public render() {\n    return (<div>' +
-  '<DefaultButton text="DefaultButton"/><PrimaryButton text="PrimaryButton"/><Toggle label="Enabled"/><Toggle label="Disabled" disabled={true}/>' +
-  '</div>);\n  }\n}\n' +
-  "ReactDOM.render(<Content />,document.getElementById('content'));";
+interface INewTheme {
+  default: ISubTheme;
+  oldButton: ISubTheme;
+  newButton: ISubTheme;
+  accentButton: ISubTheme;
+}
+
+/*
+function wrapDecrement(i: number, max: number) {
+  if (--i < 0) {
+    return max;
+  }
+  return i;
+}
+
+function wrapIncrement(i: number, max: number) {
+  if (++i >= max) {
+    return 0;
+  }
+  return i;
+}
+*/
+
+function _getAccessibleShade(from: IColor, ramp: Array<IColor>, startingIndex: number | IColor, minContrast: number): IColor {
+  if (typeof startingIndex !== 'number') {
+    startingIndex = ramp.indexOf(startingIndex);
+    if (startingIndex === -1) {
+      alert('_getAccessibleShade Error: startingIndex IColor not found in given ramp');
+    }
+  }
+
+  if (startingIndex < 0) {
+    startingIndex = 0;
+  } else if (startingIndex >= ramp.length) {
+    startingIndex = ramp.length - 1;
+  }
+
+  let maxCr = 0;
+  let maxCrColor = ramp[startingIndex];
+
+  const startingCr = getContrastRatio(ramp[startingIndex], from);
+  if (startingCr >= minContrast) {
+    return ramp[startingIndex];
+  }
+  maxCr = startingCr;
+
+  // this parts starts by going down (lighter) first, therefore by default everything tries to go lighter
+  // todo: make this a flag that you can pass in to decide whether you want to go lighter or darker first
+  for (let i = startingIndex; i >= 0; i--) {
+    const cr = getContrastRatio(ramp[i], from);
+    if (cr > minContrast) {
+      return ramp[i];
+    }
+    if (cr > maxCr) {
+      maxCr = cr;
+      maxCrColor = ramp[i];
+    }
+  }
+
+  for (let i = startingIndex; i < ramp.length; i++) {
+    const cr = getContrastRatio(ramp[i], from);
+    if (cr > minContrast) {
+      return ramp[i];
+    }
+    if (cr > maxCr) {
+      maxCr = cr;
+      maxCrColor = ramp[i];
+    }
+  }
+
+  console.error('Color with sufficient contrast not found, using contrast of ' + maxCr + ' from ' + from.str + ' to ' + maxCrColor.str);
+  return maxCrColor;
+}
+
+function clamp(value: number, max: number, min = 0): number {
+  return value < min ? min : value > max ? max : value;
+}
+
+function _darken(hsv: IHSV, factor: number) {
+  return getColorFromHSV({
+    h: hsv.h,
+    s: hsv.s,
+    v: clamp(hsv.v - hsv.v * factor, 100)
+  });
+}
+
+function _lighten(hsv: IHSV, factor: number) {
+  return getColorFromHSV({
+    h: hsv.h,
+    s: clamp(hsv.s - hsv.s * factor, 100),
+    v: clamp(hsv.v + (100 - hsv.v) * factor, 100)
+  });
+}
+
+function _colorTowards(from: IColor, to: IColor, factor: number) {
+  return getColorFromRGBA({
+    r: clamp((1 - factor) * from.r + factor * to.r, MAX_COLOR_RGB),
+    g: clamp((1 - factor) * from.g + factor * to.g, MAX_COLOR_RGB),
+    b: clamp((1 - factor) * from.b + factor * to.b, MAX_COLOR_RGB),
+    a: from.a
+  });
+}
+
+// total number of shades in color ramp
+const TOTAL_SHADES = 99;
+// make primary/text colors go towards bg color
+const FANCY_RAMP = true;
+
+export interface IColorsPageState {
+  basePrimary: IColor;
+  baseBackground: IColor;
+  baseText: IColor;
+  rampPrimary: Array<IColor>;
+  rampBackground: Array<IColor>;
+  rampText: Array<IColor>;
+
+  isInverted: boolean;
+}
 
 export class ColorsPage extends BaseComponent<{}, IColorsPageState> {
-  private _semanticSlotColorChangeTimeout: number;
-
   constructor(props: {}) {
     super(props);
 
-    const themeRules = themeRulesStandardCreator();
-    ThemeGenerator.insureSlots(themeRules, isDark(themeRules[BaseSlots[BaseSlots.backgroundColor]].color!));
-
     this.state = {
-      themeRules: themeRules,
-      colorPickerSlotRule: null,
-      colorPickerElement: null,
-      colorPickerVisible: false
+      basePrimary: getColorFromString('#0078d4')!,
+      baseBackground: getColorFromString('#fff')!,
+      baseText: getColorFromString('#333')!,
+      // ramps will be filled in by getDerivedStateFromProps
+      rampPrimary: [],
+      rampBackground: [],
+      rampText: [],
+      isInverted: false
     };
   }
 
-  public componentWillUnmount(): void {
-    // remove temp styles
-    const root = document.querySelector('.App-content') as HTMLElement;
-    if (root) {
-      root.style.backgroundColor = '';
-      root.style.color = '';
-    }
-    document.body.style.backgroundColor = '';
-    document.body.style.color = '';
+  public componentDidUpdate = () => {
+    this._setElementToBackground('page', 75);
+    this._setElementToBackground('header', 75);
+    this._setElementToBackground('nav1', 50);
+    this._setElementToBackground('nav2', 25);
+    this._setElementToBackground('pageContent', 0);
+  };
 
-    // and apply the default theme to overwrite any existing custom theme
-    loadTheme({});
-  }
+  public componentDidMount = () => {
+    this.componentDidUpdate();
+  };
 
-  public render(): JSX.Element {
-    const { colorPickerVisible, colorPickerSlotRule, colorPickerElement } = this.state;
-
-    const fabricThemeSlots = [
-      this._fabricSlotWidget(FabricSlots.themeDarker),
-      this._fabricSlotWidget(FabricSlots.themeDark),
-      this._fabricSlotWidget(FabricSlots.themeDarkAlt),
-      this._fabricSlotWidget(FabricSlots.themePrimary),
-      this._fabricSlotWidget(FabricSlots.themeSecondary),
-      this._fabricSlotWidget(FabricSlots.themeTertiary),
-      this._fabricSlotWidget(FabricSlots.themeLight),
-      this._fabricSlotWidget(FabricSlots.themeLighter),
-      this._fabricSlotWidget(FabricSlots.themeLighterAlt)
-    ];
-    const fabricNeutralForegroundSlots = [
-      this._fabricSlotWidget(FabricSlots.black),
-      this._fabricSlotWidget(FabricSlots.neutralDark),
-      this._fabricSlotWidget(FabricSlots.neutralPrimary),
-      this._fabricSlotWidget(FabricSlots.neutralPrimaryAlt),
-      this._fabricSlotWidget(FabricSlots.neutralSecondary),
-      this._fabricSlotWidget(FabricSlots.neutralTertiary)
-    ];
-    const fabricNeutralBackgroundSlots = [
-      this._fabricSlotWidget(FabricSlots.neutralTertiaryAlt),
-      this._fabricSlotWidget(FabricSlots.neutralQuaternary),
-      this._fabricSlotWidget(FabricSlots.neutralQuaternaryAlt),
-      this._fabricSlotWidget(FabricSlots.neutralLight),
-      this._fabricSlotWidget(FabricSlots.neutralLighter),
-      this._fabricSlotWidget(FabricSlots.neutralLighterAlt),
-      this._fabricSlotWidget(FabricSlots.white)
-    ];
-
-    const stylingUrl = 'https://github.com/OfficeDev/office-ui-fabric-react/tree/master/packages/styling';
+  public render = (): JSX.Element => {
+    const { basePrimary, baseBackground, baseText, rampPrimary, rampBackground, rampText } = this.state;
 
     return (
       <div className="ms-themer">
-        <div className="overview">
-          <h2 id="Overview">Overview</h2>
-          <p>
-            This tool helps you easily create all the shades and slots for a custom theme. The theme can be used by Fabric React's styling
-            package, see the{' '}
-            <a className={'themeGeneratorPageLink'} href={stylingUrl}>
-              documentation
-            </a>
-            .<br />
-            As you modify one of the three base colors, the theme will update automatically based on predefined rules. You can modify each
-            individual slot below as well.
-          </p>
-        </div>
-        {/* Hello! You've found hidden functionality for generating a theme from an image. This uses Microsoft's
-         * Cognitive Vision API, documented here:
-         * https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/quickstarts/javascript
-         * We use that API to identify the most prominent background and foreground colors, and the accent color,
-         * and generate a theme based off of those.
-         * Since this API requires a personal subscription key, you'll have to enlist and insert your subscription
-         * key in _makeThemeFromImg() @ https://raw.githubusercontent.com/cliffkoh/office-ui-fabric-react/9c95e9b92f8caa1fe5ffb9da769ce0921a5272ed/packages/office-ui-fabric-react/src/components/ThemeGenerator/ThemeGeneratorPage.tsx
-         * Then, just uncomment this section. */}
-        {/*}
-        <div style={ { display: 'flex' } }>
-          <div>URL to image:&nbsp;</div>
-          <input type='text' id='imageUrl' />
-          <button onClick={ this._makeThemeFromImg }>Create theme from image</button>
-        </div>
-        <div id='imageDescription' />
-        <div><img id='imagePreview' style={ { maxHeight: '500px', maxWidth: '800px' } } /></div>
-        {*/}
-
-        {/* the shared popup color picker for slots */}
-        {colorPickerVisible && colorPickerSlotRule !== null && colorPickerSlotRule !== undefined && colorPickerElement && (
-          <Callout
-            key={colorPickerSlotRule.name}
-            gapSpace={10}
-            target={colorPickerElement}
-            setInitialFocus={true}
-            onDismiss={this._colorPickerOnDismiss}
-          >
-            <ColorPicker color={colorPickerSlotRule.color!.str} onChange={this._semanticSlotRuleChanged.bind(this, colorPickerSlotRule)} />
-          </Callout>
-        )}
-
-        {/* the three base slots, prominently displayed at the top of the page */}
         <div style={{ display: 'flex' }}>
-          {[
-            this._baseColorSlotPicker(BaseSlots.primaryColor, 'Primary Theme Color'),
-            this._baseColorSlotPicker(BaseSlots.foregroundColor, 'Body Text Color'),
-            this._baseColorSlotPicker(BaseSlots.backgroundColor, 'Body Background Color')
-          ]}
-        </div>
-        <br />
-
-        {this._outputSection()}
-        <br />
-
-        <h2 id="Fabric palette">Fabric palette</h2>
-        <p>
-          The original Fabric palette slots. These are raw colors with no prescriptive uses. Each one is a shade or tint of a base color.
-        </p>
-        <div className={'ms-themer-fabricPalette-root'}>
-          <div>{fabricThemeSlots}</div>
-          <div>
-            <p>generally used for text and foregrounds</p>
-            {fabricNeutralForegroundSlots}
-          </div>
-          <div>
-            <p>generally used for backgrounds</p>
-            {fabricNeutralBackgroundSlots}
-          </div>
-        </div>
-        <br />
-
-        <h2 id="Samples">Samples</h2>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <div className="ms-themer-example">
-            <TextFieldBasicExample />
-          </div>
-          <div className="ms-themer-example">
-            <ToggleBasicExample />
-            <ChoiceGroup
-              options={[
-                {
-                  key: 'A',
-                  text: 'Option A'
-                },
-                {
-                  key: 'B',
-                  text: 'Option B',
-                  checked: true
-                }
-              ]}
-              label="Pick one"
-              required={true}
-            />
-            <ChoiceGroup
-              options={[
-                {
-                  key: 'C',
-                  text: 'Option C',
-                  disabled: true
-                },
-                {
-                  key: 'D',
-                  text: 'Option D',
-                  checked: true,
-                  disabled: true
-                }
-              ]}
-              label="Pick one"
-              required={true}
-            />
-          </div>
-          <div className="ms-themer-example">
-            <TeachingBubbleBasicExample />
-            <br />
-            <ProgressIndicatorBasicExample />
-          </div>
+          {this._baseColorSlotPicker(basePrimary.str, 'Primary')}
+          {this._baseColorSlotPicker(baseBackground.str, 'Background')}
+          {this._baseColorSlotPicker(baseText.str, 'Text')}
         </div>
 
-        <h2 id="Accessibility">Accessibility</h2>
-        <p>Each pair of colors below should produce legible text and have a minimum contrast ratio of 4.5.</p>
-        <table className="ms-themer-accessibilityTable">
-          <thead>
-            <td>Sample text</td>
-            <td>Contrast ratio</td>
-            <td>Slot pair</td>
-          </thead>
-          {this._accessibilityTableBody()}
-        </table>
+        {this._renderRamp(rampPrimary)}
+        {this._renderRamp(rampBackground)}
+        {this._renderRamp(rampText)}
+
+        <br />
+
+        <div id={'page'}>
+          <div id={'header'}>
+            <h4>Header</h4>
+            {this._renderSampleButtons()}
+          </div>
+          <div id={'nav1'}>
+            <h4>nav1</h4>
+            {this._renderSampleButtons()}
+          </div>
+          <div id={'nav2'}>
+            <h4>nav2</h4>
+            {this._renderSampleButtons()}
+          </div>
+          <div id={'pageContent'}>
+            {/* #content is already being used */}
+            <h4>pageContent</h4>
+            {this._renderSampleButtons()}
+          </div>
+        </div>
       </div>
     );
+  };
+
+  public static getDerivedStateFromProps(props: any, state: IColorsPageState) {
+    const { isInverted, baseBackground, basePrimary, baseText } = state;
+
+    /* MAKE COLOR RAMPS */
+    // bg ramp
+    const rampBackground = new Array(TOTAL_SHADES);
+    for (let i = 0; i < TOTAL_SHADES; i++) {
+      const rampIndex = !isInverted ? i : TOTAL_SHADES - i;
+      rampBackground[rampIndex] = !isInverted ? _darken(baseBackground, i / TOTAL_SHADES) : _lighten(baseBackground, i / TOTAL_SHADES);
+    }
+
+    // primary ramp
+    const rampPrimary = new Array(TOTAL_SHADES);
+    const middleIndex = Math.floor(TOTAL_SHADES / 2);
+    // do the light half first
+    for (let i = middleIndex; i >= 0; i--) {
+      rampPrimary[i] =
+        !isInverted && FANCY_RAMP
+          ? _colorTowards(basePrimary, baseBackground, (middleIndex - i) / middleIndex)
+          : _lighten(basePrimary, (middleIndex - i) / middleIndex);
+    }
+    // now do dark half
+    for (let i = middleIndex; i < TOTAL_SHADES; i++) {
+      rampPrimary[i] =
+        !isInverted || !FANCY_RAMP
+          ? _darken(basePrimary, (i - middleIndex) / middleIndex)
+          : _colorTowards(basePrimary, baseBackground, (i - middleIndex) / middleIndex);
+    }
+
+    // primary ramp
+    const rampText = new Array(TOTAL_SHADES);
+    // do the light half first
+    for (let i = middleIndex; i >= 0; i--) {
+      rampText[i] =
+        !isInverted && FANCY_RAMP
+          ? _colorTowards(baseText, baseBackground, (middleIndex - i) / middleIndex)
+          : _lighten(baseText, (middleIndex - i) / middleIndex);
+    }
+    // now do dark half
+    for (let i = middleIndex; i < TOTAL_SHADES; i++) {
+      rampText[i] =
+        !isInverted || !FANCY_RAMP
+          ? _darken(baseText, (i - middleIndex) / middleIndex)
+          : _colorTowards(baseText, baseBackground, (i - middleIndex) / middleIndex);
+    }
+    /* END MAKE COLOR RAMPS */
+
+    return {
+      rampBackground,
+      rampPrimary,
+      rampText
+    };
   }
 
-  private _colorPickerOnDismiss = (): void => {
-    this.setState({ colorPickerVisible: false });
-  };
-
-  private _semanticSlotRuleChanged = (slotRule: IThemeSlotRule, ev: React.MouseEvent<HTMLElement>, color: IColor): void => {
-    if (this._semanticSlotColorChangeTimeout) {
-      clearTimeout(this._semanticSlotColorChangeTimeout);
+  private _setElementToBackground = (id: string, background: number) => {
+    const elem = document.getElementById(id);
+    if (!elem) {
+      alert('_setElementToBackground Error: element not found');
+      return;
     }
-    this._semanticSlotColorChangeTimeout = this._async.setTimeout(() => {
-      const { themeRules } = this.state;
+    const theme = this._makeThemeFromBackground(background);
 
-      ThemeGenerator.setSlot(slotRule, color.str, isDark(themeRules[BaseSlots[BaseSlots.backgroundColor]].color!), true, true);
-      this.setState({ themeRules: themeRules }, this._makeNewTheme);
-    }, 20);
-    // 20ms is low enough that you can slowly drag to change color and see that theme,
-    // but high enough that quick changes don't get bogged down by a million changes inbetween
+    elem.style.setProperty('--default-background', theme.default.background.str);
+    elem.style.setProperty('--default-text', theme.default.text.str);
+    elem.style.setProperty('--default-border', theme.default.border.str);
+
+    elem.style.setProperty('--oldButton-background', theme.oldButton.background.str);
+    elem.style.setProperty('--oldButton-text', theme.oldButton.text.str);
+    elem.style.setProperty('--oldButton-border', theme.oldButton.border.str);
+    elem.style.setProperty('--oldButton-background-hovered', theme.oldButton.backgroundHovered.str);
+    elem.style.setProperty('--oldButton-text-hovered', theme.oldButton.textHovered.str);
+    elem.style.setProperty('--oldButton-border-hovered', theme.oldButton.borderHovered.str);
+
+    elem.style.setProperty('--newButton-background', theme.newButton.background.str);
+    elem.style.setProperty('--newButton-text', theme.newButton.text.str);
+    elem.style.setProperty('--newButton-border', theme.newButton.border.str);
+    elem.style.setProperty('--newButton-background-hovered', theme.newButton.backgroundHovered.str);
+    elem.style.setProperty('--newButton-text-hovered', theme.newButton.textHovered.str);
+    elem.style.setProperty('--newButton-border-hovered', theme.newButton.borderHovered.str);
+
+    elem.style.setProperty('--accentButton-background', theme.accentButton.background.str);
+    elem.style.setProperty('--accentButton-text', theme.accentButton.text.str);
+    elem.style.setProperty('--accentButton-border', theme.accentButton.border.str);
+    elem.style.setProperty('--accentButton-background-hovered', theme.accentButton.backgroundHovered.str);
+    elem.style.setProperty('--accentButton-text-hovered', theme.accentButton.textHovered.str);
+    elem.style.setProperty('--accentButton-border-hovered', theme.accentButton.borderHovered.str);
+
+    console.log('Applied theme to ' + id + ':\n', theme);
   };
 
-  private _onSwatchClick = (slotRule: IThemeSlotRule, ev: React.MouseEvent<HTMLElement>): void => {
-    const { colorPickerSlotRule, colorPickerElement } = this.state;
-
-    if (
-      colorPickerSlotRule !== null &&
-      colorPickerSlotRule !== undefined &&
-      !!colorPickerElement &&
-      colorPickerSlotRule === slotRule &&
-      colorPickerElement === ev.target
-    ) {
-      // same one, close it
-      this.setState({ colorPickerVisible: false, colorPickerSlotRule: null, colorPickerElement: null });
-    } else {
-      // new one, open it
-      this.setState({
-        colorPickerVisible: true,
-        colorPickerSlotRule: slotRule,
-        colorPickerElement: ev.target as HTMLElement
-      });
+  private _makeThemeFromBackground = (index: number) => {
+    if (index < 0 || index >= TOTAL_SHADES) {
+      alert('_makeThemeFromBackground Error: out of bounds');
+      index = 0;
     }
+
+    const { rampBackground, rampPrimary, rampText } = this.state;
+    // the index of the original user-chosen color for text/primary colors
+    const startingIndex = Math.floor(TOTAL_SHADES / 2);
+    const textCr = 4.5;
+    const borderCr = 1.5;
+    const hoverCr = 1.2;
+    const backgroundCr = 3;
+
+    const theme: INewTheme = {
+      default: {
+        background: rampBackground[index],
+        text: _getAccessibleShade(rampBackground[index], rampText, startingIndex, textCr),
+        border: _getAccessibleShade(rampBackground[index], rampBackground, 0, borderCr)
+      } as ISubTheme, // stupid hack
+      oldButton: {
+        background: _getAccessibleShade(rampBackground[index], rampBackground, 0, backgroundCr),
+        // text:
+        border: getColorFromString('transparent')
+      } as ISubTheme,
+      newButton: {
+        background: rampBackground[index]
+        // text:
+        // border:
+      } as ISubTheme,
+      accentButton: {
+        background: _getAccessibleShade(rampBackground[index], rampPrimary, startingIndex, backgroundCr),
+        // text:
+        border: getColorFromString('transparent')
+      } as ISubTheme
+    };
+
+    theme.oldButton = {
+      ...theme.oldButton,
+      text: _getAccessibleShade(theme.oldButton.background, rampText, startingIndex, textCr),
+      backgroundHovered: _getAccessibleShade(theme.oldButton.background, rampBackground, theme.oldButton.background, hoverCr),
+      // textHovered:
+      borderHovered: getColorFromString('transparent')!
+    };
+    theme.oldButton.textHovered = _getAccessibleShade(theme.oldButton.backgroundHovered, rampText, theme.oldButton.text, textCr);
+
+    theme.newButton = {
+      ...theme.newButton,
+      text: theme.default.text,
+      border: theme.default.border,
+      backgroundHovered: _getAccessibleShade(theme.default.background, rampBackground, theme.default.background, hoverCr),
+      // textHovered: _getAccessibleShade(theme.default.text, rampText, theme.default.text, hoverCr),
+      borderHovered: _getAccessibleShade(theme.default.border, rampBackground, theme.default.border, hoverCr)
+    };
+    theme.newButton.textHovered = _getAccessibleShade(theme.newButton.backgroundHovered, rampText, theme.newButton.text, textCr);
+
+    theme.accentButton = {
+      ...theme.accentButton,
+      text: _getAccessibleShade(theme.accentButton.background, rampBackground, 0, textCr),
+      backgroundHovered: _getAccessibleShade(theme.accentButton.background, rampPrimary, theme.accentButton.background, hoverCr),
+      // textHovered:
+      borderHovered: getColorFromString('transparent')!
+    };
+    theme.accentButton.textHovered = _getAccessibleShade(
+      theme.accentButton.backgroundHovered,
+      rampBackground,
+      theme.accentButton.text,
+      textCr
+    );
+
+    return theme;
   };
 
-  private _slotWidget = (slotRule: IThemeSlotRule): JSX.Element => {
+  private _renderSampleButtons = () => {
     return (
-      <div key={slotRule.name} className="ms-themer-slot">
-        {this._colorSquareSwatchWidget(slotRule)}
-        <div>
-          <div>{slotRule.name}</div>
-          {!slotRule.isCustomized ? <div>Inherits from: {slotRule.inherits!.name}</div> : <div>Customized</div>}
-        </div>
-      </div>
+      <>
+        <h4>Lorem Ipsum</h4>
+        <hr />
+        <button className={'old'}>{'Old'}</button>
+        <br />
+        <button className={'new'}>{'New'}</button>
+        <br />
+        <button className={'accent'}>{'Accent'}</button>
+      </>
     );
   };
 
-  private _fabricSlotWidget = (fabricSlot: FabricSlots): JSX.Element => {
-    return this._slotWidget(this.state.themeRules[FabricSlots[fabricSlot]]);
-  };
+  private _renderRamp = (ramp: Array<IColor>): JSX.Element => {
+    const totalWidth = 1000,
+      cellWidth = totalWidth / ramp.length;
 
-  private _colorSquareSwatchWidget(slotRule: IThemeSlotRule): JSX.Element {
+    const cells = [];
+    for (let i = 0; i < ramp.length; i++) {
+      cells.push(
+        <div
+          key={i}
+          style={{
+            display: 'inline-block',
+            width: cellWidth,
+            height: '100%',
+            backgroundColor: ramp[i].str
+          }}
+        />
+      );
+    }
+
     return (
       <div
-        key={slotRule.name}
-        className="ms-themer-swatch"
-        style={{ backgroundColor: slotRule.color!.str }}
-        onClick={this._onSwatchClick.bind(this, slotRule)}
-      />
-    );
-  }
-
-  private _accessibilityRow = (foreground: FabricSlots, background: FabricSlots): JSX.Element => {
-    const themeRules = this.state.themeRules;
-    const bgc: IColor = themeRules[FabricSlots[background]].color!;
-    const fgc: IColor = themeRules[FabricSlots[foreground]].color!;
-
-    const contrastRatio = getContrastRatio(bgc, fgc);
-    let contrastRatioString = String(contrastRatio);
-    contrastRatioString = contrastRatioString.substr(0, contrastRatioString.indexOf('.') + 3);
-    if (contrastRatio < 4.5) {
-      contrastRatioString = '**' + contrastRatioString + '**';
-    }
-
-    return (
-      <tr key={String(foreground) + String(background)}>
-        <td style={{ backgroundColor: bgc.str, color: fgc.str }}>How vexingly quick daft zebras jump.</td>
-        <td>{contrastRatioString}</td>
-        <td>{FabricSlots[foreground] + ' + ' + FabricSlots[background]}</td>
-      </tr>
-    );
-  };
-
-  private _accessibilityTableBody = (): JSX.Element => {
-    const accessibilityRows: JSX.Element[] = [
-      this._accessibilityRow(FabricSlots.neutralPrimary, FabricSlots.white), // default
-      // primary color also needs to be accessible, this is also strong variant default
-      this._accessibilityRow(FabricSlots.white, FabricSlots.themePrimary),
-      this._accessibilityRow(FabricSlots.neutralPrimary, FabricSlots.neutralLighter), // neutral variant default
-      this._accessibilityRow(FabricSlots.themeDark, FabricSlots.neutralLighter),
-      this._accessibilityRow(FabricSlots.neutralPrimary, FabricSlots.themeLighter)
-    ]; // neutral variant with primary color
-
-    // these are the text and primary colors on top of the soft variant, whose bg depends on invertedness of original theme
-    if (!isDark(this.state.themeRules[BaseSlots[BaseSlots.backgroundColor]].color!)) {
-      // is not inverted
-      accessibilityRows.push(
-        this._accessibilityRow(FabricSlots.neutralPrimary, FabricSlots.themeLighterAlt),
-        this._accessibilityRow(FabricSlots.themeDarkAlt, FabricSlots.themeLighterAlt)
-      );
-    } else {
-      // is inverted
-      accessibilityRows.push(
-        this._accessibilityRow(FabricSlots.neutralPrimary, FabricSlots.themeLight),
-        this._accessibilityRow(FabricSlots.themeDarkAlt, FabricSlots.themeLight)
-      );
-    }
-
-    return <tbody>{accessibilityRows}</tbody>;
-  };
-
-  private _outputSection = (): JSX.Element => {
-    const themeRules = this.state.themeRules;
-
-    // strip out the unnecessary shade slots from the final output theme
-    const abridgedTheme: IThemeRules = {};
-    for (const ruleName in themeRules) {
-      if (themeRules.hasOwnProperty(ruleName)) {
-        if (
-          ruleName.indexOf('ColorShade') === -1 &&
-          ruleName !== 'primaryColor' &&
-          ruleName !== 'backgroundColor' &&
-          ruleName !== 'foregroundColor'
-        ) {
-          abridgedTheme[ruleName] = themeRules[ruleName];
-        }
-      }
-    }
-
-    const themeAsCode = ThemeGenerator.getThemeAsCode(abridgedTheme);
-
-    return (
-      <div>
-        <h2 id="Output">Output</h2>
-        <div className={'ms-themer-output-root'}>
-          <Pivot styles={{ root: { padding: 10 } }}>
-            <PivotItem headerText="Code">
-              <textarea readOnly={true} spellCheck={false} value={codeHeader + themeAsCode} style={{ width: 350 }} />
-              <p>
-                This code block initializes the theme you have configured above and loads it using the loadTheme utility function. Calling
-                loadTheme will automatically apply the configured theming to any Fabric controls used within the same app. You can also
-                export this example to CodePen with a few component examples below.
-              </p>
-              <CodepenComponent jsContent={codepenHeader + themeAsCode + codepenSamples} buttonAs={PrimaryButton} />
-            </PivotItem>
-            <PivotItem headerText="JSON">
-              <textarea
-                readOnly={true}
-                spellCheck={false}
-                value={JSON.stringify(ThemeGenerator.getThemeAsJson(abridgedTheme), void 0, 2)}
-                style={{ width: 350 }}
-              />
-            </PivotItem>
-            <PivotItem headerText="PowerShell">
-              <textarea
-                readOnly={true}
-                spellCheck={false}
-                value={ThemeGenerator.getThemeForPowerShell(abridgedTheme)}
-                style={{ width: 350 }}
-              />
-            </PivotItem>
-          </Pivot>
-        </div>
+        style={{
+          width: totalWidth + 'px',
+          height: '15px'
+        }}
+      >
+        {cells}
       </div>
     );
   };
 
-  private _makeNewTheme = (): void => {
-    const themeAsJson: { [key: string]: string } = ThemeGenerator.getThemeAsJson(this.state.themeRules);
-    console.log('New theme...', themeAsJson);
-
-    const finalTheme = loadTheme({
-      ...{ palette: themeAsJson },
-      isInverted: isDark(this.state.themeRules[BaseSlots[BaseSlots.backgroundColor]].color!)
-    });
-
-    const root = document.querySelector('.App-content') as HTMLElement;
-    if (root) {
-      root.style.backgroundColor = finalTheme.semanticColors.bodyBackground;
-      root.style.color = finalTheme.semanticColors.bodyText;
-    }
-
-    document.body.style.backgroundColor = finalTheme.semanticColors.bodyBackground;
-    document.body.style.color = finalTheme.semanticColors.bodyText;
-    console.log('New theme:', finalTheme);
-  };
-
-  private _baseColorSlotPicker = (baseSlot: BaseSlots, title: string): JSX.Element => {
+  private _baseColorSlotPicker = (color: string, title: string): JSX.Element => {
     let colorChangeTimeout: number;
 
-    const onChange = (ev: React.MouseEvent<HTMLElement>, newColor: IColor): void => {
+    const onChange = (ev: any, newColor: IColor): void => {
       if (colorChangeTimeout) {
         clearTimeout(colorChangeTimeout);
       }
       colorChangeTimeout = this._async.setTimeout(() => {
-        const themeRules = this.state.themeRules;
-        const currentIsDark = isDark(themeRules[BaseSlots[BaseSlots.backgroundColor]].color!);
-        ThemeGenerator.setSlot(themeRules[BaseSlots[baseSlot]], newColor.str, currentIsDark, true, true);
-        if (currentIsDark !== isDark(themeRules[BaseSlots[BaseSlots.backgroundColor]].color!)) {
-          // isInverted got swapped, so need to refresh slots with new shading rules
-          ThemeGenerator.insureSlots(themeRules, !currentIsDark);
-        }
-        this.setState({ themeRules: themeRules }, this._makeNewTheme);
+        const newState: any = {};
+        newState['base' + title] = newColor;
+        this.setState(newState);
       }, 20);
       // 20ms is low enough that you can slowly drag to change color and see that theme,
       // but high enough that quick changes don't get bogged down by a million changes inbetween
     };
 
     return (
-      <div className="ms-themer-paletteSlot" key={baseSlot}>
+      <div className="ms-themer-paletteSlot" key={title}>
         <h3>{title}</h3>
-        <div>
-          <ColorPicker
-            key={'baseslotcolorpicker' + baseSlot}
-            color={this.state.themeRules[BaseSlots[baseSlot]].color!.str}
-            onChange={onChange}
-          />
-        </div>
-        <div className="ms-themer-swatchBg" style={{ backgroundColor: this.state.themeRules[BaseSlots[baseSlot]].color!.str }}>
-          <div className="ms-themer-swatch" style={{ backgroundColor: this.state.themeRules[BaseSlots[baseSlot]].color!.str }} />
-          {[
-            this._colorSquareSwatchWidget(this.state.themeRules[BaseSlots[baseSlot] + 'Shade1']),
-            this._colorSquareSwatchWidget(this.state.themeRules[BaseSlots[baseSlot] + 'Shade2']),
-            this._colorSquareSwatchWidget(this.state.themeRules[BaseSlots[baseSlot] + 'Shade3']),
-            this._colorSquareSwatchWidget(this.state.themeRules[BaseSlots[baseSlot] + 'Shade4']),
-            this._colorSquareSwatchWidget(this.state.themeRules[BaseSlots[baseSlot] + 'Shade5']),
-            this._colorSquareSwatchWidget(this.state.themeRules[BaseSlots[baseSlot] + 'Shade6']),
-            this._colorSquareSwatchWidget(this.state.themeRules[BaseSlots[baseSlot] + 'Shade7']),
-            this._colorSquareSwatchWidget(this.state.themeRules[BaseSlots[baseSlot] + 'Shade8'])
-          ]}
-        </div>
+        <ColorPicker key={'baseslotcolorpicker' + title} color={color} onChange={onChange} />
       </div>
     );
   };
