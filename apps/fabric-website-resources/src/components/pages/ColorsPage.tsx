@@ -122,7 +122,7 @@ function _colorTowards(from: IColor, to: IColor, factor: number) {
 
 // total number of shades in color ramp
 const TOTAL_SHADES = 99;
-// make primary/text colors go towards bg color
+// make primary/text colors go towards bg color (instead of just white or black)
 const FANCY_RAMP = true;
 
 export interface IColorsPageState {
@@ -294,6 +294,7 @@ export class ColorsPage extends BaseComponent<{}, IColorsPageState> {
     console.log('Applied theme to ' + id + ':\n', theme);
   };
 
+  /** from a chosen background index (in the bg ramp), make a theme out of it */
   private _makeThemeFromBackground = (index: number) => {
     if (index < 0 || index >= TOTAL_SHADES) {
       alert('_makeThemeFromBackground Error: out of bounds');
@@ -303,6 +304,8 @@ export class ColorsPage extends BaseComponent<{}, IColorsPageState> {
     const { rampBackground, rampPrimary, rampText } = this.state;
     // the index of the original user-chosen color for text/primary colors
     const startingIndex = Math.floor(TOTAL_SHADES / 2);
+
+    // the strat here is the pick the closest color that fulfills the contrast ratio requirements
     const textCr = 4.5;
     const borderCr = 1.5;
     const hoverCr = 1.2;
