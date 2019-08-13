@@ -183,7 +183,15 @@ exports[`Pivot renders link Pivot correctly 1`] = `
           <span
             className=
                 ms-Pivot-linkContent
-
+                {
+                  flex: 0 1 100%;
+                }
+                & > *  {
+                  margin-left: 4px;
+                }
+                & > *:first-child {
+                  margin-left: 0px;
+                }
           >
             <span
               className=
@@ -332,7 +340,15 @@ exports[`Pivot renders link Pivot correctly 1`] = `
           <span
             className=
                 ms-Pivot-linkContent
-
+                {
+                  flex: 0 1 100%;
+                }
+                & > *  {
+                  margin-left: 4px;
+                }
+                & > *:first-child {
+                  margin-left: 0px;
+                }
           >
             <span
               className=
