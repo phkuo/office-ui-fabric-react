@@ -117,6 +117,7 @@ export class FocusTrapZone extends React.Component<IFocusTrapZoneProps, {}> impl
       },
       tabIndex: disabled ? -1 : 0, // make bumpers tabbable only when enabled
       'data-is-visible': true,
+      'aria-hidden': true,
     } as React.HTMLAttributes<HTMLDivElement>;
 
     return (
